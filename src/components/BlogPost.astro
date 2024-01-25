@@ -1,0 +1,13 @@
+---
+import { CalendarIcon } from '@radix-ui/react-icons';
+const { url, title, description, pubDate, tags} = Astro.props
+---
+
+<div class="flex flex-col p-2 border-2 border-secondary rounded-md hover:bg-accent">
+  <h4 class="text-sm font-semibold">{title}</h4>
+  <p class="text-sm">{description}</p>
+  <div class="flex items-center pt-2">
+    <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
+    <span class="text-xs text-muted-foreground">{(new Date(pubDate)).toLocaleDateString('en-us')}</span>
+  </div>
+</div>
