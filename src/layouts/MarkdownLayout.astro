@@ -4,5 +4,7 @@ const { frontmatter } = Astro.props
 ---
 
 <BaseLayout pageTitle={frontmatter.title}>
-  <slot />
+  <section>
+    <slot />
+  </section>
 </BaseLayout>
