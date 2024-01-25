@@ -1,10 +1,14 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro"
 const { frontmatter } = Astro.props
+const { title, description, publishedAt} = frontmatter
 ---
-
 <BaseLayout pageTitle={frontmatter.title}>
-  <section>
+  <header class="text-primary prose dark:prose-invert mb-8 pb-8 border-b max-w-none">
+    <h1 class="mb-0 font-bold">{title}</h1>
+    <small class="font-semibold ">by Saketh Thota · {(new Date(publishedAt)).toLocaleDateString('en-us')}</small>
+  </header>
+  <div class="prose prose-h2:mb-2 dark:prose-invert max-w-none">
     <slot />
-  </section>
+  </div>
 </BaseLayout>

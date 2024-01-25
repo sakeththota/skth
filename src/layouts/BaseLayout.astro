@@ -3,6 +3,24 @@ import '@/styles/globals.css';
 import Header from '../components/Header.astro';
 const { pageTitle} = Astro.props;
 ---
+<script is:inline>
+	const getThemePreference = () => {
+		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+			return localStorage.getItem('theme');
+		}
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	};
+	const isDark = getThemePreference() === 'dark';
+	document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+ 
+	if (typeof localStorage !== 'undefined') {
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('dark');
+			localStorage.setItem('theme', isDark ? 'dark' : 'light');
+		});
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+	}
+</script>
 
 <html lang="en">
   <head>
@@ -12,8 +30,8 @@ const { pageTitle} = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
   </head>
-  <body class="antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto">
-    <main class="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+  <body class="antialiased max-w-2xl mb-40 flex flex-col mt-8 mx-auto">
+    <main class="flex-auto min-w-0 mt-6 flex flex-col px-2 justify-center ">
       <Header />
       <slot />
     </main>

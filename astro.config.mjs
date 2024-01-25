@@ -12,5 +12,9 @@ export default defineConfig({
     react(),
     mdx(),
   ],
+  markdown: {
+    shikiConfig: {
+      theme: "rose-pine-moon",
+    },
+  },
 });
-
