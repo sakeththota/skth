@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { Badge } from "@/components/ui/badge";
 const { frontmatter } = Astro.props
-const { title, description, publishedAt} = frontmatter
+const { title, publishedAt, tags} = frontmatter
 ---
 <BaseLayout pageTitle={frontmatter.title}>
   <header class="text-primary prose dark:prose-invert mb-8 pb-8 border-b max-w-none">
@@ -10,5 +11,8 @@ const { title, description, publishedAt} = frontmatter
   </header>
   <div class="prose prose-h2:mb-2 dark:prose-invert max-w-none">
     <slot />
+  </div>
+  <div class="flex gap-2 mt-8">
+    {tags.map((tag) => <Badge>{tag}</Badge>)}
   </div>
 </BaseLayout>
