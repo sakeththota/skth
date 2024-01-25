@@ -6,7 +6,7 @@ const pageTitle = 'Blog';
 const posts = await Astro.glob('../pages/posts/*.mdx');
 ---
 <BaseLayout pageTitle={pageTitle}>
-    <section> 
+    <section class="flex flex-col gap-4"> 
       {posts.map((post) => <BlogPost url={post.url} {...post.frontmatter} />)}
     </section>
 </BaseLayout>

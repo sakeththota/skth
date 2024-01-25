@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # vscode environment variables
 .vscode
+
+# ignore test blog posts
+src/pages/posts/test*.mdx
