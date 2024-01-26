@@ -4,6 +4,7 @@ import {
   MenuItems,
 } from "astro-navbar";
 import { ModeToggle } from '@/components/ModeToggle';
+import {GitHubLogoIcon} from '@radix-ui/react-icons';
 ---
 <aside class="-ml-[8px] mb-16 tracking-tight"
   <div class="lg:sticky lg:top-20">
@@ -17,10 +18,13 @@ import { ModeToggle } from '@/components/ModeToggle';
                 <a href="/work" class="font-medium text-2xl hover:text-accent">work</a>
             </li>
             <li>
-              <a href="/projects" class="font-medium text-2xl hover:text-accent">projects</a>
+              <a href="/cv" class="font-medium text-2xl hover:text-accent">cv</a>
             </li>
             <li>
                 <a href="/blog" class="font-medium text-2xl hover:text-accent">blog</a>
+            </li>
+            <li>
+              <a href="https://github.com/sakeththota/skth" class="font-medium text-2xl hover:text-accent"><GitHubLogoIcon className="h-6 w-6"/></a>
             </li>
             <li>
               <ModeToggle client:load />

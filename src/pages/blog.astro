@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogPost from '@/components/BlogPost.astro';
-
+import { Separator } from '@/components/ui/separator';
 const pageTitle = 'Blog';
 const posts = await Astro.glob("../pages/posts/*.mdx");
 ---
-<BaseLayout pageTitle={pageTitle}>
+<BaseLayout {pageTitle}>
+    <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight mb-8">Recent</h1>
     <section class="flex flex-col gap-4"> 
       {posts.map((post) => <BlogPost url={post.url} {...post.frontmatter} />)}
     </section>
