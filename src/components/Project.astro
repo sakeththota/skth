@@ -3,17 +3,17 @@ import { Badge } from '@/components/ui/badge';
 import { GitHubLogoIcon, OpenInNewWindowIcon } from '@radix-ui/react-icons';
 const { url, src, title, description, source, live, tags} = Astro.props
 ---
-<div class="flex flex-col justify-start w-full p-2 drop-shadow border-[1px] rounded-md 1/2">
+<div class="flex flex-col justify-start w-full p-2 drop-shadow border-[1px] rounded-md w-2/3">
   <a href={url} class="cursor-pointer mb-2">
       <img {src} class="rounded-md">
   </a>
-  <h4 class="font-semibold">{title}</h4>
-  <p class="text-sm">{description}</p>
+  <h4 class="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h4>
+  <p class="text-lg font-medium">{description}</p>
   <div class="flex items-center pt-2 gap-2">
-    <a href={source}><GitHubLogoIcon className="h-4 w-4 opacity-70 z-10" /></a>
-    <a href={live}><OpenInNewWindowIcon className="h-4 w-4 opacity-70 z-11" /></a
+    <a href={source}><GitHubLogoIcon className="h-6 w-6 opacity-70 z-10" /></a>
+    <a href={live}><OpenInNewWindowIcon className="h-6 w-6 opacity-70 z-11" /></a
     <div class="flex gap-2">
-      {tags.map(tag => <Badge variant="outline">{tag}</Badge>)}
+      {tags.map(tag => <Badge className="text-md" variant="outline">{tag}</Badge>)}
     </div>
   </div>
 </div>
