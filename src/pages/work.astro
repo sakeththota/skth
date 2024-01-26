@@ -3,7 +3,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Project from '@/components/Project.astro';
 
 const pageTitle = 'Projects';
-const projects = await Astro.glob("../pages/projects/*_final.mdx");
+let projects: any[] = [];
+try {
+  projects = await Astro.glob("../pages/projects/*.mdx")
+} catch (e) {
+  console.log("no blog posts found")
+}
 ---
 
 <BaseLayout {pageTitle}>

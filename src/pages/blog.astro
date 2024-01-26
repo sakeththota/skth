@@ -1,9 +1,14 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogPost from '@/components/BlogPost.astro';
-import { Separator } from '@/components/ui/separator';
+
 const pageTitle = 'Blog';
-const posts = await Astro.glob("../pages/posts/*.mdx");
+let posts: any[] = [];
+try {
+  posts = await Astro.glob("../pages/posts/*.md")
+} catch (e) {
+  console.log("no blog posts found")
+}
 ---
 <BaseLayout {pageTitle}>
     <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight mb-8">Recent</h1>
