@@ -1,8 +1,30 @@
 ---
 import BaseLayout  from '../layouts/BaseLayout.astro';
-const pageTitle = 'Saketh Thota';
----
+import { Separator } from '@/components/ui/separator';
+import BlogPost from '@/components/BlogPost.astro';
+import Project from '@/components/Project.astro';
 
+const pageTitle = 'Saketh Thota';
+const latestPosts = (await Astro.glob("../pages/posts/*.mdx")).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+const current = (await Astro.glob("../pages/projects/gzip-knn-classifier.mdx"))[0];
+---
 <BaseLayout {pageTitle}>
-  <h1 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0bb">Hi I'm Saketh</h1></BaseLayout>
+  <h2 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb">Hey, I'm Saketh</h2>
+  <p class="text-2xl leading-8">I'm a software engineer with a passion for building things, teaching, and bringing people together. I currently work as a developer at Caterpillar where I admin a self-service marketing service for our dealerships.</p>
+  <p class="text-2xl leading-8 mt-8">When I'm not working, I enjoy tutoring computer science and math, curating playlists, and remaining involed with my fraternity's local and national service initiatives.</p>
+  <Separator className="my-16"/>
+  <div class="grid md:grid-cols-2 gap-16 pb-16">
+    <div class="flex flex-col gap-8 ">
+      <h3 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb ">Latest Posts</h3>
+      <div class="flex flex-col gap-4 justify-center">
+        {latestPosts.map((post) => <BlogPost url={post.url} {...post.frontmatter} />)}
+      </div>
+    </div>
+    <div class="flex flex-col gap-8">
+      <h3 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb ">Working On</h3>
+      <Project url={current.url} {...current.frontmatter} />
+    </div>
+  </div>
+  <h3 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb ">Follow Me</h3>
+
 </BaseLayout>

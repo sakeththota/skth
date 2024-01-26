@@ -5,7 +5,7 @@ import Project from '@/components/Project.astro';
 const pageTitle = 'Projects';
 let projects: any[] = [];
 try {
-  projects = await Astro.glob("../pages/projects/*.mdx")
+  projects = await Astro.glob("../pages/projects/*_final.mdx")
 } catch (e) {
   console.log("no blog posts found")
 }
