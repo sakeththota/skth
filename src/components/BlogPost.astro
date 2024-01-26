@@ -1,7 +1,7 @@
 ---
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { Badge } from '@/components/ui/badge';
-const { url, title, description, publishedAt, tags} = Astro.props
+const { url, title, description, publishedAt, tags} = Astro.props 
 ---
 
 <a href={url} class="cursor-pointer">
@@ -12,7 +12,7 @@ const { url, title, description, publishedAt, tags} = Astro.props
       <CalendarIcon className="h-6 w-6 opacity-70" />
       <span class="text-md text-muted-foreground">{(new Date(publishedAt)).toLocaleDateString('en-us')}</span>
       <div class="flex gap-2">
-        {tags.map(tag => <Badge className="text-md" variant="outline">{tag}</Badge>)}
+        {tags.map((tag: string) => <Badge className="text-md" variant="outline">{tag}</Badge>)}
       </div>
     </div>
   </div>

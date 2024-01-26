@@ -5,7 +5,7 @@ import BlogPost from '@/components/BlogPost.astro';
 import Project from '@/components/Project.astro';
 
 const pageTitle = 'Saketh Thota';
-const latestPosts = (await Astro.glob("../pages/posts/*.mdx")).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+const latestPosts = (await Astro.glob("../pages/posts/*.mdx")).sort((a, b) => new Date(b.frontmatter.publishedAt) < new Date(a.frontmatter.publishedAt) ? -1 : 1);
 const current = (await Astro.glob("../pages/projects/gzip-knn-classifier.mdx"))[0];
 ---
 <BaseLayout {pageTitle}>

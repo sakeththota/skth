@@ -3,9 +3,19 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogPost from '@/components/BlogPost.astro';
 
 const pageTitle = 'Blog';
+
+interface Frontmatter {
+  layout: string;
+  title: string;
+  description: string;
+  publishedAt: string;
+  src: string;
+  tags: string[];
+}
+
 let posts: any[] = [];
 try {
-  posts = await Astro.glob("../pages/posts/*.mdx")
+  posts = await Astro.glob<Frontmatter>("../pages/posts/*.mdx")
 } catch (e) {
   console.log("no blog posts found")
 }

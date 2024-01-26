@@ -12,6 +12,6 @@ const { title, tags} = frontmatter
     <slot />
   </div>
   <div class="flex gap-2 mt-8">
-    {tags.map((tag) => <Badge className="text-md" variant="outline">{tag}</Badge>)}
+    {tags.map((tag: string) => <Badge className="text-md" variant="outline">{tag}</Badge>)}
   </div>
 </BaseLayout>

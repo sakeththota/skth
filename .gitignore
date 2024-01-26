@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # ignore test blog posts
 src/pages/posts/test*.mdx
+.vercel
