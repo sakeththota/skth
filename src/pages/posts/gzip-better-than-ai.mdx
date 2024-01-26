@@ -2,23 +2,29 @@
 layout: "@/layouts/MarkdownLayout.astro"
 title: "Gzip is Better than AI?"
 description: "A light-weight alternative to deep learning."
-publishedAt: "2024-01-28"
+publishedAt: "2024-01-26"
 tags: ["astro", "react", "tailwindcss"]
 ---
 
-A proof of concept implementation for using Gzip and k-NN to perform parameter-free text classification.
+After a recent [paper](https://www.youtube.com/watch?v=pYsQu3GjdME) went viral on Hacker News and on Youtube via Tsoding, I decided to try
+my hand at implementing its proposed algorithm for text classification in C++. 
 
-### Motivation
+## Proposed Solution
 
-DNNs are used often for text classification for their high levels of accuracy, but they're computationally intensive due to large amounts of labeled data and parameters.
+DNNs are used often for text classification for their high levels of accuracy,
+but they're computationally intensive due to large amounts of labeled data and parameters.
+They also require a lot of training and fine tuning to perform well.
 
-### Proposed Solution
+Using a combination of a simple compressor like gzip and a k-nearest neighbor classifier,
+it is possible to achieve similar or even better results without any training, pretraining,
+or fine tuning. This light weight and universal solution also covers cases where there may
+be limited labeled data for DNNs to perform well.
 
-Using a combination of a simple compressor like gzip and a k-nearest neighbor classifier, it is possible to achieve similar or even better results without any training, pretraining, or fine tuning. This light weight and universal solution also covers cases where there may be limited labeled data for DNNs to perform well.
+## Gzip and Lossless Compressors
 
-### Gzip and Lossless Compressors
-
-Used primarily in the past for plagiarism detection, he reason compressor-based distance metrics work is because are good at capturing regularity, and objects from the same category share more regularity than those that aren't.
+Used primarily in the past for plagiarism detection, the reason compressor-based distance
+metrics work is because are good at capturing regularity, and objects from the same category
+share more regularity than those that aren't.
 
 Given the following texts:
 
@@ -39,9 +45,7 @@ $$
 
 Since $x_1$ and $x_2$ share more regularity than $x_1$ and $x_3$, more bytes are saved encoding $x_2$ if we know $x_1$ than they would be encoding $x_3$. This is referred to as Prediction by Partial Matching (PPM) which estimates cross entropy between the probability distribution built on class c and the document d.
 
-### Approach
-
-We begin by computing the Normalized Compression Distance (NCD) between each test sample and each training sample.
+## Approach
 
 $$
   \begin{align*}
@@ -49,14 +53,55 @@ $$
   \end{align*}
 $$
 
+We begin by computing the Normalized Compression Distance (NCD) between each test sample and each training sample.
+
+```cpp
+for (auto &test_sample : test_samples) {
+  size_t c_x1 = compress(test_sample.text, test_sample.len).second;
+
+  std::vector<NCD> ncds;
+  for (auto &train_sample : training_samples) {
+    size_t c_x2 = compress(train_sample.text, train_sample.len).second;
+
+    char *x1x2 = new char[test_sample.len + train_sample.len + 1];
+    std::strcpy(x1x2, test_sample.text);
+    std::strcat(x1x2, train_sample.text);
+    size_t c_x1x2 = compress(x1x2, test_sample.len + train_sample.len).second;
+
+    ncds.emplace_back(train_sample.label, (c_x1x2 - std::min(c_x1, c_x2)) /
+                                              (float)std::max(c_x1, c_x2));
+  }
+
+  ...
+
+}
+```
+
 With the distance matrix NCD provides, we can then use k-nearest neighbors algorithm (k-NN) to classify the test sample.
 
-### References
+```cpp
+std::sort(ncds.begin(), ncds.end());
+size_t label_freqs[4] = {0};
+for (size_t i = 0; i < ncds.size() && i < 2; ++i) {
+  label_freqs[ncds[i].label - 1]++;
+}
+size_t predicted =
+    std::max_element(label_freqs, label_freqs + 4) - label_freqs + 1;
+````
+
+## Results
+
+After training on the AG News dataset, I was able to achieve about 85% accuracy after testing 1/3 of the test samples. The original paper acheived a 92% accuracy.
+
+Due to cpu limitations, I was not able to test on the whole set. In the future I would like to try C++'s thread library as much of the computation time here can be parallelized. 
+
+## References
 
 Inspired by:
 
-- https://github.com/tsoding/data-mining-in-c
-- https://www.youtube.com/watch?v=kH-hqG34ylA
+https://github.com/tsoding/data-mining-in-c
+
+https://www.youtube.com/watch?v=kH-hqG34ylA
 
 Original Paper: https://arxiv.org/abs/2212.09410
 
