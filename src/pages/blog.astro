@@ -15,7 +15,9 @@ interface Frontmatter {
 
 let posts: any[] = [];
 try {
-  posts = await Astro.glob<Frontmatter>("../pages/posts/*.mdx")
+  posts = (await Astro.glob<Frontmatter>("../pages/posts/*.mdx")).sort((a, b) => {
+    return new Date(b.frontmatter.publishedAt).getTime() - new Date(a.frontmatter.publishedAt).getTime();
+  });
 } catch (e) {
   console.log("no blog posts found")
 }
