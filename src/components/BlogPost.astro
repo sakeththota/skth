@@ -5,8 +5,8 @@ const { url, title, description, publishedAt, tags} = Astro.props
 ---
 
 <a href={url} class="cursor-pointer">
-  <div class="flex flex-col justify-start w-full p-2 border-2 border-secondary rounded-md hover:bg-accent">
-    <h4 class="text-sm font-semibold">{title}</h4>
+  <div class="flex flex-col justify-start w-full p-2 border-[1px] rounded-md hover:bg-accent">
+    <h4 class="font-semibold">{title}</h4>
     <p class="text-sm">{description}</p>
     <div class="flex items-center pt-2 gap-2">
       <CalendarIcon className=" h-4 w-4 opacity-70" />

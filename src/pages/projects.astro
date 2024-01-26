@@ -1,7 +1,13 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Project from '@/components/Project.astro';
+
+const pageTitle = 'Projects';
+const projects = await Astro.glob("../pages/projects/*.mdx");
 ---
 
 <BaseLayout>
-  <h1>Projects</h1>
+  <section class="flex flex-col gap-16 items-center"> 
+    {projects.map((project) => <Project url={project.url} {...project.frontmatter} />)}
+  </section>
 </BaseLayout>
