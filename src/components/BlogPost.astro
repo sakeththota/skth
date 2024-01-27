@@ -9,8 +9,8 @@ const { url, title, description, publishedAt, tags} = Astro.props
     <h4 class="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h4>
     <p class="text-lg font-medium">{description}</p>
     <div class="flex items-center pt-2 gap-2">
-      <CalendarIcon className="h-6 w-6 opacity-70" />
-      <span class="text-md text-muted-foreground">{(new Date(publishedAt)).toLocaleDateString('en-us')}</span>
+      <CalendarIcon className="h-4 w-4 sm:h-6 sm:w-6 opacity-70" />
+      <span class="text-sm sm:text-md text-muted-foreground">{(new Date(publishedAt)).toLocaleDateString('en-us')}</span>
       <div class="flex gap-2">
         {tags.map((tag: string) => <Badge className="lg:text-base" variant="outline">{tag}</Badge>)}
       </div>

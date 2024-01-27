@@ -1,0 +1,130 @@
+---
+layout: "@/layouts/MarkdownLayout.astro"
+title: "How Gzip Just Beat AI"
+description: "A light-weight alternative to deep learning."
+publishedAt: "2024-01-26"
+tags: ["c++", "zlib"]
+---
+
+## Whats the Big Deal?
+A few weeks ago you might've heard talks about a [paper](https://arxiv.org/abs/2212.09410) that went viral
+on Hacker News and on Youtube via Tsoding. The paper describes an unusual approach
+to text classification that boasts surpassing the performance of deep neual networks (DNN).
+
+I say unusual because instead of using a complex model with lots of parameters and training,
+they just used `gzip`.
+
+## Gzip: The Forgotten Hero
+Though it might come as a shock, compressors like `gzip` have long been used in other language
+applicatons like plagiarism detection. The goal of compression algorithms is simply to find
+redundancies in a file and removing them without losing any information. In doing so, they
+are also able to capture regularity in the text being compressed. Since texts fom the same
+category share more regularity than those that aren't, we can use `gzip` in some pretty clever ways.
+
+If we take $C(•)$ to represent compressed lengths where $C(x_1x_2)$ is the compressed length of the
+concatenation of $x_1$ and $x_2$, $C(x_1x_2) - C(x_1)$ is the information distance between
+$x_1$ and $x_2$, or how many more bytes are needed to encode $x_2$ given $x_1$. This means,
+$C(x_1x_2) - C(x_1) < C(x_1x_3) - C(x_1)$, $x_2$ is more similar to $x_1$ than $x_3$.
+
+We're now left with 2 obstacles: how do we calculate information distance, and how do we classify our text?
+
+## NCD: Close Enough
+Information distance is defined as the length of the shortest binary program that converts $x$ to $y$. It is 
+a well-defined problem that is as follows:
+$$
+\begin{align*}
+  E(x,y) & = max\{K(x|y), K(y|x)\} \\
+         & = K(xy) - min\{K(x), K(y)\}
+\end{align*}
+$$
+
+Unfortunately, $K$ in this definition refers to Kolmogorov complexity, and its use here renders
+$E(x,y)$ incomputable.
+
+If we use a common compressor like we intend with `gzip`, though, we can approximate
+the information distance as follows to achieve whats known as the normalized compression distance (NCD):
+
+$$
+\begin{align*}
+  NCD(x,y) & = \frac{C(xy) - min\{C(x), C(y)\}}{max\{C(x), C(y)\}}
+\end{align*}
+$$
+
+Now that we have all the pieces, we can finally get to classifying our text.
+
+## k-NN: Bringing it All Together
+The k-nearest neighbors algorithm (k-NN) is a simple algorithm that classifies a sample by assigning the label
+which is most frequent among its k-nearest neighbors. In our case, we can use NCD to determine the distance from
+our sample to each of the training samples, and then assign the label.
+
+<figure class="w-full flex justify-center">
+  ![k-nn-example](https://cdn.analyticsvidhya.com/wp-content/uploads/2024/01/image-20.png)
+</figure>
+
+## Implementation
+After some finicking with zlib and rapidcsv, I was able to get a working implementation of the paper's proposed algorithm in C++.
+
+**[source code](https://github.com/sakeththota/gzip-text-classification)**
+
+**Compression**
+```cpp
+std::pair<char *, size_t> compress(char *original, int len) {
+  char *compressed = (char *)malloc(len + 1);
+
+  z_stream strm = {0};
+  strm.avail_in = (int)len;
+  strm.next_in = (Bytef *)original;
+  strm.avail_out = (int)len;
+  strm.next_out = (Bytef *)compressed;
+
+  deflateInit(&strm, Z_BEST_COMPRESSION);
+  deflate(&strm, Z_FINISH);
+  deflateEnd(&strm);
+
+  return std::make_pair(compressed, (size_t)strm.total_out);
+}
+```
+
+**k-NN**
+```cpp
+for (auto &test_sample : test_samples) {
+  size_t c_x1 = compress(test_sample.text, test_sample.len).second;
+
+  std::vector<NCD> ncds;
+  for (auto &train_sample : training_samples) {
+    size_t c_x2 = compress(train_sample.text, train_sample.len).second;
+
+    char *x1x2 = new char[test_sample.len + train_sample.len + 1];
+    std::strcpy(x1x2, test_sample.text);
+    std::strcat(x1x2, train_sample.text);
+    size_t c_x1x2 = compress(x1x2, test_sample.len + train_sample.len).second;
+
+    ncds.emplace_back(train_sample.label, (c_x1x2 - std::min(c_x1, c_x2)) /
+                                              (float)std::max(c_x1, c_x2));
+  }
+
+  std::sort(ncds.begin(), ncds.end());
+  size_t label_freqs[4] = {0};
+  for (size_t i = 0; i < ncds.size() && i < 2; ++i) {
+    label_freqs[ncds[i].label - 1]++;
+  }
+  size_t predicted =
+      std::max_element(label_freqs, label_freqs + 4) - label_freqs + 1;
+}
+```
+
+## Results
+Training on the AG News dataset I was able to achieve about 85% accuracy after 1/3
+of the test samples. The original paper acheived a 92% accuracy.
+
+Due to cpu limitations, I was not able to test on the whole set. In the future I would like to try
+C++'s thread library as much of the computation time here can be parallelized.
+
+## References
+- https://github.com/tsoding/data-mining-in-c
+- https://www.youtube.com/watch?v=kH-hqG34ylA
+- https://arxiv.org/abs/2212.09410
+- https://github.com/d99kris/rapidcsv
+- https://zlib.net
+- https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
+- https://www.analyticsvidhya.com/blog/2018/03/introduction-k-neighbours-algorithm-clustering/
