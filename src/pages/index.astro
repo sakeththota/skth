@@ -1,8 +1,12 @@
 ---
 import BaseLayout  from '@/layouts/BaseLayout.astro';
+
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button'
 import BlogPost from '@/components/BlogPost.astro';
 import Project from '@/components/Project.astro';
+import { GitHubLogoIcon, InstagramLogoIcon, LinkedInLogoIcon} from '@radix-ui/react-icons';
+import { Icon } from 'astro-icon/components'
 
 const pageTitle = 'Saketh Thota';
 let latestPosts: any[] = [];
@@ -16,7 +20,29 @@ const current = (await Astro.glob("../pages/projects/gzip-knn-classifier_final.m
 <BaseLayout {pageTitle}>
   <h2 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb">Hey, I'm Saketh</h2>
   <p class="text-2xl leading-8">I'm a software engineer with a passion for building things, teaching, and bringing people together. I currently work as a developer at Caterpillar where I admin a self-service marketing service for our dealerships.</p>
-  <p class="text-2xl leading-8 mt-8">When I'm not working, I enjoy tutoring computer science and math, curating playlists, and remaining involed with my fraternity's local and national service initiatives.</p>
+  <p class="text-2xl leading-8 mt-8 mb-14">When I'm not working, I enjoy tutoring computer science and math, curating playlists, and remaining involed with my fraternity's local and national service initiatives.</p>
+  <div class="flex justify-start items-center gap-4">
+    <a href="https://github.com/sakeththota">
+      <Button className="border-0" variant="outline" size="icon">
+        <Icon name="mdi:github"/>
+      </Button>
+    </a>
+    <a href="https://instagram.com/ssakethh">
+      <Button className="border-0" variant="outline" size="icon">
+        <Icon name="mdi:instagram"/>
+      </Button>
+    </a>
+    <a href="https://linkedin.com/in/saketh-thota">
+      <Button className="border-0" variant="outline" size="icon">
+        <Icon name="mdi:linkedin"/>
+      </Button>
+    </a>
+    <a href="https://open.spotify.com/user/ewh7myvj13dio09ye08z9ufqn?si=125da40256594770">
+      <Button className="border-0" variant="outline" size="icon">
+        <Icon name="mdi:spotify"/>
+      </Button>
+    </a>
+  </div>
   <Separator className="my-16"/>
   <div class="grid md:grid-cols-2 gap-16 pb-16">
     <div class="flex flex-col gap-8">
