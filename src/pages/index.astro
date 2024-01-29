@@ -15,7 +15,7 @@ try {
 } catch (e) {
   console.log("no posts foudn");
 }
-const current = (await Astro.glob("../pages/projects/gzip-knn-classifier_final.mdx"))[0];
+const current = (await Astro.glob("../pages/projects/*_final.mdx")).sort((a, b) => { return a.frontmatter.id < b.frontmatter.id ? -1 : 1 }).reverse()[0]
 ---
 <BaseLayout {pageTitle}>
   <h2 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb">Hey, I'm Saketh</h2>
