@@ -10,7 +10,7 @@ const { url, src, title, description, source, live, tags} = Astro.props
   <p class="text-base lg:text-lg font-medium">{description}</p>
   <div class="flex items-center pt-2 gap-2">
     <a href={source}><GitHubLogoIcon className="h-6 w-6 opacity-70 z-10" /></a>
-    <a href={live}><OpenInNewWindowIcon className="h-6 w-6 opacity-70 z-11" /></a
+    <a href={live}><OpenInNewWindowIcon className="h-6 w-6 opacity-70 z-11" /></a>
     <div class="flex gap-2">
       {tags.map((tag: string) => <Badge className="lg:text-base" variant="outline">{tag}</Badge>)}
     </div>
