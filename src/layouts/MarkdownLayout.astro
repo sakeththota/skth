@@ -6,10 +6,10 @@ const { title, publishedAt, tags} = frontmatter
 ---
 <BaseLayout pageTitle={frontmatter.title}>
   <header class="text-primary prose dark:prose-invert mb-8 pb-8 border-b max-w-none">
-    <h1 class="mb-4 font-bold">{title}</h1>
-    <small class="text-lg font-medium">by Saketh Thota · {(new Date(publishedAt)).toLocaleDateString('en-us')}</small>
+    <h1 class="mb-4 text-4xl font-bold">{title}</h1>
+    <small class="text-2xl text-muted-foreground">by Saketh Thota · {(new Date(publishedAt)).toLocaleDateString('en-us')}</small>
   </header>
-  <div class="prose prose-h2:pb-4 prose-code:text-base  prose-code:md:text-lg prose-code:lg:text-xl prose-code:whitespace-pre-wrap prose-p:text-2xl prose-p:leading-8 prose-h2:mb-2 dark:prose-invert max-w-none">
+  <div class="prose prose-h2:text-3xl prose-h2:font-bold prose-p:text-2xl prose-p:leading-10 prose-code:text-base prose-code:md:text-lg prose-code:lg:text-xl prose-code:whitespace-pre-wrap prose-li:text-2xl dark:prose-invert max-w-none">
     <slot />
   </div>
   <div class="flex gap-2 mt-8">
