@@ -2,8 +2,49 @@
 title: "2024 Blog Setup"
 description: "Astro Content Collections and MDX"
 publishedAt: "2024-01-24"
-tags: ["astro", "markdown"]
+tags: ["astro", "Markdown"]
 draft: true
 ---
+
+One of my resolutions for last year was to start writing to document the things I learn
+and share my thoughts and opinions on tech related topics I find interesting. Unfortunately,
+I struggled to find a good workflow and platform to keep myself motivated.
+
+After a lot of research and experimentation, I've settled on a platform that's easy to set up,
+maintain, and publish.
+
+## Astro
+Astro is a web framework that pioneers a frontend architecture called islands. Islands
+strip all non-essential JavaScript from the page reducing overhead, increasing perfomance
+and making Astro perfect for static sites like my portfolio. It even ships with Markdown
+support and a file-based routing system for a seamless experience writing and publishing a post.
+
+## Quick Setup
+For a very quick and basic setup, you can use the `create astro` CLI to create a new project and start
+writing immediately. Simply run `npm create astro@latest` to bootstrap a new project, and create
+new blog posts in the `src/pages` directory.
+
+*example from [Astro docs](https://docs.astro.build/en/guides/markdown-content/#file-based-routing)*
+
+```md title="src/pages/post-1.md"
+---
+title: Hello, World
+---
+
+# Hi there!
+
+This Markdown file creates a page at `your-domain.com/page-1/`
+
+It probably isn't styled much, but Markdown does support:
+- **bold** and _italics._
+- lists
+- [links](https://astro.build)
+- and more!
+```
+
+And that's it! By default this Markdown file creates a page at `/post-1`.
+
+## Extend w/ Content Collections
+
 
 
