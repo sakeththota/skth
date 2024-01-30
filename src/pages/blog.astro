@@ -1,17 +1,17 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import BlogPost from '@/components/BlogPost.astro';
+import Post from '@/components/Post.astro';
 import { getCollection } from 'astro:content';
 
 const pageTitle = 'Blog';
 
-const blogPosts = getCollection('blog', ({ data }) => {
+const posts = await getCollection('blog', ({ data }) => {
   return data.draft !== true;
 });
 ---
 <BaseLayout {pageTitle}>
     <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight mb-8">Recent</h1>
     <section class="flex flex-col gap-4"> 
-      {blogPosts.map((post) => <BlogPost url={post.url} {...post.frontmatter} />)}
+      {posts.map((post) => <Post url=`/posts/${post.slug}/` {...post.data} />)}
     </section>
 </BaseLayout>

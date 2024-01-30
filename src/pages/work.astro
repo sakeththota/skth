@@ -1,19 +1,15 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Project from '@/components/Project.astro';
+import { getCollection } from 'astro:content';
 
 const pageTitle = 'Projects';
-let projects: any[] = [];
-try {
-  projects = (await Astro.glob("../pages/projects/*_final.mdx")).sort((a, b) => { return a.frontmatter.id < b.frontmatter.id ? -1 : 1 })
-} catch (e) {
-  console.log("no blog posts found")
-}
+const projects = await getCollection('projects');
 ---
 
 <BaseLayout {pageTitle}>
   <h1 class="scroll-m-20 text-3xl font-semibold tracking-tight mb-8">Projects</h1>
   <section class="grid md:grid-cols-2 gap-8"> 
-    {projects.reverse().map((project) => <Project url={project.url} {...project.frontmatter} />)}
+    {projects.reverse().map((project) => <Project {...project.data} />)}
   </section>
 </BaseLayout>

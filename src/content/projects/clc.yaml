@@ -1,5 +1,4 @@
 ---
-layout: "@/layouts/ProjectLayout.astro"
 id: 0
 title: "CLC Listing Tracker" 
 description: "Track listings in various digital marketplaces" 

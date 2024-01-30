@@ -1,21 +1,17 @@
 ---
+import { getEntry } from 'astro:content'
 import BaseLayout  from '@/layouts/BaseLayout.astro';
-
+import Post from '@/components/Post.astro';
+import Project from '@/components/Project.astro';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button'
-import BlogPost from '@/components/BlogPost.astro';
-import Project from '@/components/Project.astro';
+
 import { GitHubLogoIcon, InstagramLogoIcon, LinkedInLogoIcon} from '@radix-ui/react-icons';
 import { Icon } from 'astro-icon/components'
 
 const pageTitle = 'Saketh Thota';
-let latestPosts: any[] = [];
-try {
-  latestPosts = (await Astro.glob("../pages/posts/*.mdx")).sort((a, b) => new Date(b.frontmatter.publishedAt) < new Date(a.frontmatter.publishedAt) ? -1 : 1);
-} catch (e) {
-  console.log("no posts foudn");
-}
-const current = (await Astro.glob("../pages/projects/*_final.mdx")).sort((a, b) => { return a.frontmatter.id < b.frontmatter.id ? -1 : 1 }).reverse()[0]
+const latestPosts = [ await getEntry('blog', 'gzip-knn')]  
+const currentProject = await getEntry('projects', 'uc-compiler'); 
 ---
 <BaseLayout {pageTitle}>
   <h2 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb">Hey, I'm Saketh</h2>
@@ -48,12 +44,12 @@ const current = (await Astro.glob("../pages/projects/*_final.mdx")).sort((a, b) 
     <div class="flex flex-col gap-8">
       <h3 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb ">Latest Posts</h3>
       <div class="flex flex-col gap-4 justify-center">
-        {latestPosts.map((post) => <BlogPost url={post.url} {...post.frontmatter} />)}
+        {latestPosts.map((post) => <Post url=`/posts/${post.slug}/` {...post.data} />)}
       </div>
     </div>
     <div class="flex flex-col gap-8">
       <h3 class="scroll-m-20 pb-8 text-3xl font-semibold tracking-tight first:mt-0bb ">Working On</h3>
-      <Project url={current.url} {...current.frontmatter} />
+      <Project {...currentProject.data} />
     </div>
   </div>
 </BaseLayout>
