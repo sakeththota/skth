@@ -11,7 +11,7 @@ and share my thoughts and opinions on tech related topics I find interesting. Un
 I struggled to find a good workflow and platform to keep myself motivated.
 
 After a lot of research and experimentation, I've settled on a platform that's easy to set up,
-maintain, and publish.
+maintain, and publish. The source code for this project (this site) is available [here](https://github.com/sakeththota/skth).
 
 ## Astro
 Astro is a web framework that pioneers a frontend architecture called islands. Islands
@@ -44,7 +44,18 @@ It probably isn't styled much, but Markdown does support:
 
 And that's it! By default this Markdown file creates a page at `/post-1`.
 
-## Extend w/ Content Collections
+## Extend w/ Content Collections and MDX
+This is a good start, but there's 2 main reasons I wanted to use Astro that we haven't touched on:
+Content Collections and MDX.
+
+**MDX** is a superset of Markdown that lets users embed JSX components directly in your Markdown files.
+With MDX, we can create custom components to extend the functionality of our blog posts. For example,
+If we have want to embed a tweet but don't want to have interactivity and not just a screenshot, we
+can use [Vercels React Tweet](https://react-tweet.vercel.app/) component directly in our markdown.
+To use MDX in Astro, we can simply run `npx astro add mdx` and begin using `.mdx` files.
+
+**Content Collections** are a type-safe way to organize content and data in an Astro project. In an 
+astro project, we can place content (.md/.mdx) or data (.yaml/.json) files into the `src/content`
 
 
 
