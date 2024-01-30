@@ -3,7 +3,7 @@ title: "2024 Blog Setup"
 description: "Astro Content Collections and MDX"
 publishedAt: "2024-01-30"
 tags: ["astro", "Markdown"]
-draft: true
+draft: false
 ---
 
 One of my resolutions for last year was to start writing to document the things I learn
@@ -43,9 +43,15 @@ It probably isn't styled much, but Markdown does support:
 
 And that's it! By default this Markdown file creates a page at `/post-1`.
 
-## Content Collections and MDX
+## MDX and Content Collections
 This is a good start, but there's 2 main reasons I wanted to use Astro that we haven't touched on:
 Content Collections and MDX.
+
+**MDX** is a superset of Markdown that lets users embed JSX components directly in your Markdown files.
+With MDX, we can create custom components to extend the functionality of our blog posts. For example,
+If we have want to embed a tweet but want to have interactivity and not just a screenshot, we
+can use [Vercels React Tweet](https://react-tweet.vercel.app/) component directly in our markdown.
+To use MDX in Astro, we can simply run `npx astro add mdx` and begin using `.mdx` files.
 
 **Content Collections** are a type-safe way to organize content and data in an Astro project. Content
 refers to any `.md` or `mdx`, and data refers to any `.yaml` or `json`. In Astro, any directories in the
@@ -93,11 +99,37 @@ Alongside blog related Markdown content, I also use content collections to store
 collection of `.yaml` files. The files simply include metadata that I have type-safe access too after querying
 the collection into an `.astro` component.
 
-**MDX** is a superset of Markdown that lets users embed JSX components directly in your Markdown files.
-With MDX, we can create custom components to extend the functionality of our blog posts. For example,
-If we have want to embed a tweet but want to have interactivity and not just a screenshot, we
-can use [Vercels React Tweet](https://react-tweet.vercel.app/) component directly in our markdown.
-To use MDX in Astro, we can simply run `npx astro add mdx` and begin using `.mdx` files.
+## Extend w/ LaTeX and Expressive Code 
+I often include LaTeX snippets in my posts but Astro doesn't currently support it. To add support, we can
+use remark with its math and katex plugins to parse LaTeX snippets and render them as SVGs. Simply run
+`npm install remark-math rehype-katex` and add the following to your `astro.config.mjs` and `index.astro`.
+```js title="astro.config.mjs" ins={4-10}
+import { defineConfig } from 'astro/config';
 
-## Extend w/ Remark and Expressive Code 
+export default defineConfig({
+    markdown: {
+        remarkPlugins: [
+            'remark-math',
+        ],
+        rehypePlugins: [
+            ['rehype-katex', {}]
+        ]
+    }
+});
+```
+```astro title="src/pages/index.astro" ins={4-5}
+<html lang='en'>
+    <head>
+        <!-- Katex -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+            integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+    </head>
+    <body>
+        <slot />
+    </body>
+</html>
+```
 
+Code Blocks are already supported by Astro's Markdown parser, but I wanted to add additional functionality like file
+names, line highlighting, and copy buttons. To do this, I used [Expressive Code](). We can add Expressive Code to our
+Astro project by running `npx astro add expressive-code`. The result are the pretty code blocks you see in this post!
