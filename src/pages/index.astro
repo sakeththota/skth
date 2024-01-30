@@ -1,5 +1,5 @@
 ---
-import { getEntry } from 'astro:content'
+import { getEntry, getCollection } from 'astro:content'
 import BaseLayout  from '@/layouts/BaseLayout.astro';
 import Post from '@/components/Post.astro';
 import Project from '@/components/Project.astro';
@@ -10,7 +10,7 @@ import { GitHubLogoIcon, InstagramLogoIcon, LinkedInLogoIcon} from '@radix-ui/re
 import { Icon } from 'astro-icon/components'
 
 const pageTitle = 'Saketh Thota';
-const latestPosts = [ await getEntry('blog', 'gzip-knn')]  
+const latestPosts = await getCollection('blog')
 const currentProject = await getEntry('projects', 'uc-compiler'); 
 ---
 <BaseLayout {pageTitle}>
