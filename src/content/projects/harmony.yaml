@@ -1,5 +1,4 @@
 ---
-layout: "@/layouts/ProjectLayout.astro"
 id: 1
 title: "Harmony" 
 description: "All in one music client" 
@@ -7,4 +6,3 @@ source: "https://github.com/sakeththota/harmony"
 live: "#"
 src: "/harmony.png" 
 tags: ['sveltekit', 'supabase']
----
