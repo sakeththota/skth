@@ -1,7 +1,103 @@
 ---
 title: "2024 Blog Setup"
-description: "Astro content collections and mdx"
-publishedAt: "2024-01-24"
-tags: ["astro", "markdown"]
+description: "Astro Content Collections and MDX"
+publishedAt: "2024-01-30"
+tags: ["astro", "Markdown"]
 draft: true
 ---
+
+One of my resolutions for last year was to start writing to document the things I learn
+and share my thoughts and opinions on tech related topics I find interesting. Unfortunately,
+I struggled to find a good workflow and platform to keep myself motivated.
+
+After a lot of research and experimentation, I've settled on a platform that's easy to set up,
+maintain, and publish. The source code for this project (this site) is available [here](https://github.com/sakeththota/skth).
+
+*With code examples from [Astro docs](https://docs.astro.build/en/guides/markdown-content/#file-based-routing)*
+
+## Astro
+Astro is a web framework that pioneers a frontend architecture called islands. Islands
+strip all non-essential JavaScript from the page reducing overhead, increasing perfomance
+and making Astro perfect for static sites like my portfolio. It even ships with Markdown
+support and a file-based routing system for a seamless experience writing and publishing a post.
+
+For a very quick and basic setup, we can use the `create astro` CLI to create a new project and start
+writing immediately. Simply run `npm create astro@latest` to bootstrap a new project, and create
+new blog posts in the `src/pages` directory.
+
+```md title="src/pages/post-1.md"
+---
+title: Hello, World
+---
+
+# Hi there!
+
+This Markdown file creates a page at `your-domain.com/page-1/`
+
+It probably isn't styled much, but Markdown does support:
+- **bold** and _italics._
+- lists
+- [links](https://astro.build)
+- and more!
+```
+
+And that's it! By default this Markdown file creates a page at `/post-1`.
+
+## Content Collections and MDX
+This is a good start, but there's 2 main reasons I wanted to use Astro that we haven't touched on:
+Content Collections and MDX.
+
+**Content Collections** are a type-safe way to organize content and data in an Astro project. Content
+refers to any `.md` or `mdx`, and data refers to any `.yaml` or `json`. In Astro, any directories in the
+reserved `src/content` are automatically treated as content collections. To get all the type-safe goodness
+lets use zod and define a TypeScript-first schema for our blog post frontmatter.
+
+```ts title="src/content/config.ts"
+import { z, defineCollection } from 'astro:content';
+
+export const collections = {
+  'blog': defineCollection({
+    type: 'data',
+    schema: z.object({
+      title: z.string(),
+      description: z.string(),
+      publishedAt: z.string(),
+      tags: z.array(z.string()),
+      draft: z.boolean(),
+    }),
+  }),
+};
+```
+
+From here we can move our posts to `src/content/blog` and query our collection to generate the routes needed
+for our blog's static content.
+
+```astro title="src/pages/posts/[...slug].astro"
+---
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<h1>{entry.data.title}</h1>
+<Content />
+```
+
+Alongside blog related Markdown content, I also use content collections to store my portfolio projects in a
+collection of `.yaml` files. The files simply include metadata that I have type-safe access too after querying
+the collection into an `.astro` component.
+
+**MDX** is a superset of Markdown that lets users embed JSX components directly in your Markdown files.
+With MDX, we can create custom components to extend the functionality of our blog posts. For example,
+If we have want to embed a tweet but want to have interactivity and not just a screenshot, we
+can use [Vercels React Tweet](https://react-tweet.vercel.app/) component directly in our markdown.
+To use MDX in Astro, we can simply run `npx astro add mdx` and begin using `.mdx` files.
+
+## Extend w/ Remark and Expressive Code 
+

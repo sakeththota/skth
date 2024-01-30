@@ -6,11 +6,11 @@ const { url, src, title, description, source, live, tags} = Astro.props
 ---
 <div class="flex flex-col justify-start p-2 border-[1px] rounded-md w-full">
   <Image {src} alt="" class="rounded-md" width="1400" height="1024"/>
-  <h4 class="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h4>
-  <p class="text-lg font-medium">{description}</p>
+  <h4 class="scroll-m-20 text-xl mt-2 lg:text-2xl font-semibold tracking-tight">{title}</h4>
+  <p class="text-base lg:text-lg font-medium">{description}</p>
   <div class="flex items-center pt-2 gap-2">
     <a href={source}><GitHubLogoIcon className="h-6 w-6 opacity-70 z-10" /></a>
-    <a href={live}><OpenInNewWindowIcon className="h-6 w-6 opacity-70 z-11" /></a
+    <a href={live}><OpenInNewWindowIcon className="h-6 w-6 opacity-70 z-11" /></a>
     <div class="flex gap-2">
       {tags.map((tag: string) => <Badge className="lg:text-base" variant="outline">{tag}</Badge>)}
     </div>
