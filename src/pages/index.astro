@@ -13,7 +13,7 @@ const pageTitle = 'Saketh Thota';
 const latestPosts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
 });
-const currentProject = await getEntry('projects', 'uc-compiler'); 
+const currentProject = await getEntry('projects', 'ucc'); 
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 id: 3
-title: "uC Compiler" 
+title: "ucc" 
 description: "Compiler for uC, a small language in the C family" 
 source: "https://github.com/sakeththota/ucc" 
 live: "https://eecs390.github.io/uc-language/"
