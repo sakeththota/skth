@@ -14,7 +14,9 @@ export default defineConfig({
     applyBaseStyles: false
   }), react(), icon(), expressiveCode({
       theme: "rose-pine-moon",
-      styleOverrides: {}
+      styleOverrides: {
+        uiFontSize: "1em",
+      }
     }), mdx()],
   markdown: {
     remarkPlugins: [remarkMath],

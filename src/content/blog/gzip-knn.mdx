@@ -1,8 +1,10 @@
 ---
-title: "How Gzip Just Beat AI"
-description: "A light-weight alternative to deep learning."
-publishedAt: "1/26/2024"
-tags: ["c++", "zlib"]
+title: How Gzip Just Beat AI
+description: A light-weight alternative to deep learning.
+publishedAt: 1/26/2024
+tags:
+  - cpp
+  - zlib
 draft: false
 ---
 
@@ -67,8 +69,7 @@ After some finicking with zlib and rapidcsv, I was able to get a working impleme
 
 **[source code](https://github.com/sakeththota/gzip-text-classification)**
 
-**Compression**
-```cpp
+```cpp title="Compression"
 std::pair<char *, size_t> compress(char *original, int len) {
   char *compressed = (char *)malloc(len + 1);
 
@@ -85,9 +86,8 @@ std::pair<char *, size_t> compress(char *original, int len) {
   return std::make_pair(compressed, (size_t)strm.total_out);
 }
 ```
-
-**k-NN**
-```cpp
+<br />
+```cpp title="k-nearest neighbors"
 for (auto &test_sample : test_samples) {
   size_t c_x1 = compress(test_sample.text, test_sample.len).second;
 
