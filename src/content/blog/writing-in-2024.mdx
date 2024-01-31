@@ -49,12 +49,12 @@ MDX and Content Collections.
 With MDX, we can create custom components to extend the functionality of our blog posts. For example,
 If we have want to embed a tweet but want to have interactivity and not just a screenshot, we
 can use [Vercels React Tweet](https://react-tweet.vercel.app/) component directly in our markdown.
-To use MDX in Astro, we can simply run `npx astro add mdx` and begin using `.mdx` files.
+To use MDX in Astro, run `npx astro add mdx` and begin using `.mdx` files.
 
 **Content Collections** are a type-safe way to organize content and data in an Astro project. Content
 refers to any `.md` or `mdx`, and data refers to any `.yaml` or `json`. In Astro, any directories in the
 reserved `src/content` are automatically treated as content collections. To get all the type-safe goodness
-provided by content collections, lets use zod and define a TypeScript-first schema for our blog post frontmatter.
+Astro provides, lets use zod and define a TypeScript-first schema for our blog post frontmatter.
 
 ```ts title="src/content/config.ts"
 import { z, defineCollection } from 'astro:content';
@@ -94,12 +94,12 @@ const { Content } = await entry.render();
 ```
 
 Alongside blog related Markdown content, I also use content collections to store my portfolio projects in a
-collection of `.yaml` files. The files simply include metadata that I have type-safe access too after querying
-the collection into an `.astro` component.
+collection of `.yaml` files. The files contain metadata that I use in the Project component, and the 
+result is full TypeScript support when I query the collection, including property autocompletion and type-checking.
 
-## Extend w/ LaTeX and Expressive Code 
+## Extend w/ LaTeX and Expressive Code
 I often include LaTeX snippets in my posts but Astro doesn't currently support it. To add support, we can
-use remark with its math and katex plugins to parse LaTeX snippets and render them as SVGs. Simply run
+use remark with its math and rehype-katex plugins to parse LaTeX snippets and render them as SVGs. Just run
 `npm install remark-math rehype-katex` and add the following to your `astro.config.mjs` and `index.astro`.
 ```js title="astro.config.mjs" ins={4-10}
 import { defineConfig } from 'astro/config';
@@ -130,7 +130,7 @@ export default defineConfig({
 ```
 
 Code Blocks are already supported by Astro's Markdown parser, but I wanted to add additional functionality like file
-names, line highlighting, and copy buttons. To do this, I used [Expressive Code](). We can add Expressive Code to our
+names, line highlighting, and copy buttons. [Expressive Code](https://expressive-code.com/) is a great integration of this that we can add to our
 Astro project by running `npx astro add expressive-code`. The result are the pretty code blocks you see in this post!
 
 ## References
