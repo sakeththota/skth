@@ -14,6 +14,6 @@ const posts = await getCollection('blog', ({ data }) => {
     <section class="flex flex-col gap-4"> 
       {posts.sort((a, b) => { 
         return new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime(); 
-      }).map((post) => <Post url=`/posts/${post.slug}/` {...post.data} />)}
+      }).map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
     </section>
 </BaseLayout>
