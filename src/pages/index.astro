@@ -1,5 +1,4 @@
 ---
-
 import { getEntry, getCollection } from 'astro:content'
 import BaseLayout  from '@/layouts/BaseLayout.astro';
 import Post from '@/components/Post.astro';
@@ -7,6 +6,8 @@ import Project from '@/components/Project.astro';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button'
 import { Icon } from 'astro-icon/components'
+
+export const prerender = true;
 
 const pageTitle = 'Saketh Thota';
 const latestPosts = await getCollection('blog', ({ data }) => {
@@ -47,9 +48,7 @@ const currentProject = await getEntry('projects', 'ucc');
     <div class="flex flex-col gap-8">
       <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Recent Posts</h1>
       <div class="flex flex-col gap-4 justify-center">
-        { latestPosts.sort((a, b) => { 
-            return new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime(); 
-          }).map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
+        { latestPosts.reverse().map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
       </div>
     </div>
     <div class="flex flex-col gap-8">

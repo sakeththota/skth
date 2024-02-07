@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel/serverless";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
@@ -10,16 +11,24 @@ import expressiveCode from "astro-expressive-code";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind({
-    applyBaseStyles: false
-  }), react(), icon(), expressiveCode({
+  output: "server",
+  adapter: vercel(),
+  integrations: [
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    react(),
+    icon(),
+    expressiveCode({
       theme: "rose-pine-moon",
       styleOverrides: {
         uiFontSize: "1em",
-      }
-    }), mdx()],
+      },
+    }),
+    mdx(),
+  ],
   markdown: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
-  }
+  },
 });

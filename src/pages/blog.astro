@@ -3,17 +3,16 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Post from '@/components/Post.astro';
 import { getCollection } from 'astro:content';
 
-const pageTitle = 'Blog';
+export const prerender = true;
 
+const pageTitle = 'Blog';
 const posts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
 });
 ---
 <BaseLayout {pageTitle}>
   <h1 class="pb-8 scroll-m-20 text-3xl lg:text-4xl font-semibold tracking-tight">Posts</h1>
-    <section class="flex flex-col gap-4"> 
-      {posts.sort((a, b) => { 
-        return new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime(); 
-      }).map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
+    <section class="flex flex-col gap-4">
+      {posts.reverse().map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
     </section>
 </BaseLayout>

@@ -4,6 +4,7 @@ description: A light-weight alternative to deep learning.
 publishedAt: 1/26/2024
 tags: ["cpp", "zlib"]
 draft: false
+idx: 0
 ---
 
 ## Whats the Big Deal?
@@ -29,7 +30,7 @@ $C(x_1x_2) - C(x_1) < C(x_1x_3) - C(x_1)$, $x_2$ is more similar to $x_1$ than $
 We're now left with 2 obstacles: how do we calculate information distance, and how do we classify our text?
 
 ## NCD: Close Enough
-Information distance is defined as the length of the shortest binary program that converts $x$ to $y$. It is 
+Information distance is defined as the length of the shortest binary program that converts $x$ to $y$. It is
 a well-defined problem that is as follows:
 
 $$
@@ -84,7 +85,9 @@ std::pair<char *, size_t> compress(char *original, int len) {
   return std::make_pair(compressed, (size_t)strm.total_out);
 }
 ```
+
 <br />
+
 ```cpp title="k-nearest neighbors"
 for (auto &test_sample : test_samples) {
   size_t c_x1 = compress(test_sample.text, test_sample.len).second;
