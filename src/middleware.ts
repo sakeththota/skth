@@ -1,6 +1,7 @@
 import { defineMiddleware, sequence } from "astro:middleware";
 
 const updateViews = defineMiddleware(async ({ url, params }, next) => {
+  console.log("running");
   if (import.meta.env.ASTRO_MODE === "build") {
     return next();
   }
