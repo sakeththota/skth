@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { Badge } from "@/components/ui/badge";
 const { frontmatter } = Astro.props
-const { id, title, publishedAt, tags} = frontmatter
+const { idx, title, publishedAt, tags} = frontmatter
 ---
 <BaseLayout pageTitle={frontmatter.title}>
   <header class="text-primary prose dark:prose-invert mb-8 pb-8 border-b max-w-none">
