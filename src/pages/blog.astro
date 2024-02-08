@@ -9,6 +9,7 @@ const pageTitle = 'Blog';
 const posts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
 });
+
 ---
 <BaseLayout {pageTitle}>
   <h1 class="pb-8 scroll-m-20 text-3xl lg:text-4xl font-semibold tracking-tight">Posts</h1>
