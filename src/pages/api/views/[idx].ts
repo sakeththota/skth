@@ -10,7 +10,7 @@ export const POST: APIRoute = async ({ params }) => {
 
   const ref = db.ref("views").child(params.idx);
 
-  const { snapshot } = await ref.transaction((current) => {
+  const { snapshot } = await ref.transaction((current: number) => {
     if (current === null) {
       return 1;
     }
