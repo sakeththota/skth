@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-// import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel/serverless";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
@@ -8,14 +8,10 @@ import rehypeKatex from "rehype-katex";
 import icon from "astro-icon";
 import expressiveCode from "astro-expressive-code";
 
-import node from "@astrojs/node";
-
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: vercel(),
   integrations: [
     tailwind({
       applyBaseStyles: false,
@@ -35,4 +31,3 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex],
   },
 });
-
