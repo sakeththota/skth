@@ -48,7 +48,7 @@ const currentProject = await getEntry('projects', 'ucc');
     <div class="flex flex-col gap-8">
       <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Recent Posts</h1>
       <div class="flex flex-col gap-4 justify-center">
-        { latestPosts.reverse().map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
+        { latestPosts.sort((a,b)=>{return b.data.idx-a.data.idx}).map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
       </div>
     </div>
     <div class="flex flex-col gap-8">
