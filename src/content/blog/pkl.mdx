@@ -7,6 +7,63 @@ tags: ["pkl", "json", "yaml"]
 draft: true
 ---
 
-```go title="test.pkg"
+Apple just announced a new open source programming language called Pkl, and it may just
+change the way we write our config files for good.
 
+Built to solve the shortcomings of
+common static config languages like JSON and YAML, Apple's goals with Pkl are to:
+
+1. Provide safety by catching validation errors *before* deployment
+2. Scale from simple to complex use-cases
+3. Be a joy to write *with best-in-class IDE integrations*
+
+## Basic Syntax
+To get a quick start going, we'll first write a file called a *template* to define the types of our data. If you've
+seen a `.d.ts` file before, this template functions very similarly.
+
+```python title="app.pkg"
+hostname: String
+port: UInt16
+environment: Environment
+database: Database
+
+typealias Environment = "dev"|"qa"|"prod"
+
+class Database {
+  username: String
+  password: String
+  host: String
+  port: UInt16
+  dbName: String
+}
 ```
+
+Then we can define our data as follows.
+
+```python title="localhost.pkl"
+amends "Application.pkl"
+
+hostname = "localhost"
+port = 3599
+environment = "dev"
+
+database {
+  host = "localhost"
+  port = 5786
+  username = "admin"
+  password = read("env:DATABASE_PASSWORD") 
+  dbName = "myapp"
+}
+```
+
+*examples provided by: [Pkl Blog](https://pkl-lang.org/blog)*
+
+The built-in `read` function is a very cool feature that allows users to change
+the 'env' to read external properties, files, http(s) resources, or even module paths for JVM langauges.
+
+## For Loops in config???
+## Errors for Type validation
+## Packages / Language Bindings
+## Editor Support
+
+## References
