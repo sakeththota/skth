@@ -13,7 +13,7 @@ const pageTitle = 'Saketh Thota';
 const latestPosts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
 });
-const currentProject = await getEntry('projects', 'ucc'); 
+const currentProject = await getEntry('projects', 'ucc');
 
 const nowPlaying = await fetch('http://localhost:4321/api/spotify/now-playing').then(res => res.json());
 console.log(nowPlaying);
@@ -23,7 +23,7 @@ console.log(nowPlaying);
 <BaseLayout {pageTitle}>
   <h1 class="pb-8 scroll-m-20 text-3xl lg:text-4xl font-semibold tracking-tight">Hey, I'm Saketh</h1>
   <p class="text-xl lg:text-2xl leading-8 lg:leading-10">I'm a software engineer with a passion for building things, teaching, and bringing people together. I currently work as a developer at Caterpillar where I admin a self-service marketing service for our dealerships.</p>
-  <p class="text-xl lg:text-2xl leading-8 lg:leading-10 mt-8 mb-8">When I'm not working, I enjoy curating playlists, tutoring computer science and math, and remaining involed with my fraternity's local and national service initiatives.</p>
+  <p class="text-xl lg:text-2xl leading-8 lg:leading-10 mt-8 mb-8">When I'm not working, I enjoy traveling, curating playlists, and remaining involved with my fraternity's local and national service initiatives.</p>
   <div class="flex flex-col md:flex-row md:justify-between md:items-center items-start gap-8">
     <div class="flex justify-start items-center gap-4 ">
       <a href="https://github.com/sakeththota">
@@ -47,13 +47,16 @@ console.log(nowPlaying);
         </Button>
       </a>
     </div>
+    <!-- Now Playing Component -->
     <div class="flex h-20 gap-6 rounded-md p-2 w-80 border-2">
       <img class="rounded-md"src={nowPlaying.albumImageUrl} />
       <div class="flex flex-col justify-center overflow-hidden whitespace-nowrap">
-        <h2 class="text-xl font-semibold">{nowPlaying.title}</h2>
-        <p>{nowPlaying.artist}</p>
+        <p class="text-xs text-muted-foreground">Now Playing</p>
+        <h2 class="text-lg font-bold">{nowPlaying.title}</h2>
+        <p class="text-semibold -mt-1">{nowPlaying.artist}</p>
       </div>
     </div>
+    <!-- --------------------- -->
   </div>
   <Separator className="my-10"/>
   <div class="grid md:grid-cols-2 gap-8">
@@ -68,4 +71,5 @@ console.log(nowPlaying);
       <Project {...currentProject.data} />
     </div>
   </div>
+  <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight"></h1>
 </BaseLayout>
