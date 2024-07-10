@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 export const NowPlaying = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
 
   const fetchNowPlaying = async () => {
     const res = await fetch("http://localhost:4321/api/spotify/now-playing");
