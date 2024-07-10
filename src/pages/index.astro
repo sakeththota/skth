@@ -6,6 +6,7 @@ import Project from '@/components/Project.astro';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button'
 import { Icon } from 'astro-icon/components'
+import { GET } from './api/spotify/now-playing.ts'
 
 export const prerender = true;
 
@@ -15,9 +16,8 @@ const latestPosts = await getCollection('blog', ({ data }) => {
 });
 const currentProject = await getEntry('projects', 'ucc');
 
-const nowPlaying = await fetch('http://localhost:4321/api/spotify/now-playing').then(res => res.json());
-console.log(nowPlaying);
-
+const res = await GET(Astro)
+const nowPlaying = await res.json()
 ---
 
 <BaseLayout {pageTitle}>
