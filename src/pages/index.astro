@@ -8,8 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Icon } from 'astro-icon/components'
 import { GET } from './api/spotify/now-playing.ts'
 
-export const prerender = true;
-
 const pageTitle = 'Saketh Thota';
 const latestPosts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
