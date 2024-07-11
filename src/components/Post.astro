@@ -5,7 +5,7 @@ const { url, title, description, publishedAt, tags} = Astro.props
 ---
 
 <a href={url} id="link" class="cursor-pointer">
-  <div class="flex flex-col justify-start w-full p-2 border-[1px] rounded-md hover:bg-accent">
+  <div class="flex flex-col justify-start w-full p-2 border-[1px] md:border-0 rounded-md md:hover:bg-accent">
     <h4 class="scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight">{title}</h4>
     <p class="text-base lg:text-lg font-medium">{description}</p>
     <div class="flex items-center pt-2 gap-2">
