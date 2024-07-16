@@ -48,7 +48,9 @@ console.log(nowPlaying)
     </div>
     { nowPlaying.isPlaying &&
       <div class="flex h-20 gap-4 rounded-md p-2 w-80">
-        <img class="rounded-md h-auto max-w-100 object-cover" src={nowPlaying.albumImageUrl} />
+        <div class="relative aspect-square h-full w-auto">
+          <img class="rounded-md absolute inset-0 h-full w-full object-cover" src={nowPlaying.albumImageUrl} />
+        </div>
         <div class="flex flex-col justify-center overflow-hidden whitespace-nowrap">
           <p class="text-xs text-muted-foreground">Now Playing</p>
           <h2 class="text-lg font-bold">{nowPlaying.title}</h2>
