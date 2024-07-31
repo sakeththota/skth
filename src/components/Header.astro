@@ -4,6 +4,7 @@ import {
   MenuItems,
 } from "astro-navbar";
 import { ModeToggle } from '@/components/ModeToggle';
+import { GitHubLogoIcon, OpenInNewWindowIcon } from '@radix-ui/react-icons';
 ---
 <aside class="-ml-[8px] mb-16 tracking-tight"
   <div class="lg:sticky lg:top-20">
@@ -24,6 +25,10 @@ import { ModeToggle } from '@/components/ModeToggle';
             </li>
             <li>
               <ModeToggle client:load />
+            </li>
+            <li>
+              <a href="https://github.com/sakeththota/skth" class="hover:text-accent">
+                <OpenInNewWindowIcon className="h-6 w-6 opacity-70" /></a>
             </li>
           </ul>
       </MenuItems>
