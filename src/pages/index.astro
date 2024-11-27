@@ -5,9 +5,10 @@ import Post from '@/components/Post.astro';
 import Project from '@/components/Project.astro';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Icon } from 'astro-icon/components'
 import { GET } from './api/spotify/now-playing.ts'
-
+import { NowPlaying} from '@/components/NowPlaying.tsx'
 const pageTitle = 'Saketh Thota';
 const latestPosts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
@@ -47,16 +48,7 @@ console.log(nowPlaying)
       </a>
     </div>
     { nowPlaying.isPlaying &&
-      <div class="flex h-20 gap-4 rounded-md p-2 w-80">
-        <div class="relative aspect-square h-full w-auto">
-          <img class="rounded-md absolute inset-0 h-full w-full object-cover" src={nowPlaying.albumImageUrl} />
-        </div>
-        <div class="flex flex-col justify-center overflow-hidden whitespace-nowrap">
-          <p class="text-xs text-muted-foreground">Now Playing</p>
-          <h2 class="text-lg font-bold">{nowPlaying.title}</h2>
-          <p class="text-semibold -mt-1">{nowPlaying.artist}</p>
-        </div>
-      </div>
+      <NowPlaying client:load {nowPlaying} />
     }
   </div>
   <Separator className="my-10"/>
