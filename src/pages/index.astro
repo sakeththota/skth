@@ -48,7 +48,7 @@ console.log(nowPlaying)
       </a>
     </div>
     { nowPlaying.isPlaying &&
-      <NowPlaying client:load {nowPlaying} />
+      <NowPlaying client:load {...nowPlaying} />
     }
   </div>
   <Separator className="my-10"/>

@@ -5,7 +5,21 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-export const NowPlaying = ({ nowPlaying }) => {
+
+interface NowPlayingProps {
+  album: string;
+  albumImageUrl: string;
+  artist: string;
+  isPlaying: boolean;
+  songUrl: string;
+  title: string;
+}
+
+export const NowPlaying = ({
+  albumImageUrl,
+  title,
+  artist,
+}: NowPlayingProps) => {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -14,13 +28,13 @@ export const NowPlaying = ({ nowPlaying }) => {
             <div className="relative aspect-square h-full w-auto">
               <img
                 className="rounded-md absolute inset-0 h-full w-full object-cover"
-                src={nowPlaying.albumImageUrl}
+                src={albumImageUrl}
               />
             </div>
             <div className="flex flex-col justify-center items-start overflow-hidden whitespace-nowrap">
               <p className="text-xs text-muted-foreground">Now Playing</p>
-              <h2 className="text-lg font-bold">{nowPlaying.title}</h2>
-              <p className="text-semibold -mt-1">{nowPlaying.artist}</p>
+              <h2 className="text-lg font-bold">{title}</h2>
+              <p className="text-semibold -mt-1">{artist}</p>
             </div>
           </div>
         </TooltipTrigger>
