@@ -1,8 +1,8 @@
 ---
-id: 0
-title: "CLC Listing Tracker" 
-description: "Track listings in various digital marketplaces" 
-source: "https://github.com/sakeththota/clc-listing-tracker" 
+id: 4
+title: "CLC Listing Tracker"
+description: "Track listings in various digital marketplaces"
+source: "https://github.com/sakeththota/clc-listing-tracker"
 live: "#"
-src: "/clc.png" 
-tags: ['react', 'electron']
+src: "/clc.png"
+tags: ["react", "electron"]

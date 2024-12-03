@@ -1,8 +1,8 @@
 ---
-id: 2
-title: "Gzip and k-NN for Text Classification" 
+id: 1
+title: "Gzip and k-NN for Text Classification"
 description: "Implmentation of https://arxiv.org/abs/2212.09410"
-source: "https://github.com/sakeththota/gzip-text-classification" 
+source: "https://github.com/sakeththota/gzip-text-classification"
 live: "https://arxiv.org/abs/2212.09410"
-src: "/gzip.png" 
-tags: ['c++', 'zlib']
+src: "/gzip.png"
+tags: ["c++", "zlib"]
