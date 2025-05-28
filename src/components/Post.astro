@@ -1,16 +1,16 @@
 ---
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { Badge } from '@/components/ui/badge';
-const { url, title, description, publishedAt, tags} = Astro.props
+const { url, title, description, publishedAt, tags, draft} = Astro.props
 ---
 
-<a href={url} id="link" class="cursor-pointer">
+<a href={url} id="link" class={ !draft ? "cursor-pointer" : "pointer-events-none"}>
   <div class="flex flex-col justify-start w-full p-2 border-[1px] md:border-0 rounded-md md:hover:bg-accent">
     <h4 class="scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight">{title}</h4>
     <p class="text-base lg:text-lg font-medium">{description}</p>
     <div class="flex items-center pt-2 gap-2">
       <CalendarIcon className="h-4 w-4 sm:h-6 sm:w-6 opacity-70" />
-      <span class="text-sm sm:text-md text-muted-foreground">{(new Date(publishedAt)).toLocaleDateString('en-us')}</span>
+      <span class="text-sm sm:text-md text-muted-foreground">{draft ? "Coming Soon" : (new Date(publishedAt)).toLocaleDateString('en-us')}</span>
       <div class="flex gap-2 invisible sm:visible">
         {tags.map((tag: string) => <Badge className="lg:text-base" variant="outline">{tag}</Badge>)}
       </div>
