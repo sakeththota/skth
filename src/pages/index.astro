@@ -2,23 +2,20 @@
 import { getEntry, getCollection } from 'astro:content'
 import BaseLayout  from '@/layouts/BaseLayout.astro';
 import Post from '@/components/Post.astro';
+import ServiceCard from '@/components/ServiceCard.astro'
 import Project from '@/components/Project.astro';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Icon } from 'astro-icon/components'
-import { GET } from './api/spotify/now-playing.ts'
-import { NowPlaying} from '@/components/NowPlaying.tsx'
+import { GET } from './api/spotify/now-playing'
+import { NowPlaying} from '@/components/NowPlaying'
 const pageTitle = 'Saketh Thota';
-const latestPosts = await getCollection('blog', ({ data }) => {
-  return import.meta.env.PROD ? data.draft !== true : true;
-});
 
-const currentProject = await getEntry('projects', 'aoc-24');
 
-const res = await GET(Astro)
-const nowPlaying = await res.json()
-console.log(nowPlaying)
+const latestPosts = await getCollection('blog') // blog posts
+const currentProject = await getEntry('projects', 'aoc-24'); // project info
+const tutoringServices = await getCollection('services'); // tutoring services
+const nowPlaying = await (await GET(Astro)).json() // spotify component
 ---
 
 <BaseLayout {pageTitle}>
@@ -55,9 +52,13 @@ console.log(nowPlaying)
   <Separator className="my-10"/>
   <div class="grid md:grid-cols-2 gap-8">
     <div class="flex flex-col gap-8">
+      <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Tutoring Services</h1>
+      <div class="flex flex-col gap-4 justify-center">
+        {tutoringServices.map((service, idx) => <ServiceCard url=`/tutoring/${idx}/` {...service.data.properties} />)}
+      </div>
       <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Recent Posts</h1>
       <div class="flex flex-col gap-4 justify-center">
-        { latestPosts.sort((a, b) => a.data.idx - b.data.idx).reverse().map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
+        { latestPosts.sort((a, b) => a.data.idx - b.data.idx).reverse().slice(0,2).map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
       </div>
     </div>
     <div class="flex flex-col gap-8">
@@ -65,5 +66,5 @@ console.log(nowPlaying)
       <Project {...currentProject.data} />
     </div>
   </div>
-  <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight"></h1>
+  
 </BaseLayout>

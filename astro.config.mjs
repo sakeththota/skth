@@ -34,4 +34,7 @@ export default defineConfig({
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
   },
+  experimental: {
+    contentLayer: true
+  }
 });
