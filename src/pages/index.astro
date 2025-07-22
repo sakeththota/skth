@@ -2,28 +2,29 @@
 import { getEntry, getCollection } from 'astro:content'
 import BaseLayout  from '@/layouts/BaseLayout.astro';
 import Post from '@/components/Post.astro';
-import ServiceCard from '@/components/ServiceCard.astro'
 import Project from '@/components/Project.astro';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button'
 import { Icon } from 'astro-icon/components'
 import { GET } from './api/spotify/now-playing'
 import { NowPlaying} from '@/components/NowPlaying'
+import { ServiceCarousel } from '@/components/ServiceCarousel';
 const pageTitle = 'Saketh Thota';
 
 
 const latestPosts = await getCollection('blog') // blog posts
 const currentProject = await getEntry('projects', 'aoc-24'); // project info
-const tutoringServices = await getCollection('services'); // tutoring services
+const services = await getCollection('services'); // tutoring services
+console.log(services)
 const nowPlaying = await (await GET(Astro)).json() // spotify component
 ---
 
 <BaseLayout {pageTitle}>
-  <h1 class="pb-8 scroll-m-20 text-3xl lg:text-4xl font-semibold tracking-tight">Hey, I'm Saketh</h1>
+  <h1 class="pb-8 scroll-m-20 text-3xl lg:text-4xl font-semibold tracking-tight">Hey, I'm Saketh!</h1>
   <p class="text-xl lg:text-2xl leading-8 lg:leading-10">I'm a software engineer with a passion for building things, teaching, and bringing people together. I currently work as a developer at Caterpillar where I admin a self-service marketing service for our dealerships.</p>
   <p class="text-xl lg:text-2xl leading-8 lg:leading-10 mt-8 mb-8">When I'm not working, I enjoy traveling, curating playlists, and remaining involved with my fraternity's local and national service initiatives.</p>
   <div class="flex flex-col md:flex-row md:justify-between md:items-center items-start gap-8">
-    <div class="flex justify-start items-center gap-4 ">
+    <div class="flex justify-start items-center gap-4">
       <a href="https://github.com/sakeththota">
         <Button className="border-0" variant="outline" size="icon">
           <Icon name="mdi:github"/>
@@ -50,19 +51,19 @@ const nowPlaying = await (await GET(Astro)).json() // spotify component
     }
   </div>
   <Separator className="my-10"/>
-  <div class="grid md:grid-cols-2 gap-8">
-    <div class="flex flex-col gap-8">
-      <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Tutoring Services</h1>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="flex flex-col gap-4">
+      <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight pb-2">Recent Posts</h1>
       <div class="flex flex-col gap-4 justify-center">
-        {tutoringServices.map((service, idx) => <ServiceCard url=`/tutoring/${idx}/` {...service.data.properties} />)}
-      </div>
-      <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Recent Posts</h1>
-      <div class="flex flex-col gap-4 justify-center">
-        { latestPosts.sort((a, b) => a.data.idx - b.data.idx).reverse().slice(0,2).map((post) => <Post url=`/blog/${post.slug}/` {...post.data} />)}
+        { latestPosts.sort((a, b) => {
+          return a.data.idx - b.data.idx
+        }).reverse().slice(0,2).map((post) => {
+          return <Post url=`/blog/${post.slug}/` {...post.data} />
+        })}
       </div>
     </div>
-    <div class="flex flex-col gap-8">
-      <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Working On</h1>
+    <div class="flex flex-col gap-4">
+      <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight pb-2">Working On...</h1>
       <Project {...currentProject.data} />
     </div>
   </div>
