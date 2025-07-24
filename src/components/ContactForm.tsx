@@ -41,7 +41,7 @@ export function ContactForm() {
 
     return (
         <Form  {...form}>
-            <form className="flex flex-col w-2/3 gap-4 items-center">
+            <form className="flex flex-col w-full gap-4 items-center">
                 <div className="flex flex-row gap-4 w-full">
                     <FormField
                         control={form.control}
@@ -114,7 +114,7 @@ export function ContactForm() {
                     />
                 </div>
                 <div className="w-full ">
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full mt-2">
                         Submit
                     </Button>
                 </div>

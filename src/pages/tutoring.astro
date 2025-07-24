@@ -32,10 +32,19 @@ const testimonials = await getCollection('testimonials') // testimonials
         </div>
     </div>
     <!-- form -->
-    <div class="flex flex-row justify-between pt-8">
-        <div>
-            <h1 class="pb-8 scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight">Contact</h1>
+    <div class="flex flex-col items-center gap-16 lg:gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div class="w-full lg:w-2/5">
+            <h3 class="scroll-m-20 text-lg lg:text-xl font-semibold tracking-tight pb-4">
+                Contact
+            </h3>
+            <p class="text-base lg:text-lg">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Nullam pulvinar turpis ex, varius dapibus erat placerat
+                non.
+            </p>
         </div>
-        <ContactForm />
+        <div class="flex w-4/5 md:w-2/3 lg:w-1/2">
+            <ContactForm />
+        </div>
     </div>
 </BaseLayout>

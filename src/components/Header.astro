@@ -2,39 +2,63 @@
 import {
   Astronav,
   MenuItems,
+  MenuIcon
 } from "astro-navbar";
 import { ModeToggle } from '@/components/ModeToggle';
 import { GitHubLogoIcon, OpenInNewWindowIcon } from '@radix-ui/react-icons';
+import { Separator } from "./ui/separator";
+
+const menuItems = [
+  {
+    title: "tutoring",
+    path: "/tutoring"
+  },
+  { title: "cv",
+    path: "/cv"
+  },
+  {
+    title: "projects",
+    path: "/projects"
+  },
+  {
+    title: "blog",
+    path: "/blog"
+  },
+]
 ---
-<aside class="-ml-[8px] mb-16 tracking-tight"
+<aside class="-ml-[8px] mb-10 tracking-tight"
   <div class="lg:sticky lg:top-20">
     <Astronav>
-      <MenuItems class="flex flex-row items-start justify-center relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative">
-          <ul class="flex flex-row gap-8 items-center text-xl lg:text-2xl font-medium">
-            <li>
-                <a href="/" class="hover:text-accent">me</a>
-            </li>
-            <li>
-              <a href="/tutoring" class="hover:text-accent">tutoring</a>
-            </li>
-            <li>
-              <a href="/cv" class="hover:text-accent">cv</a>
-            </li>
-            <li>
-                <a href="/work" class="hover:text-accent">projects</a>
-            </li>
-            <li>
-                <a href="/blog" class="hover:text-accent">blog</a>
-            </li>
-            
-            <li>
+      <div class="flex gap-8 flex-row items-center justify-between">
+        <a href="/" class="hover:text-accent lg:hidden"><span class="font-medium text-2xl">Saketh Thota</span></a>
+        <div class="flex lg:hidden gap-2 items-center">
+          <ModeToggle client:load />
+          <OpenInNewWindowIcon href="https://github.com/sakeththota/skth" className="h-6 w-6 mr-2 hover:text-accent"/>
+          <MenuIcon class="w-6 h-6" />
+        </div>
+        
+      </div>
+      
+      <MenuItems class="hidden lg:w-auto lg:flex lg:items-start lg:justify-center relative px-0 pb-0 fade lg:overflow-auto scroll-pr-6">
+          <Separator className="mt-4 lg:hidden" />
+          <ul class="flex flex-col gap-2 mt-4 lg:mt-0 lg:flex-row lg:gap-8 text-xl lg:text-2xl font-medium">
+            <li class="hidden lg:flex"><a href="/" class="hover:text-accent">Saketh Thota</a></li>
+            <li class="hidden lg:flex">|</li>
+            {
+              menuItems.map((item, idx) => (
+                <>
+                  <li>
+                    <a href={item.path} class="hover:text-accent">{item.title}</a>
+                  </li>
+                </>
+              ))
+            }
+            <li class="hidden lg:flex items-center gap-2">
               <ModeToggle client:load />
-            </li>
-            <li>
-              <a href="https://github.com/sakeththota/skth" class="hover:text-accent">
-                <OpenInNewWindowIcon className="h-6 w-6 opacity-70" /></a>
+              <OpenInNewWindowIcon href="https://github.com/sakeththota/skth" className="h-6 w-6 hover:text-accent"/>
             </li>
           </ul>
+          <Separator className="mt-4 lg:hidden" />
       </MenuItems>
     </Astronav>
   </div>
