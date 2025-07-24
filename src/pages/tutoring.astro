@@ -3,9 +3,11 @@ import { getCollection } from 'astro:content'
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Separator } from '@/components/ui/separator';
 import { ServiceCarousel } from "@/components/ServiceCarousel"
+import { ContactForm } from "@/components/ContactForm"
 import TestimonialCard from '@/components/TestimonialCard.astro';
 
 const services = await getCollection('services'); // tutoring services
+const testimonials = await getCollection('testimonials') // testimonials
 ---
 
 <BaseLayout>
@@ -17,17 +19,23 @@ const services = await getCollection('services'); // tutoring services
         </div>
     </div>
     <Separator className="my-10"/>
-    <div class="flex flex-col gap-8">
-        <h1 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight pb-2">Services</h1>
+    <div class="flex flex-col gap-16 py-8">
         <div class="flex justify-center pb-4">
-            <div class="w-9/12 container">
+            <div class="w-11/12 md:w-9/12 container">
                 <ServiceCarousel client:load services={services.map(service=>service.data.properties)}/>
             </div>
         </div>
-        <div class="flex flex-row gap-4">
-            <TestimonialCard />
-            <TestimonialCard />
-            <TestimonialCard />
+        <div class="flex flex-col lg:flex-row gap-4">
+            {testimonials.map((testimonial) => {
+                return <TestimonialCard {...testimonial.data} />
+            })}
         </div>
+    </div>
+    <!-- form -->
+    <div class="flex flex-row justify-between pt-8">
+        <div>
+            <h1 class="pb-8 scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight">Contact</h1>
+        </div>
+        <ContactForm />
     </div>
 </BaseLayout>

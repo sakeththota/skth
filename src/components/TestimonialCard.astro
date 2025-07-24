@@ -1,18 +1,19 @@
 ---
+const { name, title, url, quote} = Astro.props
 ---
 
 <div class="flex flex-col px-8 py-8 rounded-md gap-4">
-    <div class="flex flex-row justify-between">
+    <div class="flex flex-col-reverse items-center lg:flex-row lg:justify-between">
         <div class="flex flex-col">
-            <p class="text-xl font-medium">Saketh Thota</p>
-            <p class="text-lg italic">CS Student</p>
+            <p class="text-xl font-medium">{name}</p>
+            <p class="text-lg italic">{title}</p>
         </div>
         <div>
-            <img class="w-16 h-16 rounded-full" src="https://media.licdn.com/dms/image/v2/D4E03AQEGTsoe9UvWVA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1687795381852?e=1755734400&v=beta&t=-a6oWXoRWiHdgH8tczylkcQgpOXoC9cDP_5U8d_hNr8" alt="">
+            <img class="w-16 h-16 rounded-full" src={url} alt="">
         </div>
     </div>
     <div class="flex text-center">
-        <p class="text-lg font-medium">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar turpis ex, varius dapibus erat placerat non."</p>
+        <p class="text-lg font-medium">{quote}</p>
     </div>
 </div>
 

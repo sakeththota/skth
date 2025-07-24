@@ -29,6 +29,16 @@ const projects = defineCollection({
   }),
 });
 
+const testimonials = defineCollection({
+  type: "data",
+  schema: z.object({
+    name: z.string(),
+    title: z.string(),
+    url: z.string(),
+    quote: z.string()
+  }),
+});
+
 const services = defineCollection({
   loader: notionLoader({
     auth: import.meta.env.NOTION_INTEGRATION_SECRET,
@@ -48,4 +58,4 @@ const services = defineCollection({
   })
 }) 
 
-export const collections = { blog, projects, services };
+export const collections = { blog, projects, services, testimonials };

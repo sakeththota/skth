@@ -25,13 +25,13 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
       <CarouselContent>
         {services.map(({ Name }, i) => (
           <CarouselItem key={i} className="basis-full">
-              <div className="flex flex-col justify-start py-2 px-4 border-[1px] rounded-md">
-                <div className="flex flex-col md:flex-row justify-between gap-4">
+              <div className="flex flex-col justify-start py-4 px-6 border-[1px] rounded-md">
+                <div className="flex flex-col md:flex-row justify-between gap-4 h-full">
                   <div className="md:w-4/5">
                     <h4 className="scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight">
                       {Name}
                     </h4>
-                    <h3 className="scroll-m-20 text-lg md:text-xl font-semibold tracking-tight">
+                    <h3 className="scroll-m-20 text-lg md:text-xl font-semibold tracking-tight pb-4">
                       Subheading
                     </h3>
                     <p className="text-base md:text-lg">
@@ -47,7 +47,7 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
                       <Badge variant="outline" >hybrid</Badge>
                       <Badge variant="outline" >online</Badge>
                     </div>
-                    <Button className="mb-2">Book</Button>
+                    <Button className="mb-2 w-1/2">Book</Button>
                   </div>
                 </div>
               </div>

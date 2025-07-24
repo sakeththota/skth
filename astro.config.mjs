@@ -36,5 +36,10 @@ export default defineConfig({
   },
   experimental: {
     contentLayer: true
+  },
+  vite: {
+    server: {
+      allowedHosts: true
+    }
   }
 });
