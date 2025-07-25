@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,9 +34,9 @@ export function ContactForm() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-    }
+    // function onSubmit(values: z.infer<typeof formSchema>) {
+    //     console.log(values)
+    // }
 
     return (
         <Form  {...form}>

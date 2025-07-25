@@ -17,13 +17,14 @@ interface Service {
   Price: string | null;
   Duration: string | null;
   Description: string;
+  Details: string;
 }
 
 export function ServiceCarousel({ services }: ServiceCarouselProps) {
   return (
     <Carousel>
       <CarouselContent>
-        {services.map(({ Name }, i) => (
+        {services.map(({ Name, Description, Details }, i) => (
           <CarouselItem key={i} className="basis-full">
               <div className="flex flex-col justify-start py-4 px-6 border-[1px] rounded-md">
                 <div className="flex flex-col md:flex-row justify-between gap-4 h-full">
@@ -32,13 +33,10 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
                       {Name}
                     </h4>
                     <h3 className="scroll-m-20 text-lg md:text-xl font-semibold tracking-tight pb-4">
-                      Subheading
+                      {Details}
                     </h3>
                     <p className="text-base md:text-lg">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Nullam pulvinar turpis ex, varius dapibus erat placerat
-                      non. Nullam ante purus, posuere sit amet mattis vitae,
-                      ultrices nec lorem. Vivamus eget lacinia quam.
+                      {Description}
                     </p>
                   </div>
                   <div className="md:w-2/5 flex flex-row md:flex-col md:items-end justify-between">

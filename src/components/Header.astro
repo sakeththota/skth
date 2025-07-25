@@ -5,8 +5,8 @@ import {
   MenuIcon
 } from "astro-navbar";
 import { ModeToggle } from '@/components/ModeToggle';
-import { GitHubLogoIcon, OpenInNewWindowIcon } from '@radix-ui/react-icons';
 import { Separator } from "./ui/separator";
+import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 
 const menuItems = [
   {
@@ -45,7 +45,7 @@ const menuItems = [
             <li class="hidden lg:flex"><a href="/" class="hover:text-accent">Saketh Thota</a></li>
             <li class="hidden lg:flex">|</li>
             {
-              menuItems.map((item, idx) => (
+              menuItems.map((item) => (
                 <>
                   <li>
                     <a href={item.path} class="hover:text-accent">{item.title}</a>

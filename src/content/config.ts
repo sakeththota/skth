@@ -54,6 +54,7 @@ const services = defineCollection({
       Price: transformedPropertySchema.select,
       Duration: transformedPropertySchema.select,
       Description: transformedPropertySchema.rich_text,
+      Details: transformedPropertySchema.rich_text
     })
   })
 }) 
