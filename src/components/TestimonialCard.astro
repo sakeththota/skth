@@ -1,19 +1,22 @@
 ---
+import { Separator } from "@/components/ui/separator"
+
 const { name, title, url, quote} = Astro.props
 ---
 
-<div class="flex flex-col px-8 py-8 rounded-md gap-4">
+<div class="flex flex-col px-2 py-8 rounded-md gap-4">
     <div class="flex flex-col-reverse items-center lg:flex-row lg:justify-between">
         <div class="flex flex-col">
             <p class="text-xl font-medium">{name}</p>
             <p class="text-lg italic">{title}</p>
         </div>
-        <div>
+        <!-- <div>
             <img class="w-16 h-16 rounded-full" src={url} alt="">
-        </div>
+        </div> -->
     </div>
+    <Separator />
     <div class="flex text-center">
-        <p class="text-lg font-medium">{quote}</p>
+        <p class="text-lg font-medium">"{quote}"</p>
     </div>
 </div>
 

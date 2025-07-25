@@ -106,7 +106,7 @@ export function ContactForm() {
                             <FormItem>
                                 <FormLabel>Message</FormLabel>
                                 <FormControl>
-                                    <Textarea placeholder="" {...field} />
+                                    <Textarea placeholder="Describe the service you're requesting" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

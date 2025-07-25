@@ -26,14 +26,14 @@ const menuItems = [
   },
 ]
 ---
-<aside class="-ml-[8px] mb-10 tracking-tight"
+<aside class="-ml-[8px] mb-10 tracking-tight">
   <div class="lg:sticky lg:top-20">
     <Astronav>
       <div class="flex gap-8 flex-row items-center justify-between">
         <a href="/" class="hover:text-accent lg:hidden"><span class="font-medium text-2xl">Saketh Thota</span></a>
         <div class="flex lg:hidden gap-2 items-center">
           <ModeToggle client:load />
-          <OpenInNewWindowIcon href="https://github.com/sakeththota/skth" className="h-6 w-6 mr-2 hover:text-accent"/>
+          <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 mr-2 hover:text-accent"/></a>
           <MenuIcon class="w-6 h-6" />
         </div>
         
@@ -55,7 +55,7 @@ const menuItems = [
             }
             <li class="hidden lg:flex items-center gap-2">
               <ModeToggle client:load />
-              <OpenInNewWindowIcon href="https://github.com/sakeththota/skth" className="h-6 w-6 hover:text-accent"/>
+              <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 hover:text-accent"/></a>
             </li>
           </ul>
           <Separator className="mt-4 lg:hidden" />
