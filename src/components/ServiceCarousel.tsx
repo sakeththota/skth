@@ -3,7 +3,7 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious,
+  CarouselPrevious
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,11 @@ interface Service {
 
 export function ServiceCarousel({ services }: ServiceCarouselProps) {
   return (
-    <Carousel>
+    <Carousel
+      opts = {{
+        loop: true,
+      }}
+    >
       <CarouselContent>
         {services.map(({ Name, Description, Details }, i) => (
           <CarouselItem key={i} className="basis-full">
