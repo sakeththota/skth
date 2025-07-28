@@ -46,6 +46,7 @@
     "react-query": "^3.39.3",
     "rehype-katex": "^7.0.0",
     "remark-math": "^6.0.0",
+    "resend": "^4.7.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3",
