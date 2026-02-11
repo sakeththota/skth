@@ -10,7 +10,6 @@ import { GET } from './api/spotify/now-playing'
 import { NowPlaying} from '@/components/NowPlaying'
 const pageTitle = 'Saketh Thota';
 
-
 const latestPosts = await getCollection('blog') // blog posts
 const currentProject = await getEntry('projects', 'aoc-24'); // project info
 const nowPlaying = await (await GET(Astro)).json() // spotify component
@@ -18,7 +17,7 @@ const nowPlaying = await (await GET(Astro)).json() // spotify component
 
 <BaseLayout {pageTitle}>
   <h1 class="pb-8 scroll-m-20 text-3xl lg:text-4xl font-semibold tracking-tight">Hey, I'm Saketh!</h1>
-  <p class="text-xl lg:text-2xl leading-8 lg:leading-10">I’m a software engineer with a passion for building thoughtful tools and bringing people together. I currently work as a full stack engineer at Caterpillar on our eCommerce platform used by dealers across the globe.</p>
+  <p class="text-xl lg:text-2xl leading-8 lg:leading-10">I’m a software engineer with a passion for building thoughtful tools and bringing people together. I currently work as a software engineer at The Home Depot on Search, specifically our AI-assisted semantic search platform.</p>
   <p class="text-xl lg:text-2xl leading-8 lg:leading-10 mt-8 mb-8">When I’m not working, I enjoy leading my fraternities alumni network in Chicago and being a private tutor for high school and college students.</p>
   <div class="flex flex-col md:flex-row md:justify-between md:items-center items-start gap-8">
     <div class="flex justify-start items-center gap-4">

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { ResetIcon } from "@radix-ui/react-icons"
 
 const formSchema = z.object({
     firstName: z.string().min(1, "First name is required"),
@@ -53,6 +54,8 @@ export function ContactForm() {
                 const data = await response.json();
                 console.error("Error:", data.error);
             }
+
+            form.reset()
         } catch (err) {
             console.error("Unexpected error:", err);
         }
