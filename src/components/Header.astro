@@ -1,11 +1,6 @@
 ---
-import {
-  Astronav,
-  MenuItems,
-  MenuIcon
-} from "astro-navbar";
 import { ModeToggle } from '@/components/ModeToggle';
-import { Separator } from "./ui/separator";
+import { MobileNav } from '@/components/MobileNav';
 import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 
 const menuItems = [
@@ -28,38 +23,33 @@ const menuItems = [
 ---
 <aside class="-ml-[8px] mb-10 tracking-tight">
   <div class="lg:sticky lg:top-20">
-    <Astronav>
-      <div class="flex gap-8 flex-row items-center justify-between">
-        <a href="/" class="hover:text-accent lg:hidden"><span class="font-medium text-2xl">Saketh Thota</span></a>
-        <div class="flex lg:hidden gap-2 items-center">
-          <ModeToggle client:load />
-          <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 mr-2 hover:text-accent"/></a>
-          <MenuIcon class="w-6 h-6" />
-        </div>
-        
+    <!-- Mobile header row -->
+    <div class="flex gap-8 flex-row items-center justify-between lg:hidden">
+      <a href="/" class="hover:text-accent"><span class="font-medium text-2xl">Saketh Thota</span></a>
+      <div class="flex gap-2 items-center">
+        <ModeToggle client:load />
+        <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 mr-2 hover:text-accent"/></a>
+        <MobileNav client:load />
       </div>
-      
-      <MenuItems class="hidden lg:w-auto lg:flex lg:items-start lg:justify-center relative px-0 pb-0 fade lg:overflow-auto scroll-pr-6">
-          <Separator className="mt-4 lg:hidden" />
-          <ul class="flex flex-col gap-2 mt-4 lg:mt-0 lg:flex-row lg:gap-8 text-xl lg:text-2xl font-medium">
-            <li class="hidden lg:flex"><a href="/" class="hover:text-accent">Saketh Thota</a></li>
-            <li class="hidden lg:flex">|</li>
-            {
-              menuItems.map((item) => (
-                <>
-                  <li>
-                    <a href={item.path} class="hover:text-accent">{item.title}</a>
-                  </li>
-                </>
-              ))
-            }
-            <li class="hidden lg:flex items-center gap-2">
-              <ModeToggle client:load />
-              <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 hover:text-accent"/></a>
+    </div>
+
+    <!-- Desktop nav -->
+    <nav class="hidden lg:flex lg:items-start lg:justify-center px-0 pb-0">
+      <ul class="flex flex-row gap-8 text-2xl font-medium">
+        <li><a href="/" class="hover:text-accent">Saketh Thota</a></li>
+        <li>|</li>
+        {
+          menuItems.map((item) => (
+            <li>
+              <a href={item.path} class="hover:text-accent">{item.title}</a>
             </li>
-          </ul>
-          <Separator className="mt-4 lg:hidden" />
-      </MenuItems>
-    </Astronav>
+          ))
+        }
+        <li class="flex items-center gap-2">
+          <ModeToggle client:load />
+          <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 hover:text-accent"/></a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </aside>
