@@ -1,12 +1,9 @@
 import * as React from "react";
-import { Search, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
-  CalendarIcon,
-  GitHubLogoIcon,
-  OpenInNewWindowIcon,
-} from "@radix-ui/react-icons";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface ProjectItem {
   title: string;
@@ -43,6 +40,9 @@ export function DesktopSearch({
 }: DesktopSearchProps) {
   const [expanded, setExpanded] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const [tutoringOpen, setTutoringOpen] = React.useState(false);
+  const [projectsOpen, setProjectsOpen] = React.useState(false);
+  const [blogOpen, setBlogOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -74,6 +74,19 @@ export function DesktopSearch({
   const showBlog = q && filteredPosts.length > 0;
   const showResume = q && "resume".includes(q);
   const hasResults = showTutoring || showProjects || showBlog || showResume;
+
+  // Reactively open/close collapsibles based on search query
+  React.useEffect(() => {
+    if (q) {
+      setTutoringOpen(filteredServices.length > 0);
+      setProjectsOpen(filteredProjects.length > 0);
+      setBlogOpen(filteredPosts.length > 0);
+    } else {
+      setTutoringOpen(false);
+      setProjectsOpen(false);
+      setBlogOpen(false);
+    }
+  }, [q, filteredServices.length, filteredProjects.length, filteredPosts.length]);
 
   // Close on click outside
   React.useEffect(() => {
@@ -115,168 +128,174 @@ export function DesktopSearch({
   }
 
   return (
-    <div ref={containerRef} className="relative flex items-center">
-      {/* Animated input container — expands to the left */}
+    <div ref={containerRef} className="relative flex items-baseline">
+      {/* Animated input container -- expands to the left */}
       <div
         className="overflow-hidden transition-[width,opacity] duration-200 ease-out"
         style={{
-          width: expanded ? 224 : 0,
+          width: expanded ? 240 : 0,
           opacity: expanded ? 1 : 0,
         }}
       >
         <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <Input
+          <input
             ref={inputRef}
-            placeholder="Search..."
+            placeholder="SEARCH..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-9 w-56 pl-8 pr-8 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="fd-label h-9 w-60 pl-3 pr-8 uppercase outline-none"
+            style={{
+              backgroundColor: "var(--fd-surface)",
+              color: "var(--fd-fg)",
+              border: "2px solid var(--fd-border)",
+              borderRadius: 0,
+            }}
           />
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 fd-text-icon"
+              style={{ fontSize: "0.625rem", letterSpacing: "0" }}
             >
-              <X className="h-3.5 w-3.5" />
+              &times;
             </button>
           )}
         </div>
       </div>
 
-      {/* Search/close icon — on the right */}
-      <button
-        onClick={expanded ? close : open}
-        className="inline-flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground transition-colors shrink-0"
-      >
-        {expanded ? <X className="h-4 w-4" /> : <Search className="h-4 w-4" />}
-        <span className="sr-only">{expanded ? "Close search" : "Search"}</span>
-      </button>
+      {/* Search trigger */}
+      {!expanded && (
+        <button
+          onClick={open}
+          className="fd-text-icon shrink-0"
+          style={{
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            padding: "0.25rem 0",
+            fontSize: "0.875rem",
+          }}
+        >
+          &#x2317;
+          <span className="sr-only">Search</span>
+        </button>
+      )}
 
       {/* Dropdown results */}
       {expanded && q && (
-        <div className="absolute right-0 top-full mt-2 w-80 max-h-96 overflow-y-auto rounded-md border bg-popover p-2 shadow-md z-50">
-          {!hasResults && (
-            <p className="text-sm text-muted-foreground py-4 text-center">
-              No results found
-            </p>
-          )}
-
-          {/* Tutoring results */}
-          {showTutoring && (
-            <div className="mb-2">
-              <p className="text-xs font-medium text-muted-foreground px-2 py-1.5 uppercase tracking-wider">
-                Tutoring
+        <div
+          className="absolute right-0 top-full mt-2 w-80 max-h-96 overflow-y-auto z-50 fd-body"
+          style={{
+            border: "2px solid var(--fd-border)",
+            borderRadius: 0,
+          }}
+        >
+          <div className="flex flex-col gap-3 p-3">
+            {!hasResults && (
+              <p className="fd-result-meta py-4 text-center uppercase" style={{ letterSpacing: "0.1em" }}>
+                No results found
               </p>
-              {filteredServices.map((service) => (
-                <a
-                  key={service.Name}
-                  href="/tutoring#contact"
-                  className="block rounded-md px-2 py-2 hover:bg-accent transition-colors"
-                >
-                  <p className="text-sm font-medium">{service.Name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {service.Details}
-                  </p>
-                  <p className="text-xs mt-0.5 line-clamp-1">
-                    {service.Description}
-                  </p>
-                </a>
-              ))}
-            </div>
-          )}
+            )}
 
-          {/* Resume result */}
-          {showResume && (
-            <div className="mb-2">
-              <p className="text-xs font-medium text-muted-foreground px-2 py-1.5 uppercase tracking-wider">
-                Pages
-              </p>
-              <a
-                href="/resume"
-                className="block rounded-md px-2 py-2 hover:bg-accent transition-colors"
-              >
-                <p className="text-sm font-medium">Resume</p>
-                <p className="text-xs text-muted-foreground">
-                  View resume and experience
-                </p>
-              </a>
-            </div>
-          )}
+            {/* Project results */}
+            {showProjects && (
+              <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
+                <CollapsibleTrigger className="flex w-full items-center justify-between group">
+                  <span className="fd-nav">Projects</span>
+                  <span className="fd-toggle-indicator">
+                    {projectsOpen ? "\u2212" : "+"}
+                  </span>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="flex flex-col gap-0">
+                  {filteredProjects.map((project) => (
+                    <a key={project.title} href="/projects" className="fd-result">
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="fd-result-title">{project.title}</p>
+                        <div className="flex gap-1.5 shrink-0">
+                          <a href={project.source} className="fd-text-icon" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>SRC</a>
+                          <a href={project.live} className="fd-text-icon" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>LIVE</a>
+                        </div>
+                      </div>
+                      <p className="fd-result-desc line-clamp-1">{project.description}</p>
+                      <div className="flex gap-1 flex-wrap mt-1.5">
+                        {project.tags.slice(0, 4).map((tag) => (
+                          <span key={tag} className="fd-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </a>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            )}
 
-          {/* Project results */}
-          {showProjects && (
-            <div className="mb-2">
-              <p className="text-xs font-medium text-muted-foreground px-2 py-1.5 uppercase tracking-wider">
-                Projects
-              </p>
-              {filteredProjects.map((project) => (
-                <a
-                  key={project.title}
-                  href="/projects"
-                  className="block rounded-md px-2 py-2 hover:bg-accent transition-colors"
-                >
-                  <p className="text-sm font-medium">{project.title}</p>
-                  <p className="text-xs mt-0.5 line-clamp-1">
-                    {project.description}
-                  </p>
-                  <div className="flex items-center gap-1.5 mt-1">
-                    <GitHubLogoIcon className="h-3 w-3 opacity-60" />
-                    <OpenInNewWindowIcon className="h-3 w-3 opacity-60" />
-                    <div className="flex gap-1 flex-wrap">
-                      {project.tags.slice(0, 3).map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="outline"
-                          className="text-[10px] px-1.5 py-0"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
+            {/* Resume result (wrapped to match collapsible trigger height) */}
+            {showResume && (
+              <div className="flex w-full items-center">
+                <a href="/resume" className="fd-nav">Resume</a>
+              </div>
+            )}
 
-          {/* Blog results */}
-          {showBlog && (
-            <div>
-              <p className="text-xs font-medium text-muted-foreground px-2 py-1.5 uppercase tracking-wider">
-                Blog
-              </p>
-              {filteredPosts.map((post) => (
-                <a
-                  key={post.url}
-                  href={post.url}
-                  className="block rounded-md px-2 py-2 hover:bg-accent transition-colors"
-                >
-                  <p className="text-sm font-medium">{post.title}</p>
-                  <p className="text-xs mt-0.5 line-clamp-1">
-                    {post.description}
-                  </p>
-                  <div className="flex items-center gap-1.5 mt-1">
-                    <CalendarIcon className="h-3 w-3 opacity-60" />
-                    <span className="text-[10px] text-muted-foreground">
-                      {new Date(post.publishedAt).toLocaleDateString("en-us")}
-                    </span>
-                    <div className="flex gap-1 flex-wrap">
-                      {post.tags.slice(0, 3).map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="outline"
-                          className="text-[10px] px-1.5 py-0"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
+            {/* Tutoring results */}
+            {showTutoring && (
+              <Collapsible open={tutoringOpen} onOpenChange={setTutoringOpen}>
+                <CollapsibleTrigger className="flex w-full items-center justify-between group">
+                  <span className="fd-nav">Tutoring</span>
+                  <span className="fd-toggle-indicator">
+                    {tutoringOpen ? "\u2212" : "+"}
+                  </span>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="flex flex-col gap-0">
+                  {filteredServices.map((service) => (
+                    <a key={service.Name} href="/tutoring#contact" className="fd-result">
+                      <p className="fd-result-title">{service.Name}</p>
+                      <p className="fd-result-meta">{service.Details}</p>
+                      <p className="fd-result-desc line-clamp-1">{service.Description}</p>
+                      <div className="flex gap-1 flex-wrap mt-1.5">
+                        <span className="fd-tag">in-person</span>
+                        <span className="fd-tag">hybrid</span>
+                        <span className="fd-tag">online</span>
+                      </div>
+                    </a>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            )}
+
+            {/* Blog results */}
+            {showBlog && (
+              <Collapsible open={blogOpen} onOpenChange={setBlogOpen}>
+                <CollapsibleTrigger className="flex w-full items-center justify-between group">
+                  <span className="fd-nav">Blog</span>
+                  <span className="fd-toggle-indicator">
+                    {blogOpen ? "\u2212" : "+"}
+                  </span>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="flex flex-col gap-0">
+                  {filteredPosts.map((post) => (
+                    <a key={post.url} href={post.url} className="fd-result">
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="fd-result-title">{post.title}</p>
+                        <div className="flex flex-col items-end shrink-0">
+                          <span className="fd-result-meta">
+                            {new Date(post.publishedAt).toLocaleDateString("en-us", { month: "short", day: "numeric" })}
+                          </span>
+                          <span className="fd-result-meta" style={{ opacity: 0.5 }}>
+                            {new Date(post.publishedAt).getFullYear()}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="fd-result-desc line-clamp-1">{post.description}</p>
+                      <div className="flex gap-1 flex-wrap mt-1.5">
+                        {post.tags.slice(0, 3).map((tag) => (
+                          <span key={tag} className="fd-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </a>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            )}
+          </div>
         </div>
       )}
     </div>

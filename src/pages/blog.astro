@@ -9,9 +9,13 @@ const pageTitle = 'Blog';
 const posts = await getCollection('blog', ({ data }) => !data.hidden);
 ---
 <BaseLayout {pageTitle}>
-  <h1 class="pb-8 scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Posts</h1>
-    <section class="flex flex-col gap-4">
-      {posts.sort((a, b) => a.data.idx - b.data.idx).reverse().map((post) => <Post url=`/blog/${post.id}/` {...post.data} />)}
-    </section>
+  <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
+    <div class="flex items-baseline gap-4 mb-6">
+      <span class="fd-section-num">{String(posts.length).padStart(2, '0')}</span>
+      <span class="fd-label">POSTS</span>
+    </div>
+    <div>
+      {posts.sort((a, b) => a.data.idx - b.data.idx).reverse().map((post, i) => <Post url=`/blog/${post.id}/` index={i + 1} {...post.data} />)}
+    </div>
+  </section>
 </BaseLayout>
-

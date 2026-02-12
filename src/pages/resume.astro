@@ -1,66 +1,93 @@
 
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
 
 export const prerender = true;
 
 const pageTitle = 'Resume'
 ---
 <BaseLayout {pageTitle}>
-  <h1 class="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Experience</h1>
-  <h4 class="scroll-m-20 text-xl font-semibold tracking-tight pb-2">Caterpillar Inc.</h4>
-  <div>
-    <div class="flex flex-col sm:flex-row w-full justify-between pb-2">
-      <div class="font-semibold opacity-70 text-base">Software Engineer</div>
-      <div class="text-base font-medium opacity-70">May 2023 - Present</div>
-    </div>
-    <div class="mb-2 sm:w-3/4 pl-4">
-      <div class="text-base font-medium pb-2">Spearheaded eCommerce initiatives by developing React landing pages, CMS driven banner components, and REST API integrations used by 160+ CAT dealership eCommerce sites</div>
-      <div class="text-base font-medium pb-2">Led monthly release validation and deployment for parts.cat.com in AWS, ensuring zero-downtime feature rollouts; contributed to major site architecture updates recategorizing 1.4m+ SKUs for improved SEO and faceted navigation</div>
-      <div class="text-base font-medium pb-2">Designed and launched a scalable onboarding framework using HCL Commerce, training 80+ dealers and reducing ramp-up time by 50%</div>
-      <div class="text-base font-medium">Created an internal onboarding web app and training modules that automated key workflows, improving dealer proficiency and cutting manual support requests by 30%</div>
-    </div>
-  </div>
-  <div>
-    <div class="flex flex-col sm:flex-row w-full justify-between pb-2">
-      <div class="font-semibold opacity-70 text-base">Applications Intern</div>
-      <div class="text-base font-medium opacity-70 ">May 2022 - August 2022</div>
-    </div>
-    <div class="mb-2 sm:w-3/4 pl-4">
-      <div class="text-base font-medium pb-2">Automated integration and end-to-end tests for the CAT Central App’s Login API using Cypress and Azure CI/CD pipelines, reducing manual QA time and accelerating CI/CD release cycles</div>
-      <div class="text-base font-medium pb-2">Presented a standardized test automation framework across five QA teams, increasing automated test coverage by 80% and reducing regression failure rates by 25% over two release cycles</div>
-      <div class="text-base font-medium">Generated detailed test reports using Java, Cucumber, and ExtentReports to capture integration test results, improving defect traceability and reducing test analysis time</div>
-    </div>
-  </div>
-  <div>
-    <div class="flex flex-col sm:flex-row w-full justify-between pb-2">
-      <div class="font-semibold opacity-70 text-base">Platform Intern</div>
-      <div class="text-base font-medium opacity-70">May 2021 - Dec 2021</div>
-    </div>
-    <div class="mb-2 sm:w-3/4 pl-4">
-      <div class="text-base font-medium pb-2">Built real-time AWS CloudWatch dashboards to monitor CAT Foresight’s data ingestion pipelines, reducing incident response time by 25% and improving system reliability</div>
-      <div class="text-base font-medium">Migrated legacy services and schemas in PostgreSQL and implemented input sanitization and validation logic for incoming CVA telemetry data, securing data for 4M+ CAT assets</div>
-    </div>
-  </div>
-  <h4 class="scroll-m-20 text-xl font-semibold tracking-tight pt-2 pb-2 ">Juni Learning</h4>
-  <div>
-    <div class="flex flex-col sm:flex-row w-full justify-between pb-2">
-      <div class="font-semibold opacity-70 text-base">Computer Science Instructor</div>
-      <div class="text-base font-medium opacity-70">Jan 2021 - Dec 2021</div>
-    </div>
-    <div class="mb-2 sm:w-3/4 pl-4">
-      <div class="text-base font-medium pb-2">Instructed 10 students online in high school through college level courses in C++, Python, Java, and Javscript</div>
-      <div class="text-base font-medium ">Created custom coding exercises and interactive debugging tools to address individual students' needs</div>
-    </div>
-  </div>
-  <h1 class="pt-6 scroll-m-20 text-2xl font-semibold tracking-tight mb-4">Education</h1>
-  <h4 class="scroll-m-20 text-xl font-semibold tracking-tight pb-2">University of Michigan</h4>
-  <div>
-    <div class="flex flex-row w-full justify-between">
-      <div class="font-semibold opacity-70 text-base">B.S.E in Computer Science, Magna Cum Laude</div>
-      <div class="text-base font-medium opacity-70 invisible sm:visible">Dec 2022</div>
-    </div>
-    <div class="text-base font-semibold opacity-70">Coursework: Operating Systems, Web Systems, Database Management, UI Development</div>
-  </div>
-</BaseLayout>
 
+  {/* --- EDUCATION --- */}
+  <section class="px-4 sm:px-6 lg:px-12 pt-10 lg:pt-14 pb-0">
+    <span class="fd-label block mb-6">EDUCATION</span>
+    <div>
+      <h4 class="fd-sub-heading mb-4">University of Michigan</h4>
+      <div class="flex flex-col sm:flex-row w-full justify-between mb-1">
+        <span class="fd-resume-role">B.S.E in Computer Science, Magna Cum Laude</span>
+        <span class="fd-resume-date hidden sm:inline">Dec 2022</span>
+      </div>
+    </div>
+  </section>
+
+  {/* --- EXPERIENCE --- */}
+  <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
+    <span class="fd-label block mb-6">EXPERIENCE</span>
+
+    {/* --- The Home Depot --- */}
+    <div class="mb-10">
+      <h4 class="fd-sub-heading mb-4">The Home Depot</h4>
+
+      {/* Software Engineer */}
+      <div class="mb-6">
+        <div class="flex flex-col sm:flex-row w-full justify-between mb-2">
+          <span class="fd-resume-role">Software Engineer</span>
+          <span class="fd-resume-date">September 2025 - January 2026</span>
+        </div>
+        <div class="sm:w-3/4 pl-4 flex flex-col gap-2">
+          <p class="fd-resume-bullet">Designed and built core backend microservices in Java and Spring Boot for a production semantic search platform handling 400k+ daily searches, enabling structured filtering from free-text queries using vector embeddings and approximate nearest-neighbor search (Vertex AI)</p>
+          <p class="fd-resume-bullet">Architected the customer-feedback component of the AI-assisted Search platform, using React, GraphQL, and a BigQuery analytics pipeline to refine the semantic search model and improve recommendation relevance</p>
+          <p class="fd-resume-bullet">Identified and resolved a critical production React incident in the primary search path, coordinating a live hotfix and preventing an estimated $1M/week in lost revenue</p>
+          <p class="fd-resume-bullet">Directed GM experience releases as release captain, hosting cross-team code reviews, coordinating deployments via Github Actions and Spinnaker, and training engineers during a platform ownership transition with 0 rollbacks</p>
+        </div>
+      </div>
+    </div>
+
+    {/* --- Caterpillar --- */}
+    <div class="mb-10">
+      <h4 class="fd-sub-heading mb-4">Caterpillar Inc.</h4>
+
+      {/* Software Engineer */}
+      <div class="mb-6">
+        <div class="flex flex-col sm:flex-row w-full justify-between mb-2">
+          <span class="fd-resume-role">Software Engineer</span>
+          <span class="fd-resume-date">May 2023 - October 2024</span>
+        </div>
+        <div class="sm:w-3/4 pl-4 flex flex-col gap-2">
+          <p class="fd-resume-bullet">Spearheaded eCommerce initiatives by developing React landing pages, CMS driven banner components, and REST API integrations supporting 160+ CAT dealer sites on a high-availability, SLA-backed global commerce platform</p>
+          <p class="fd-resume-bullet">Led monthly production release validation and deployments in AWS, ensuring zero-downtime rollouts and contributing to a major platform migration recategorizing 1.4M+ SKUs for improved navigation and SEO</p>
+          <p class="fd-resume-bullet">Designed and launched a scalable dealer onboarding platform using HCL Commerce, providing a self-service workflow for new dealers, training 80+ users and reducing ongoing support load by 30%</p>
+          <p class="fd-resume-bullet">Introduced a standardized test automation framework using Cucumber and JUnit across 5 QA teams, writing step definitions and glue code to integrate Spring services, test fixtures, and CI pipelines, increasing automated coverage and reducing regression failures by 25%</p>
+        </div>
+      </div>
+
+      {/* Software Engineer Intern */}
+      <div class="mb-6">
+        <div class="flex flex-col sm:flex-row w-full justify-between mb-2">
+          <span class="fd-resume-role">Software Engineer Intern</span>
+          <span class="fd-resume-date">May 2021 - August 2022</span>
+        </div>
+        <div class="sm:w-3/4 pl-4 flex flex-col gap-2">
+          <p class="fd-resume-bullet">Modernized legacy Java services and PostgreSQL schemas, implementing stream-level data sanitization and validation securing telemetry for 4M+ connected assets</p>
+          <p class="fd-resume-bullet">Automated integration and end-to-end test pipelines using Cypress and Azure CI/CD, significantly reducing manual QA and accelerating release cycles</p>
+          <p class="fd-resume-bullet">Built real-time CloudWatch observability dashboards for ingestion pipelines, cutting incident response time by 25%</p>
+        </div>
+      </div>
+    </div>
+
+    {/* --- Juni Learning --- */}
+    <div class="mb-8">
+      <h4 class="fd-sub-heading mb-4">Juni Learning</h4>
+      <div class="mb-6">
+        <div class="flex flex-col sm:flex-row w-full justify-between mb-2">
+          <span class="fd-resume-role">Computer Science Instructor</span>
+          <span class="fd-resume-date">Jan 2021 - Dec 2021</span>
+        </div>
+        <div class="sm:w-3/4 pl-4 flex flex-col gap-2">
+          <p class="fd-resume-bullet">Instructed 10 students online in high school through college level courses in C++, Python, Java, and Javscript</p>
+          <p class="fd-resume-bullet">Created custom coding exercises and interactive debugging tools to address individual students' needs</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

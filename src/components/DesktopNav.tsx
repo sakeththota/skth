@@ -88,32 +88,32 @@ export function DesktopNav({ items, pathname }: DesktopNavProps) {
   };
 
   return (
-    <ul ref={containerRef} className="relative flex items-center"
+    <nav
+      ref={containerRef}
+      className="relative flex items-baseline gap-5"
       onMouseLeave={handleMouseLeave}
     >
       {/* Sliding underline */}
-      <li
+      <div
         aria-hidden
-        className="pointer-events-none absolute bottom-0 left-0 h-px bg-muted-foreground"
-        style={lineStyle}
+        className="pointer-events-none absolute left-0"
+        style={{
+          ...lineStyle,
+          bottom: "-4px",
+          height: "2px",
+          backgroundColor: "var(--fd-accent)",
+        }}
       />
-      {items.map((item, i) => {
-        const isActive =
-          pathname === item.path || pathname.startsWith(item.path + "/");
-        return (
-          <li key={item.path}>
-            <a
-              href={item.path}
-              className={`relative text-base inline-flex items-center h-9 px-3 transition-colors text-muted-foreground ${
-                !isActive ? "hover:text-foreground" : ""
-              }`}
-              onMouseEnter={() => moveTo(i, true)}
-            >
-              <span>{item.title}</span>
-            </a>
-          </li>
-        );
-      })}
-    </ul>
+      {items.map((item, i) => (
+        <a
+          key={item.path}
+          href={item.path}
+          className="fd-nav fd-nav--no-underline"
+          onMouseEnter={() => moveTo(i, true)}
+        >
+          <span>{item.title}</span>
+        </a>
+      ))}
+    </nav>
   );
 }

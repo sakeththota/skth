@@ -1,68 +1,240 @@
 ---
-import { getCollection } from 'astro:content'
-import BaseLayout  from '@/layouts/BaseLayout.astro';
-import Post from '@/components/Post.astro';
-import Project from '@/components/Project.astro';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button'
-import { Icon } from 'astro-icon/components'
-import { GET } from './api/spotify/now-playing'
-import { NowPlaying} from '@/components/NowPlaying'
-const pageTitle = 'Saketh Thota';
+import { getCollection } from "astro:content";
+import "@/styles/globals.css";
+import { ModeToggle } from "@/components/ModeToggle";
+import { MobileNav } from "@/components/MobileNav";
+import { DesktopSearch } from "@/components/DesktopSearch";
+import { DesktopNav } from "@/components/DesktopNav";
+import { SocialLinks } from "@/components/SocialLinks";
+import { ProjectCard } from "@/components/ProjectCard";
+import { GET } from "./api/spotify/now-playing";
 
-const latestPosts = await getCollection('blog', ({ data }) => !data.hidden) // blog posts
-const currentProject = (await getCollection('projects', ({ data }) => !data.hidden))
-  .sort((a, b) => b.data.id - a.data.id)[0]; // latest non-hidden project
-const nowPlaying = await (await GET(Astro)).json() // spotify component
+const latestPosts = (await getCollection("blog", ({ data }) => !data.hidden))
+  .sort((a, b) => b.data.idx - a.data.idx)
+  .slice(0, 4);
+
+const projects = (await getCollection("projects", ({ data }) => !data.hidden))
+  .sort((a, b) => b.data.id - a.data.id);
+
+const currentProject = projects[0];
+const nowPlaying = await (await GET(Astro)).json();
+
+const menuItems = [
+  { title: "Projects", path: "/projects" },
+  { title: "Resume", path: "/resume" },
+  { title: "Tutoring", path: "/tutoring" },
+  { title: "Blog", path: "/blog" },
+];
+
+const socialLinks = [
+  { label: "GitHub", handle: "sakeththota", url: "https://github.com/sakeththota" },
+  { label: "LinkedIn", handle: "saketh-thota", url: "https://linkedin.com/in/saketh-thota" },
+  { label: "Instagram", handle: "@ssakethh", url: "https://instagram.com/ssakethh" },
+  { label: "Spotify", handle: "Saketh Thota", url: "https://open.spotify.com/user/ewh7myvj13dio09ye08z9ufqn" },
+];
+
+/* Data for search/mobile nav */
+const projectItems = projects.map((p) => ({
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags,
+  source: p.data.source,
+  live: p.data.live,
+}));
+
+const postItems = (await getCollection("blog", ({ data }) => !data.hidden))
+  .sort((a, b) => a.data.idx - b.data.idx)
+  .reverse()
+  .map((p) => ({
+    title: p.data.title,
+    description: p.data.description,
+    tags: p.data.tags,
+    publishedAt: p.data.publishedAt,
+    url: `/blog/${p.id}/`,
+  }));
+
+const services = (await getCollection("services")).map((s) => ({
+  Name: s.data.properties.Name,
+  Description: s.data.properties.Description,
+  Details: s.data.properties.Details,
+}));
 ---
 
-<BaseLayout {pageTitle}>
-  <h1 class="pb-8 scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Hey, I'm Saketh!</h1>
-  <p class="text-base lg:text-lg leading-7 lg:leading-8">I’m a software engineer with a passion for building thoughtful tools and bringing people together. I currently work as a software engineer at The Home Depot on Search, specifically our AI-assisted semantic search platform.</p>
-  <p class="text-base lg:text-lg leading-7 lg:leading-8 mt-8 mb-8">When I’m not working, I enjoy leading my fraternities alumni network in Chicago and being a private tutor for high school and college students.</p>
-  <div class="flex flex-col md:flex-row md:justify-between md:items-center items-start gap-8">
-    <div class="flex justify-start items-center gap-4">
-      <a href="https://github.com/sakeththota">
-        <Button className="border-0 h-9 w-9" variant="outline" size="icon">
-          <Icon name="mdi:github" class="h-4 w-4"/>
-        </Button>
-      </a>
-      <a href="https://instagram.com/ssakethh">
-        <Button className="border-0 h-9 w-9" variant="outline" size="icon">
-          <Icon name="mdi:instagram" class="h-4 w-4"/>
-        </Button>
-      </a>
-      <a href="https://linkedin.com/in/saketh-thota">
-        <Button className="border-0 h-9 w-9" variant="outline" size="icon">
-          <Icon name="mdi:linkedin" class="h-4 w-4"/>
-        </Button>
-      </a>
-      <a href="https://open.spotify.com/user/ewh7myvj13dio09ye08z9ufqn?si=125da40256594770">
-        <Button className="border-0 h-9 w-9" variant="outline" size="icon">
-          <Icon name="mdi:spotify" class="h-4 w-4"/>
-        </Button>
-      </a>
-    </div>
-    { nowPlaying.isPlaying &&
-      <NowPlaying client:load {...nowPlaying} />
+<script is:inline>
+  const getThemePreference = () => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme');
     }
-  </div>
-  <Separator className="my-10"/>
-  <div class="grid md:grid-cols-2 gap-4">
-    <div class="flex flex-col gap-4">
-      <h1 class="scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight pb-2">Recent Posts</h1>
-      <div class="flex flex-col gap-4 justify-center">
-        { latestPosts.sort((a, b) => {
-          return a.data.idx - b.data.idx
-        }).reverse().slice(0,3).map((post) => {
-          return <Post url=`/blog/${post.id}/` {...post.data} />
-        })}
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+  const isDark = getThemePreference() === 'dark';
+  document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+  if (typeof localStorage !== 'undefined') {
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  }
+</script>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Saketh Thota</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css" integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM" crossorigin="anonymous">
+    
+  </head>
+  <body class="fd-body antialiased min-h-screen flex flex-col max-w-screen-2xl mx-auto">
+
+    {/* --- HEADER --- */}
+    <header class="px-4 sm:px-6 lg:px-12 py-5 flex items-center justify-between">
+      {/* Logo */}
+      <a href="/" class="fd-logo">skth.dev</a>
+
+      {/* Desktop: nav links + search + mode toggle + github */}
+      <div class="hidden lg:flex items-baseline gap-6">
+        <DesktopNav client:load items={menuItems} pathname="/" />
+        <div class="flex items-baseline gap-3">
+          <DesktopSearch client:load projects={projectItems} posts={postItems} services={services} />
+          <ModeToggle client:load />
+          <a href="https://github.com/sakeththota/skth" class="fd-text-icon" style="font-size: 0.875rem;" target="_blank" rel="noopener noreferrer">&#x2197;</a>
+        </div>
       </div>
-    </div>
-    <div class="flex flex-col gap-4">
-      <h1 class="scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight pb-2">Working On...</h1>
-      { currentProject && <Project {...currentProject.data} /> }
-    </div>
-  </div>
-  
-</BaseLayout>
+
+      {/* Mobile: mode toggle + github + hamburger */}
+      <div class="flex lg:hidden items-center gap-3">
+        <ModeToggle client:load />
+        <a href="https://github.com/sakeththota/skth" class="fd-text-icon" style="font-size: 0.875rem;" target="_blank" rel="noopener noreferrer">&#x2197;</a>
+        <MobileNav client:load projects={projectItems} posts={postItems} services={services} />
+      </div>
+    </header>
+
+    <div class="fd-rule-thick"></div>
+
+    {/* --- HERO + RIGHT PANEL --- */}
+    <section class="px-4 sm:px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-0">
+
+        {/* Left — name */}
+        <div class="pt-10 lg:pt-16 pb-4 lg:pb-12">
+          <div class="fd-hero">
+            <span>SAKETH</span><br/>
+            <span style="color: var(--fd-accent);">THOTA</span>
+          </div>
+        </div>
+
+        {/* Right — profile + bio stacked, single border */}
+        <div class="pb-8 lg:py-16 lg:pl-8">
+          <div class="lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-8 flex flex-col gap-3 lg:gap-4">
+
+          {/* Identity + social links + now playing */}
+          <div>
+            <div class="fd-typo-role">Software Engineer</div>
+            <div class="fd-typo-company">
+              <span class="fd-company-logo" aria-hidden="true"></span>
+              The Home Depot
+            </div>
+            <div class="fd-typo-focus">AI & Semantic Search</div>
+            <div style="margin-top: 0.5rem;">
+              <SocialLinks client:load links={socialLinks} />
+            </div>
+            {/* Spotify now playing */}
+            {nowPlaying.isPlaying && (
+              <a href={nowPlaying.songUrl} class="fd-np" target="_blank" rel="noopener noreferrer">
+                <img src={nowPlaying.albumImageUrl} alt={nowPlaying.album} class="fd-np-art" />
+                <div class="fd-np-info">
+                  <div class="fd-np-label">
+                    <span class="fd-np-dot"></span>
+                    <span class="fd-label">NOW PLAYING</span>
+                  </div>
+                  <div class="fd-np-title">{nowPlaying.title}</div>
+                  <div class="fd-np-artist">{nowPlaying.artist}</div>
+                </div>
+              </a>
+            )}
+          </div>
+
+          <div style="height: 1px; background-color: var(--fd-border-light);"></div>
+
+          {/* Bio + CTA */}
+          <div>
+            <p class="fd-body-text">
+              I'm a software engineer at The Home Depot, where I work on AI-assisted semantic search. I love building thoughtful tools and making simple solutions to complex problems.
+            </p>
+            <p class="fd-body-text mt-2">
+              Outside of work I lead my fraternity's alumni network in Chicago and tutor students in math and CS. I'm always open to freelance work and private tutoring, so feel free to reach out!
+            </p>
+            <a href="mailto:saketh@umich.edu" class="fd-typo-cta" style="margin-top: 0.75rem;">Get in touch &rarr;</a>
+          </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="fd-rule-thick"></div>
+
+    {/* --- BLOG --- */}
+    <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
+      <div class="flex items-center justify-between mb-6">
+        <span class="fd-label">RECENT WRITING</span>
+        <a href="/blog" class="fd-label hover:text-[var(--fd-accent)]" style="transition: color 0.15s;">VIEW ALL &rarr;</a>
+      </div>
+      <div>
+        {latestPosts.map((post, i) => (
+          <a href={`/blog/${post.id}/`} class="fd-post">
+            <span class="fd-post-index">{String(i + 1).padStart(2, '0')}</span>
+            <div class="min-w-0">
+              <span class="fd-post-title">{post.data.title}</span>
+              <p class="fd-post-desc hidden md:block">{post.data.description}</p>
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+                {post.data.tags.map((tag: string) => (
+                  <span class="fd-tag fd-tag-sm">{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-0.5 flex-shrink-0 pt-1">
+              <span class="fd-post-date">
+                {new Date(post.data.publishedAt).toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}
+              </span>
+              <span class="fd-post-date" style="opacity: 0.5;">
+                {new Date(post.data.publishedAt).getFullYear()}
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <div class="fd-rule-thick"></div>
+
+    {/* --- PROJECT --- */}
+    <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
+      <span class="fd-label block mb-6">CURRENT PROJECT</span>
+      {currentProject && (
+        <ProjectCard
+          client:load
+          title={currentProject.data.title}
+          description={currentProject.data.description}
+          source={currentProject.data.source}
+          live={currentProject.data.live}
+          src={currentProject.data.src}
+          images={currentProject.data.images}
+          tags={currentProject.data.tags}
+          index={1}
+        />
+      )}
+    </section>
+
+    {/* --- FOOTER --- */}
+    <footer class="px-4 sm:px-6 lg:px-12 py-5 flex items-center justify-between mt-auto" style="border-top: 2px solid var(--fd-accent);">
+      <span class="fd-footer">&copy; {new Date().getFullYear()} Saketh Thota</span>
+      <span class="fd-footer">Chicago, IL</span>
+    </footer>
+
+  </body>
+</html>

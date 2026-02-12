@@ -1,19 +1,18 @@
 import * as React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
-interface ServiceCarouselProps {
-  services: Service[];
+interface Testimonial {
+  name: string;
+  title: string;
+  url: string;
+  quote: string;
 }
 
-interface Service {
-  Name: string;
-  Price: string | null;
-  Duration: string | null;
-  Description: string;
-  Details: string;
+interface TestimonialCarouselProps {
+  testimonials: Testimonial[];
 }
 
-export function ServiceCarousel({ services }: ServiceCarouselProps) {
+export function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
@@ -41,23 +40,16 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
       {/* Carousel viewport */}
       <div ref={emblaRef} className="overflow-hidden">
         <div className="flex">
-          {services.map(({ Name, Description, Details }, i) => (
+          {testimonials.map(({ name, title, quote }, i) => (
             <div key={i} className="min-w-0 shrink-0 grow-0 basis-full pl-0">
-              <div className="fd-service-card">
-                <div className="flex flex-col md:flex-row justify-between gap-4 h-full">
-                  <div className="md:w-4/5">
-                    <h4 className="fd-service-name">{Name}</h4>
-                    <p className="fd-service-details">{Details}</p>
-                    <p className="fd-service-desc">{Description}</p>
-                  </div>
-                  <div className="md:w-2/5 flex flex-row items-center md:flex-col md:items-end justify-between gap-2">
-                    <div className="flex flex-wrap gap-1">
-                      <span className="fd-tag">in-person</span>
-                      <span className="fd-tag">hybrid</span>
-                      <span className="fd-tag">online</span>
-                    </div>
-                    <a href="#contact" className="fd-btn md:mb-2 shrink-0" style={{ width: "fit-content" }}>Book</a>
-                  </div>
+              <div className="fd-testimonial">
+                <div className="flex-1">
+                  <p className="fd-testimonial-quote">&ldquo;{quote}&rdquo;</p>
+                </div>
+                <div style={{ height: "1px", backgroundColor: "var(--fd-border-light)" }} />
+                <div>
+                  <p className="fd-testimonial-name">{name}</p>
+                  <p className="fd-testimonial-title mt-1">{title}</p>
                 </div>
               </div>
             </div>
@@ -72,7 +64,7 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
             onClick={() => emblaApi?.scrollPrev()}
             disabled={!canScrollPrev}
             className="fd-carousel-arrow fd-carousel-arrow--external"
-            aria-label="Previous service"
+            aria-label="Previous testimonial"
           >
             &#x2190;
           </button>
@@ -80,13 +72,13 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
             onClick={() => emblaApi?.scrollNext()}
             disabled={!canScrollNext}
             className="fd-carousel-arrow fd-carousel-arrow--external"
-            aria-label="Next service"
+            aria-label="Next testimonial"
           >
             &#x2192;
           </button>
         </div>
         <span className="fd-label">
-          {selectedIndex + 1} / {services.length}
+          {selectedIndex + 1} / {testimonials.length}
         </span>
       </div>
     </div>

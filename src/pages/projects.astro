@@ -1,17 +1,36 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Project from '@/components/Project.astro';
+import { ProjectCard } from '@/components/ProjectCard';
 import { getCollection } from 'astro:content';
 
 export const prerender = true;
 
 const pageTitle = 'Projects';
-const projects = await getCollection('projects', ({ data }) => !data.hidden);
+const projects = (await getCollection('projects', ({ data }) => !data.hidden))
+  .sort((a, b) => b.data.id - a.data.id);
 ---
 
 <BaseLayout {pageTitle}>
-  <h1 class="pb-8 scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Projects</h1>
-  <section class="grid md:grid-cols-2 gap-8"> 
-    {projects.sort((a,b) => b.data.id - a.data.id).map((project) => <Project {...project.data} />)}
+  <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
+    <div class="flex items-baseline gap-4 mb-6">
+      <span class="fd-section-num">{String(projects.length).padStart(2, '0')}</span>
+      <span class="fd-label">PROJECTS</span>
+    </div>
+    <div class="flex flex-col">
+      {projects.map((project, i) => (
+        <ProjectCard
+          client:load
+          title={project.data.title}
+          description={project.data.description}
+          source={project.data.source}
+          live={project.data.live}
+          src={project.data.src}
+          images={project.data.images}
+          tags={project.data.tags}
+          index={i + 1}
+          reverse={i % 2 === 1}
+        />
+      ))}
+    </div>
   </section>
 </BaseLayout>

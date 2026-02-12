@@ -1,50 +1,105 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { Separator } from '@/components/ui/separator';
 import { ServiceCarousel } from "@/components/ServiceCarousel"
+import { TestimonialCarousel } from "@/components/TestimonialCarousel"
 import { ContactForm } from "@/components/ContactForm"
-import TestimonialCard from '@/components/TestimonialCard.astro';
 import headshot from '../../public/headshot.jpg'
 
-const services = await getCollection('services'); // tutoring services
-const testimonials = await getCollection('testimonials') // testimonials
+const services = await getCollection('services');
+const testimonials = await getCollection('testimonials');
 ---
 
 <BaseLayout>
-    <h1 class="pb-8 scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Book with Me!</h1>
-    <div class="flex flex-col-reverse gap-8 md:flex-row md:flex justify-between items-center md:items-start ">
-        <p class="text-base lg:text-lg leading-7 lg:leading-8 md:w-3/5">I have 7+ years of experience as a private tutor / teaching assistant, and I have a love for making tough topics click. I help students master everything from HS math and standardized testing to college-level computer science course, and I'm comfortable working with all ages.</p>
-        <div class="flex w-2/5 justify-center">
-            <img class="w-32 h-32 md:w-48 md:h-48 rounded-full" alt="headshot" src={headshot.src}>
+
+  {/* --- ABOUT --- */}
+  <section class="px-4 sm:px-6 lg:px-12 pt-8 lg:pt-10 pb-6 lg:pb-10">
+
+    {/* Asymmetric grid: title + headshot + credentials | bio + CTA + carousel */}
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-0 items-start">
+
+      {/* Left — hero lockup + headshot + structured credentials */}
+      <div class="lg:col-span-5 flex flex-col gap-5">
+        <span class="fd-label block">ABOUT</span>
+        <div class="fd-tutor-lockup">
+          <img class="fd-tutor-lockup-img" alt="headshot" src={headshot.src}>
+          <div class="fd-tutor-lockup-text">
+            <h2 class="fd-tutor-name">SAKETH<br/>THOTA</h2>
+            <span class="fd-tutor-role">PRIVATE TUTOR</span>
+          </div>
         </div>
+        <div class="flex flex-col gap-2">
+          <div class="fd-credential">
+            <span class="fd-credential-key">EXPERIENCE</span>
+            <span class="fd-credential-val">7+ years</span>
+          </div>
+          <div class="fd-credential">
+            <span class="fd-credential-key">SUBJECTS</span>
+            <span class="fd-credential-val">Math, Computer Science, Standardized Testing</span>
+          </div>
+          <div class="fd-credential">
+            <span class="fd-credential-key">FORMAT</span>
+            <span class="fd-credential-val">In-Person, Hybrid, Online</span>
+          </div>
+          <div class="fd-credential">
+            <span class="fd-credential-key">STUDENTS</span>
+            <span class="fd-credential-val">All ages — HS through college</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Right — bio + CTA + services carousel + testimonials with vertical divider */}
+      <div class="lg:col-span-7 lg:pl-8">
+        <div class="lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-8 flex flex-col gap-4">
+          <p class="fd-body-text">
+            I have 7+ years of experience as a private tutor and teaching assistant, and I have a love for making tough topics click. I help students master everything from high school math and standardized testing to college-level computer science, with a patient approach tailored to each student.
+          </p>
+          <a href="#contact" class="fd-btn" style="width: fit-content;">Book a Session &rarr;</a>
+
+          {/* Services carousel */}
+          <div style="height: 1px; background-color: var(--fd-border-light); margin-top: 0.25rem;"></div>
+          <div class="flex flex-col gap-2">
+            <span class="fd-label">SERVICES</span>
+            <ServiceCarousel client:load services={services.map(service=>service.data.properties)}/>
+          </div>
+
+          {/* Testimonials */}
+          <div style="height: 1px; background-color: var(--fd-border-light); margin-top: 0.25rem;"></div>
+          <div class="flex flex-col gap-2">
+            <span class="fd-label">TESTIMONIALS</span>
+            <TestimonialCarousel client:load testimonials={testimonials.reverse().map(t => t.data)} />
+          </div>
+        </div>
+      </div>
+
     </div>
-    <Separator className="my-10"/>
-    <div class="flex flex-col gap-16 pt-8 pb-16">
-        <div class="flex justify-center px-12">
-            <div class="w-full md:w-9/12 container">
-                <ServiceCarousel client:load services={services.map(service=>service.data.properties)}/>
-            </div>
+  </section>
+
+  <div class="fd-rule-thick"></div>
+
+  {/* --- CONTACT --- */}
+  <section id="contact" class="px-4 sm:px-6 lg:px-12 scroll-mt-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-0">
+
+      {/* Left — info, narrower */}
+      <div class="lg:col-span-5 pt-10 lg:pt-14 pb-4 lg:pb-14">
+        <span class="fd-label block mb-6">CONTACT</span>
+        <h3 class="fd-sub-heading mb-4">Get in Touch</h3>
+        <p class="fd-body-text mb-6">If none of my services match what you're looking for just drop a message and I'll be in contact within 24 hours.</p>
+        <div class="flex flex-col gap-1">
+          <p class="fd-contact-name">Saketh Thota</p>
+          <p class="fd-contact-detail">sakeththota01@gmail.com</p>
+          <p class="fd-contact-detail">(269) 873-7150</p>
         </div>
-        <div class="flex flex-col items-center lg:flex-row gap-8">
-            {testimonials.reverse().map((testimonial) => {
-                return <TestimonialCard {...testimonial.data} />
-            })}
+      </div>
+
+      {/* Right — form, wider */}
+      <div class="lg:col-span-7 pb-10 lg:py-14 lg:pl-8">
+        <div class="lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-8">
+          <ContactForm client:load />
         </div>
+      </div>
+
     </div>
-    <!-- form -->
-    <div id="contact" class="flex flex-col items-center gap-16 lg:gap-4 lg:flex-row lg:items-start lg:justify-between scroll-mt-8">
-        <div class="w-full lg:w-2/5">
-            <h3 class="scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight pb-4">
-                Get in Touch
-            </h3>
-            <p class="text-sm lg:text-base leading-6 lg:leading-7">If none of my services match what you're looking for just drop a message and i'll be in contact within 24 hours!</p>
-            <p class="text-sm lg:text-base leading-4 lg:leading-7 mt-4 lg:mt-4 font-medium">Saketh Thota</p>
-            <p class="text-sm lg:text-base leading-4 lg:leading-7 mt-2 lg:-mt-1 font-medium">sakeththota01@gmail.com</p>
-            <p class="text-sm lg:text-base leading-4 lg:leading-7 mt-2 lg:-mt-1 font-medium">(269) 873-7150</p>
-        </div>
-        <div class="flex w-full md:w-2/3 lg:w-1/2">
-            <ContactForm client:load />
-        </div>
-    </div>
+  </section>
 </BaseLayout>
