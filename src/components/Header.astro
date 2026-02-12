@@ -1,6 +1,7 @@
 ---
 import { ModeToggle } from '@/components/ModeToggle';
 import { MobileNav } from '@/components/MobileNav';
+import { DesktopSearch } from '@/components/DesktopSearch';
 import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import { getCollection } from 'astro:content';
 
@@ -21,6 +22,8 @@ const menuItems = [
     path: "/blog"
   },
 ]
+
+const pathname = Astro.url.pathname;
 
 const projects = (await getCollection('projects'))
   .sort((a, b) => a.data.id - b.data.id)
@@ -50,35 +53,58 @@ const services = (await getCollection('services'))
     Details: s.data.properties.Details,
   }));
 ---
-<aside class="-ml-[8px] mb-10 tracking-tight">
-  <div class="lg:sticky lg:top-20">
+<header class="mb-10 tracking-tight">
+  <div class="lg:sticky lg:top-8 lg:py-4 lg:backdrop-blur-sm lg:bg-background/80">
     <!-- Mobile header row -->
-    <div class="flex gap-8 flex-row items-center justify-between lg:hidden">
-      <a href="/" class="hover:text-accent"><span class="font-medium text-2xl">Saketh Thota</span></a>
+    <div class="flex flex-row items-center justify-between lg:hidden">
+      <a href="/" class="hover:text-accent-foreground transition-colors">
+        <span class="font-semibold text-2xl">Saketh Thota</span>
+      </a>
       <div class="flex gap-2 items-center">
         <ModeToggle client:load />
-        <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 mr-2 hover:text-accent"/></a>
+        <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 rounded-md hover:bg-accent transition-colors">
+          <OpenInNewWindowIcon className="h-5 w-5"/>
+        </a>
         <MobileNav client:load projects={projects} posts={posts} services={services} />
       </div>
     </div>
 
     <!-- Desktop nav -->
-    <nav class="hidden lg:flex lg:items-start lg:justify-center px-0 pb-0">
-      <ul class="flex flex-row gap-8 text-2xl font-medium">
-        <li><a href="/" class="hover:text-accent">Saketh Thota</a></li>
-        <li>|</li>
-        {
-          menuItems.map((item) => (
-            <li>
-              <a href={item.path} class="hover:text-accent">{item.title}</a>
-            </li>
-          ))
-        }
-        <li class="flex items-center gap-2">
+    <nav class="hidden lg:flex lg:items-center lg:justify-between">
+      <a href="/" class="text-xl font-semibold hover:text-accent-foreground transition-colors">
+        Saketh Thota
+      </a>
+      <div class="flex items-center gap-8">
+        <ul class="flex items-center gap-6">
+          {
+            menuItems.map((item) => {
+              const isActive = pathname === item.path || pathname.startsWith(item.path + '/');
+              return (
+                <li>
+                  <a
+                    href={item.path}
+                    class:list={[
+                      "text-base transition-colors",
+                      isActive
+                        ? "text-foreground font-medium"
+                        : "text-muted-foreground hover:text-foreground"
+                    ]}
+                  >
+                    {item.title}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+        <div class="flex items-center gap-1">
+          <DesktopSearch client:load projects={projects} posts={posts} services={services} />
           <ModeToggle client:load />
-          <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 hover:text-accent"/></a>
-        </li>
-      </ul>
+          <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 rounded-md hover:bg-accent transition-colors">
+            <OpenInNewWindowIcon className="h-4 w-4"/>
+          </a>
+        </div>
+      </div>
     </nav>
   </div>
-</aside>
+</header>
