@@ -1,17 +1,14 @@
 ---
-import { getCollection } from "astro:content";
-import "@/styles/globals.css";
-import { ModeToggle } from "@/components/ModeToggle";
-import { MobileNav } from "@/components/MobileNav";
-import { DesktopSearch } from "@/components/DesktopSearch";
-import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
-import { GET } from "./api/spotify/now-playing";
+import { getCollection } from 'astro:content';
+import '@/styles/globals.css';
+import { ModeToggle } from '@/components/ModeToggle';
+import { GET } from './api/spotify/now-playing';
 
-const latestPosts = (await getCollection("blog", ({ data }) => !data.hidden))
+const latestPosts = (await getCollection('blog', ({ data }) => !data.hidden))
   .sort((a, b) => b.data.idx - a.data.idx)
   .slice(0, 4);
 
-const projects = (await getCollection("projects", ({ data }) => !data.hidden))
+const projects = (await getCollection('projects', ({ data }) => !data.hidden))
   .sort((a, b) => b.data.id - a.data.id);
 
 const currentProject = projects[0];
@@ -30,32 +27,6 @@ const socialLinks = [
   { label: "Instagram", handle: "@ssakethh", url: "https://instagram.com/ssakethh" },
   { label: "Spotify", handle: "Saketh Thota", url: "https://open.spotify.com/user/ewh7myvj13dio09ye08z9ufqn" },
 ];
-
-/* Data for search/mobile nav */
-const projectItems = projects.map((p) => ({
-  title: p.data.title,
-  description: p.data.description,
-  tags: p.data.tags,
-  source: p.data.source,
-  live: p.data.live,
-}));
-
-const postItems = (await getCollection("blog", ({ data }) => !data.hidden))
-  .sort((a, b) => a.data.idx - b.data.idx)
-  .reverse()
-  .map((p) => ({
-    title: p.data.title,
-    description: p.data.description,
-    tags: p.data.tags,
-    publishedAt: p.data.publishedAt,
-    url: `/blog/${p.id}/`,
-  }));
-
-const services = (await getCollection("services")).map((s) => ({
-  Name: s.data.properties.Name,
-  Description: s.data.properties.Description,
-  Details: s.data.properties.Details,
-}));
 ---
 
 <script is:inline>
@@ -81,9 +52,7 @@ const services = (await getCollection("services")).map((s) => ({
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Saketh Thota</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css" integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM" crossorigin="anonymous">
+    <title>Saketh Thota — 03</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
@@ -106,14 +75,9 @@ const services = (await getCollection("services")).map((s) => ({
         --fd-border-light: #292524;
       }
 
-      .fd-body {
-        font-family: 'Inter', system-ui, sans-serif;
-        background-color: var(--fd-bg);
-        color: var(--fd-fg);
-      }
+      .fd-body { font-family: 'Inter', system-ui, sans-serif; background-color: var(--fd-bg); color: var(--fd-fg); }
       .fd-mono { font-family: 'JetBrains Mono', monospace; }
 
-      /* Hero name */
       .fd-hero {
         font-size: clamp(3rem, 11vw, 9rem);
         font-weight: 900;
@@ -124,92 +88,62 @@ const services = (await getCollection("services")).map((s) => ({
 
       .fd-rule-thick { height: 3px; background-color: var(--fd-fg); }
 
-      /* Navigation links (desktop redesign-style) */
       .fd-nav {
         position: relative;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.6875rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--fd-muted);
-        text-decoration: none;
-        padding-bottom: 4px;
-        transition: color 0.2s ease;
+        font-size: 0.6875rem; font-weight: 600;
+        letter-spacing: 0.12em; text-transform: uppercase;
+        color: var(--fd-muted); text-decoration: none;
+        padding-bottom: 4px; transition: color 0.2s ease;
       }
       .fd-nav:hover { color: var(--fd-fg); }
       .fd-nav::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 0;
-        height: 2px;
-        background-color: var(--fd-accent);
+        content: ''; position: absolute; left: 0; bottom: 0;
+        width: 0; height: 2px; background-color: var(--fd-accent);
         transition: width 0.2s ease;
       }
       .fd-nav:hover::after { width: 100%; }
 
-      /* Labels */
       .fd-label {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.625rem;
-        font-weight: 500;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
+        font-size: 0.625rem; font-weight: 500;
+        letter-spacing: 0.2em; text-transform: uppercase;
         color: var(--fd-muted);
       }
 
-      /* Blog post rows */
+      .fd-spotify { background-color: var(--fd-surface); border-top: 2px solid var(--fd-accent); }
+      .fd-spotify a { color: var(--fd-fg); text-decoration: none; transition: color 0.15s ease; }
+      .fd-spotify a:hover { color: var(--fd-accent); }
+
       .fd-post {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 1rem;
-        align-items: start;
-        padding: 1rem 0;
+        display: grid; grid-template-columns: 1fr auto; gap: 1rem;
+        align-items: start; padding: 1rem 0;
         border-bottom: 1px solid var(--fd-border-light);
-        text-decoration: none;
-        color: inherit;
+        text-decoration: none; color: inherit;
         transition: padding-left 0.15s ease;
       }
       .fd-post:hover { padding-left: 0.5rem; }
       .fd-post:hover .fd-post-title { color: var(--fd-accent); }
       .fd-post-title { transition: color 0.15s ease; }
 
-      /* Tags */
       .fd-tag {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.5625rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        padding: 2px 8px;
-        background-color: var(--fd-surface);
-        color: var(--fd-muted);
-        border: 1px solid var(--fd-border-light);
+        font-size: 0.5625rem; font-weight: 600;
+        letter-spacing: 0.1em; text-transform: uppercase;
+        padding: 2px 8px; background-color: var(--fd-surface);
+        color: var(--fd-muted); border: 1px solid var(--fd-border-light);
       }
 
-      /* Buttons */
       .fd-btn {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.6875rem;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        padding: 0.5rem 1.25rem;
-        border: 2px solid var(--fd-fg);
-        background: transparent;
-        color: var(--fd-fg);
-        text-decoration: none;
-        transition: all 0.15s ease;
+        font-size: 0.6875rem; font-weight: 700;
+        letter-spacing: 0.15em; text-transform: uppercase;
+        padding: 0.5rem 1.25rem; border: 2px solid var(--fd-fg);
+        background: transparent; color: var(--fd-fg);
+        text-decoration: none; transition: all 0.15s ease;
       }
-      .fd-btn:hover {
-        background: var(--fd-accent);
-        border-color: var(--fd-accent);
-        color: #0C0A09;
-      }
+      .fd-btn:hover { background: var(--fd-accent); border-color: var(--fd-accent); color: #0C0A09; }
 
-      /* Project stripe card */
       .fd-project-stripe {
         border-top: 4px solid var(--fd-accent);
         border-left: 1px solid var(--fd-border-light);
@@ -217,13 +151,12 @@ const services = (await getCollection("services")).map((s) => ({
         border-bottom: 1px solid var(--fd-border-light);
       }
 
-      /* Right panel: typographic profile */
+      /* Right panel: pure typographic block — no borders, no card */
       .fd-typo-role {
-        font-size: clamp(1.5rem, 3.5vw, 2.75rem);
-        font-weight: 900;
-        line-height: 1.05;
-        letter-spacing: -0.03em;
-        text-transform: uppercase;
+        font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
       }
       .fd-typo-company {
         font-family: 'JetBrains Mono', monospace;
@@ -231,7 +164,7 @@ const services = (await getCollection("services")).map((s) => ({
         font-weight: 500;
         letter-spacing: 0.08em;
         color: var(--fd-muted);
-        margin-top: 0.125rem;
+        margin-top: 0.25rem;
       }
       .fd-typo-focus {
         font-family: 'JetBrains Mono', monospace;
@@ -242,13 +175,16 @@ const services = (await getCollection("services")).map((s) => ({
         color: var(--fd-accent);
         margin-top: 0.125rem;
       }
-
-      /* Social row */
+      .fd-typo-divider {
+        width: 2rem;
+        height: 2px;
+        background-color: var(--fd-accent);
+        margin: 0.75rem 0;
+      }
       .fd-social-row {
         display: flex;
         flex-wrap: wrap;
         gap: 0.125rem 0.875rem;
-        margin-top: 0.75rem;
       }
       .fd-social-link {
         font-family: 'JetBrains Mono', monospace;
@@ -264,12 +200,11 @@ const services = (await getCollection("services")).map((s) => ({
         border-bottom-color: var(--fd-accent);
         color: var(--fd-accent);
       }
-
       .fd-avail-text {
         font-size: 0.6875rem;
         line-height: 1.5;
         color: var(--fd-muted);
-        margin-top: 0.5rem;
+        margin-top: 0.625rem;
       }
       .fd-typo-cta {
         display: inline-block;
@@ -280,164 +215,69 @@ const services = (await getCollection("services")).map((s) => ({
         text-transform: uppercase;
         color: var(--fd-accent);
         text-decoration: none;
-        margin-top: 0.375rem;
+        margin-top: 0.5rem;
         transition: color 0.15s ease;
       }
       .fd-typo-cta:hover { color: var(--fd-fg); }
-
-      /* Spotify now-playing widget */
-      .fd-np {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-top: 1rem;
-        padding: 0.625rem 0;
-        border-top: 2px solid var(--fd-accent);
-        text-decoration: none;
-        color: inherit;
-        transition: opacity 0.15s ease;
-      }
-      .fd-np:hover { opacity: 0.8; }
-      .fd-np-art {
-        width: 48px;
-        height: 48px;
-        flex-shrink: 0;
-        object-fit: cover;
-        border: 1px solid var(--fd-border-light);
-      }
-      .fd-np-info { min-width: 0; flex: 1; }
-      .fd-np-label {
-        display: flex;
-        align-items: center;
-        gap: 0.375rem;
-        margin-bottom: 0.25rem;
-      }
-      .fd-np-dot {
-        width: 6px;
-        height: 6px;
-        background-color: var(--fd-accent);
-        border-radius: 50%;
-        animation: fd-pulse 2s ease-in-out infinite;
-      }
-      @keyframes fd-pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-      }
-      .fd-np-title {
-        font-size: 0.8125rem;
-        font-weight: 600;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        transition: color 0.15s ease;
-      }
-      .fd-np:hover .fd-np-title { color: var(--fd-accent); }
-      .fd-np-artist {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.625rem;
-        color: var(--fd-muted);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      /* Header icon overrides to match fd theme */
-      .fd-header-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.25rem;
-        height: 2.25rem;
-        color: var(--fd-muted);
-        transition: color 0.15s ease;
-      }
-      .fd-header-icon:hover { color: var(--fd-fg); }
     </style>
   </head>
   <body class="fd-body antialiased min-h-screen flex flex-col">
 
-    {/* --- HEADER --- */}
     <header class="px-6 lg:px-12 py-5 flex items-center justify-between">
-      {/* Logo */}
-      <a href="/" class="text-lg font-black tracking-[-0.03em] uppercase">Saketh Thota</a>
-
-      {/* Desktop: nav links + search + mode toggle + github */}
-      <div class="hidden lg:flex items-center gap-6">
-        <nav class="flex items-center gap-5">
+      <a href="/3" class="text-lg font-black tracking-[-0.03em] uppercase">Saketh Thota</a>
+      <div class="flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-5">
           {menuItems.map((item) => (
             <a href={item.path} class="fd-nav">{item.title}</a>
           ))}
         </nav>
-        <div class="flex items-center gap-1">
-          <DesktopSearch client:load projects={projectItems} posts={postItems} services={services} />
-          <ModeToggle client:load />
-          <a href="https://github.com/sakeththota/skth" class="fd-header-icon" target="_blank" rel="noopener noreferrer">
-            <OpenInNewWindowIcon className="h-4 w-4" />
-          </a>
-        </div>
-      </div>
-
-      {/* Mobile: mode toggle + github + hamburger */}
-      <div class="flex lg:hidden items-center gap-2">
         <ModeToggle client:load />
-        <a href="https://github.com/sakeththota/skth" class="fd-header-icon" target="_blank" rel="noopener noreferrer">
-          <OpenInNewWindowIcon className="h-5 w-5" />
-        </a>
-        <MobileNav client:load projects={projectItems} posts={postItems} services={services} />
       </div>
     </header>
 
     <div class="fd-rule-thick"></div>
 
+    {nowPlaying.isPlaying && (
+      <div class="fd-spotify px-6 lg:px-12 py-3 flex items-center gap-3">
+        <span class="inline-block w-2 h-2 animate-pulse" style="background-color: var(--fd-accent);"></span>
+        <span class="fd-mono text-xs" style="color: var(--fd-muted);">NOW PLAYING</span>
+        <a href={nowPlaying.songUrl} class="fd-mono text-xs" target="_blank" rel="noopener noreferrer">
+          {nowPlaying.title} &mdash; {nowPlaying.artist}
+        </a>
+      </div>
+    )}
+
     {/* --- HERO + RIGHT PANEL --- */}
     <section class="px-6 lg:px-12 pt-10 lg:pt-16 pb-8 lg:pb-12">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 lg:items-stretch items-end">
-        <div class="lg:col-span-7 flex items-end">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+        <div class="lg:col-span-7">
           <div class="fd-hero">
             <span>SAKETH</span><br/>
             <span style="color: var(--fd-accent);">THOTA</span>
           </div>
         </div>
-        <div class="lg:col-span-5 flex flex-col lg:justify-end lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-6">
-          {/* Profile block -- pinned to bottom of column */}
-          <div class="mt-auto">
-            <div class="fd-typo-role">Software Engineer</div>
-            <div class="fd-typo-company">The Home Depot</div>
-            <div class="fd-typo-focus">AI & Semantic Search</div>
+        <div class="lg:col-span-5 flex flex-col justify-end">
+          {/* Typographic block — role as large heading */}
+          <div class="fd-typo-role">Software Engineer</div>
+          <div class="fd-typo-company">The Home Depot</div>
+          <div class="fd-typo-focus">AI & Semantic Search</div>
 
-            {/* Divider between identity and links */}
-            <div style="height: 1px; background-color: var(--fd-border-light); margin-top: 0.75rem;"></div>
+          <div class="fd-typo-divider"></div>
 
-            {/* Social links */}
-            <div class="fd-social-row">
-              {socialLinks.map((link) => (
-                <a href={link.url} class="fd-social-link" target="_blank" rel="noopener noreferrer">
-                  {link.label}
-                </a>
-              ))}
-            </div>
-
-            {/* Availability + CTA */}
-            <p class="fd-avail-text">
-              Available for freelance, collaborations & tutoring.
-            </p>
-            <a href="mailto:saketh@umich.edu" class="fd-typo-cta">Get in touch &rarr;</a>
-
-            {/* Spotify now playing */}
-            {nowPlaying.isPlaying && (
-              <a href={nowPlaying.songUrl} class="fd-np" target="_blank" rel="noopener noreferrer">
-                <img src={nowPlaying.albumImageUrl} alt={nowPlaying.album} class="fd-np-art" />
-                <div class="fd-np-info">
-                  <div class="fd-np-label">
-                    <span class="fd-np-dot"></span>
-                    <span class="fd-label" style="font-size: 0.5rem; letter-spacing: 0.2em;">NOW PLAYING</span>
-                  </div>
-                  <div class="fd-np-title">{nowPlaying.title}</div>
-                  <div class="fd-np-artist">{nowPlaying.artist}</div>
-                </div>
+          {/* Social handles — compact horizontal row */}
+          <div class="fd-social-row">
+            {socialLinks.map((link) => (
+              <a href={link.url} class="fd-social-link" target="_blank" rel="noopener noreferrer">
+                {link.label}
               </a>
-            )}
+            ))}
           </div>
+
+          {/* Availability + CTA */}
+          <p class="fd-avail-text">
+            Available for freelance, collaborations & tutoring.
+          </p>
+          <a href="mailto:saketh@umich.edu" class="fd-typo-cta">Get in touch &rarr;</a>
         </div>
       </div>
     </section>
@@ -527,7 +367,6 @@ const services = (await getCollection("services")).map((s) => ({
 
     <div class="fd-rule-thick"></div>
 
-    {/* --- FOOTER --- */}
     <footer class="px-6 lg:px-12 py-5 flex items-center justify-between mt-auto">
       <span class="fd-mono text-xs" style="color: var(--fd-muted);">&copy; {new Date().getFullYear()} SAKETH THOTA</span>
       <span class="fd-mono text-xs" style="color: var(--fd-muted);">CHICAGO, IL</span>
