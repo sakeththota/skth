@@ -2,6 +2,7 @@
 import { ModeToggle } from '@/components/ModeToggle';
 import { MobileNav } from '@/components/MobileNav';
 import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
+import { getCollection } from 'astro:content';
 
 const menuItems = [
   {
@@ -20,6 +21,34 @@ const menuItems = [
     path: "/blog"
   },
 ]
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.id - b.data.id)
+  .map((p) => ({
+    title: p.data.title,
+    description: p.data.description,
+    tags: p.data.tags,
+    source: p.data.source,
+    live: p.data.live,
+  }));
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => a.data.idx - b.data.idx)
+  .reverse()
+  .map((p) => ({
+    title: p.data.title,
+    description: p.data.description,
+    tags: p.data.tags,
+    publishedAt: p.data.publishedAt,
+    url: `/blog/${p.slug}/`,
+  }));
+
+const services = (await getCollection('services'))
+  .map((s) => ({
+    Name: s.data.properties.Name,
+    Description: s.data.properties.Description,
+    Details: s.data.properties.Details,
+  }));
 ---
 <aside class="-ml-[8px] mb-10 tracking-tight">
   <div class="lg:sticky lg:top-20">
@@ -29,7 +58,7 @@ const menuItems = [
       <div class="flex gap-2 items-center">
         <ModeToggle client:load />
         <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 mr-2 hover:text-accent"/></a>
-        <MobileNav client:load />
+        <MobileNav client:load projects={projects} posts={posts} services={services} />
       </div>
     </div>
 

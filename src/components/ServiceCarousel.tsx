@@ -49,7 +49,9 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
                       <Badge variant="outline" >hybrid</Badge>
                       <Badge variant="outline" >online</Badge>
                     </div>
-                    <Button className="mb-2 w-1/2">Book</Button>
+                    <Button className="mb-2 w-1/2" asChild>
+                      <a href="#contact">Book</a>
+                    </Button>
                   </div>
                 </div>
               </div>
