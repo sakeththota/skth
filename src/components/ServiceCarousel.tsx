@@ -33,13 +33,13 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
               <div className="flex flex-col justify-start py-4 px-6 border-[1px] rounded-md">
                 <div className="flex flex-col md:flex-row justify-between gap-4 h-full">
                   <div className="md:w-4/5">
-                    <h4 className="scroll-m-20 text-xl md:text-2xl font-semibold tracking-tight">
+                    <h4 className="scroll-m-20 text-lg md:text-xl font-semibold tracking-tight">
                       {Name}
                     </h4>
-                    <h3 className="scroll-m-20 text-lg md:text-xl font-semibold tracking-tight pb-4">
+                    <h3 className="scroll-m-20 text-base md:text-lg font-semibold tracking-tight pb-4">
                       {Details}
                     </h3>
-                    <p className="text-base md:text-lg">
+                    <p className="text-sm md:text-base">
                       {Description}
                     </p>
                   </div>
@@ -49,7 +49,9 @@ export function ServiceCarousel({ services }: ServiceCarouselProps) {
                       <Badge variant="outline" >hybrid</Badge>
                       <Badge variant="outline" >online</Badge>
                     </div>
-                    <Button className="mb-2 w-1/2">Book</Button>
+                    <Button className="mb-2 w-1/2" asChild>
+                      <a href="#contact">Book</a>
+                    </Button>
                   </div>
                 </div>
               </div>

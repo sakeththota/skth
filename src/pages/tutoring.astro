@@ -12,17 +12,17 @@ const testimonials = await getCollection('testimonials') // testimonials
 ---
 
 <BaseLayout>
-    <h1 class="pb-8 scroll-m-20 text-3xl lg:text-4xl font-semibold tracking-tight">Book with Me!</h1>
+    <h1 class="pb-8 scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Book with Me!</h1>
     <div class="flex flex-col-reverse gap-8 md:flex-row md:flex justify-between items-center md:items-start ">
-        <p class="text-xl lg:text-2xl leading-8 lg:leading-10 md:w-3/5">I have 7+ years of experience as a private tutor / teaching assistant, and I have a love for making tough topics click. I help students master everything from HS math and standardized testing to college-level computer science course, and I'm comfortable working with all ages.</p>
+        <p class="text-base lg:text-lg leading-7 lg:leading-8 md:w-3/5">I have 7+ years of experience as a private tutor / teaching assistant, and I have a love for making tough topics click. I help students master everything from HS math and standardized testing to college-level computer science course, and I'm comfortable working with all ages.</p>
         <div class="flex w-2/5 justify-center">
             <img class="w-32 h-32 md:w-48 md:h-48 rounded-full" alt="headshot" src={headshot.src}>
         </div>
     </div>
     <Separator className="my-10"/>
     <div class="flex flex-col gap-16 pt-8 pb-16">
-        <div class="flex justify-center">
-            <div class="w-11/12 md:w-9/12 container">
+        <div class="flex justify-center px-12">
+            <div class="w-full md:w-9/12 container">
                 <ServiceCarousel client:load services={services.map(service=>service.data.properties)}/>
             </div>
         </div>
@@ -33,15 +33,15 @@ const testimonials = await getCollection('testimonials') // testimonials
         </div>
     </div>
     <!-- form -->
-    <div class="flex flex-col items-center gap-16 lg:gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div id="contact" class="flex flex-col items-center gap-16 lg:gap-4 lg:flex-row lg:items-start lg:justify-between scroll-mt-8">
         <div class="w-full lg:w-2/5">
-            <h3 class="scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight pb-4">
+            <h3 class="scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight pb-4">
                 Get in Touch
             </h3>
-            <p class="text-lg lg:text-xl leading-6 lg:leading-8">If none of my services match what you're looking for just drop a message and i'll be in contact within 24 hours!</p>
-            <p class="text-lg lg:text-xl leading-4 lg:leading-8 mt-4 lg:mt-4 font-medium">Saketh Thota</p>
-            <p class="text-lg lg:text-xl leading-4 lg:leading-8 mt-2 lg:-mt-1 font-medium">sakeththota01@gmail.com</p>
-            <p class="text-lg lg:text-xl leading-4 lg:leading-8 mt-2 lg:-mt-1 font-medium">(269) 873-7150</p>
+            <p class="text-sm lg:text-base leading-6 lg:leading-7">If none of my services match what you're looking for just drop a message and i'll be in contact within 24 hours!</p>
+            <p class="text-sm lg:text-base leading-4 lg:leading-7 mt-4 lg:mt-4 font-medium">Saketh Thota</p>
+            <p class="text-sm lg:text-base leading-4 lg:leading-7 mt-2 lg:-mt-1 font-medium">sakeththota01@gmail.com</p>
+            <p class="text-sm lg:text-base leading-4 lg:leading-7 mt-2 lg:-mt-1 font-medium">(269) 873-7150</p>
         </div>
         <div class="flex w-full md:w-2/3 lg:w-1/2">
             <ContactForm client:load />

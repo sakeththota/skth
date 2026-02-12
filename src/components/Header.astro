@@ -1,12 +1,10 @@
 ---
-import {
-  Astronav,
-  MenuItems,
-  MenuIcon
-} from "astro-navbar";
 import { ModeToggle } from '@/components/ModeToggle';
-import { Separator } from "./ui/separator";
+import { MobileNav } from '@/components/MobileNav';
+import { DesktopSearch } from '@/components/DesktopSearch';
+import { DesktopNav } from '@/components/DesktopNav';
 import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
+import { getCollection } from 'astro:content';
 
 const menuItems = [
   {
@@ -25,41 +23,68 @@ const menuItems = [
     path: "/blog"
   },
 ]
+
+const pathname = Astro.url.pathname;
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.id - b.data.id)
+  .map((p) => ({
+    title: p.data.title,
+    description: p.data.description,
+    tags: p.data.tags,
+    source: p.data.source,
+    live: p.data.live,
+  }));
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => a.data.idx - b.data.idx)
+  .reverse()
+  .map((p) => ({
+    title: p.data.title,
+    description: p.data.description,
+    tags: p.data.tags,
+    publishedAt: p.data.publishedAt,
+    url: `/blog/${p.slug}/`,
+  }));
+
+const services = (await getCollection('services'))
+  .map((s) => ({
+    Name: s.data.properties.Name,
+    Description: s.data.properties.Description,
+    Details: s.data.properties.Details,
+  }));
 ---
-<aside class="-ml-[8px] mb-10 tracking-tight">
-  <div class="lg:sticky lg:top-20">
-    <Astronav>
-      <div class="flex gap-8 flex-row items-center justify-between">
-        <a href="/" class="hover:text-accent lg:hidden"><span class="font-medium text-2xl">Saketh Thota</span></a>
-        <div class="flex lg:hidden gap-2 items-center">
-          <ModeToggle client:load />
-          <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 mr-2 hover:text-accent"/></a>
-          <MenuIcon class="w-6 h-6" />
-        </div>
-        
+<header class="mb-10 tracking-tight">
+  <div class="lg:sticky lg:top-8 lg:py-4 lg:backdrop-blur-sm lg:bg-background/80">
+    <!-- Mobile header row -->
+    <div class="flex flex-row items-center justify-between lg:hidden">
+      <a href="/" class="hover:text-accent-foreground transition-colors">
+        <span class="font-semibold text-2xl">Saketh Thota</span>
+      </a>
+      <div class="flex gap-2 items-center">
+        <ModeToggle client:load />
+        <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 rounded-md hover:bg-accent transition-colors">
+          <OpenInNewWindowIcon className="h-5 w-5"/>
+        </a>
+        <MobileNav client:load projects={projects} posts={posts} services={services} />
       </div>
-      
-      <MenuItems class="hidden lg:w-auto lg:flex lg:items-start lg:justify-center relative px-0 pb-0 fade lg:overflow-auto scroll-pr-6">
-          <Separator className="mt-4 lg:hidden" />
-          <ul class="flex flex-col gap-2 mt-4 lg:mt-0 lg:flex-row lg:gap-8 text-xl lg:text-2xl font-medium">
-            <li class="hidden lg:flex"><a href="/" class="hover:text-accent">Saketh Thota</a></li>
-            <li class="hidden lg:flex">|</li>
-            {
-              menuItems.map((item) => (
-                <>
-                  <li>
-                    <a href={item.path} class="hover:text-accent">{item.title}</a>
-                  </li>
-                </>
-              ))
-            }
-            <li class="hidden lg:flex items-center gap-2">
-              <ModeToggle client:load />
-              <a href="https://github.com/sakeththota/skth"><OpenInNewWindowIcon className="h-6 w-6 hover:text-accent"/></a>
-            </li>
-          </ul>
-          <Separator className="mt-4 lg:hidden" />
-      </MenuItems>
-    </Astronav>
+    </div>
+
+    <!-- Desktop nav -->
+    <nav class="hidden lg:flex lg:items-center lg:justify-between">
+      <a href="/" class="text-xl font-semibold inline-flex items-center h-9 hover:text-accent-foreground transition-colors">
+        Saketh Thota
+      </a>
+      <div class="flex items-center gap-8">
+        <DesktopNav client:load items={menuItems} pathname={pathname} />
+        <div class="flex items-center gap-1">
+          <DesktopSearch client:load projects={projects} posts={posts} services={services} />
+          <ModeToggle client:load />
+          <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground transition-colors">
+            <OpenInNewWindowIcon className="h-4 w-4"/>
+          </a>
+        </div>
+      </div>
+    </nav>
   </div>
-</aside>
+</header>
