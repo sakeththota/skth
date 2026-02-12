@@ -101,7 +101,7 @@ result is full TypeScript support when I query the collection, including propert
 I often include LaTeX snippets in my posts but Astro doesn't currently support it. To add support, we can
 use remark with its math and rehype-katex plugins to parse LaTeX snippets and render them as SVGs. Just run
 `npm install remark-math rehype-katex` and add the following to your `astro.config.mjs` and `index.astro`.
-```js title="astro.config.mjs" ins={4-10}
+```js title="astro.config.mjs" ins={4-11}
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({

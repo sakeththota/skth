@@ -23,9 +23,21 @@ export default defineConfig({
     react(),
     icon(),
     expressiveCode({
-      theme: "rose-pine-moon",
+      themes: ["ayu-dark"],
       styleOverrides: {
         uiFontSize: "1em",
+        codeBackground: "var(--fd-surface)",
+        frames: {
+          editorBackground: "var(--fd-surface)",
+          terminalBackground: "var(--fd-surface)",
+          editorTabBarBackground: "var(--fd-surface)",
+          editorActiveTabBackground: "var(--fd-surface)",
+          editorActiveTabBorderColor: "transparent",
+          editorActiveTabIndicatorTopColor: "transparent",
+          editorActiveTabIndicatorBottomColor: "transparent",
+          editorTabBarBorderBottomColor: "transparent",
+          terminalTitlebarBackground: "var(--fd-surface)",
+        },
       },
     }),
     mdx(),
