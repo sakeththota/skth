@@ -2,6 +2,7 @@
 import { ModeToggle } from '@/components/ModeToggle';
 import { MobileNav } from '@/components/MobileNav';
 import { DesktopSearch } from '@/components/DesktopSearch';
+import { DesktopNav } from '@/components/DesktopNav';
 import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import { getCollection } from 'astro:content';
 
@@ -71,36 +72,15 @@ const services = (await getCollection('services'))
 
     <!-- Desktop nav -->
     <nav class="hidden lg:flex lg:items-center lg:justify-between">
-      <a href="/" class="text-xl font-semibold hover:text-accent-foreground transition-colors">
+      <a href="/" class="text-xl font-semibold inline-flex items-center h-9 hover:text-accent-foreground transition-colors">
         Saketh Thota
       </a>
       <div class="flex items-center gap-8">
-        <ul class="flex items-center gap-6">
-          {
-            menuItems.map((item) => {
-              const isActive = pathname === item.path || pathname.startsWith(item.path + '/');
-              return (
-                <li>
-                  <a
-                    href={item.path}
-                    class:list={[
-                      "text-base transition-colors",
-                      isActive
-                        ? "text-foreground font-medium"
-                        : "text-muted-foreground hover:text-foreground"
-                    ]}
-                  >
-                    {item.title}
-                  </a>
-                </li>
-              );
-            })
-          }
-        </ul>
+        <DesktopNav client:load items={menuItems} pathname={pathname} />
         <div class="flex items-center gap-1">
           <DesktopSearch client:load projects={projects} posts={posts} services={services} />
           <ModeToggle client:load />
-          <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 rounded-md hover:bg-accent transition-colors">
+          <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground transition-colors">
             <OpenInNewWindowIcon className="h-4 w-4"/>
           </a>
         </div>

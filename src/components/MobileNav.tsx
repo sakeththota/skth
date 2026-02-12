@@ -112,10 +112,10 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
         <VisuallyHidden.Root>
           <SheetTitle>Navigation</SheetTitle>
         </VisuallyHidden.Root>
-        <nav className="flex flex-col gap-4">
+        <nav className="flex flex-col gap-3">
           <a
             href="/"
-            className="text-2xl font-semibold hover:text-accent-foreground transition-colors"
+            className="text-xl font-semibold hover:text-accent-foreground transition-colors"
             onClick={() => setOpen(false)}
           >
             Saketh Thota
@@ -133,7 +133,7 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           {/* Tutoring -- collapsible with service cards */}
           {showTutoring && (
             <Collapsible open={tutoringOpen} onOpenChange={setTutoringOpen}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between text-xl font-medium hover:text-accent-foreground transition-colors group">
+              <CollapsibleTrigger className="flex w-full items-center justify-between text-base font-medium hover:text-accent-foreground transition-colors group">
                 <a
                   href="/tutoring"
                   onClick={() => setOpen(false)}
@@ -181,7 +181,7 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           {showCv && (
             <a
               href="/cv"
-              className="text-xl font-medium hover:text-accent-foreground transition-colors"
+              className="text-base font-medium hover:text-accent-foreground transition-colors"
               onClick={() => setOpen(false)}
             >
               cv
@@ -191,7 +191,7 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           {/* Projects -- collapsible with project cards */}
           {showProjects && (
             <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between text-xl font-medium hover:text-accent-foreground transition-colors group">
+              <CollapsibleTrigger className="flex w-full items-center justify-between text-base font-medium hover:text-accent-foreground transition-colors group">
                 <a
                   href="/projects"
                   onClick={() => setOpen(false)}
@@ -239,7 +239,7 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           {/* Blog -- collapsible with post cards */}
           {showBlog && (
             <Collapsible open={blogOpen} onOpenChange={setBlogOpen}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between text-xl font-medium hover:text-accent-foreground transition-colors group">
+              <CollapsibleTrigger className="flex w-full items-center justify-between text-base font-medium hover:text-accent-foreground transition-colors group">
                 <a
                   href="/blog"
                   onClick={() => setOpen(false)}
@@ -287,7 +287,7 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           )}
 
           {!hasResults && (
-            <p className="text-muted-foreground text-base">No results</p>
+            <p className="text-muted-foreground text-sm">No results</p>
           )}
         </nav>
       </SheetContent>

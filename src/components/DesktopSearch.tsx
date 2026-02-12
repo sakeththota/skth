@@ -2,7 +2,6 @@ import * as React from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   CalendarIcon,
   GitHubLogoIcon,
@@ -105,10 +104,9 @@ export function DesktopSearch({
 
   function open() {
     setExpanded(true);
-    // Focus input after expansion animation starts
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       inputRef.current?.focus();
-    });
+    }, 200);
   }
 
   function close() {
@@ -117,52 +115,43 @@ export function DesktopSearch({
   }
 
   return (
-    <div ref={containerRef} className="relative">
-      {/* Collapsed: search icon button */}
-      {!expanded && (
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={open}
-          className="h-9 w-9"
-        >
-          <Search className="h-4 w-4" />
-          <span className="sr-only">Search</span>
-        </Button>
-      )}
-
-      {/* Expanded: input field */}
-      {expanded && (
-        <div className="flex items-center gap-1">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-            <Input
-              ref={inputRef}
-              placeholder="Search..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="h-9 w-56 pl-8 pr-8 text-sm"
-            />
-            {query && (
-              <button
-                onClick={() => setQuery("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={close}
-            className="h-9 w-9 shrink-0"
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close search</span>
-          </Button>
+    <div ref={containerRef} className="relative flex items-center">
+      {/* Animated input container — expands to the left */}
+      <div
+        className="overflow-hidden transition-[width,opacity] duration-200 ease-out"
+        style={{
+          width: expanded ? 224 : 0,
+          opacity: expanded ? 1 : 0,
+        }}
+      >
+        <div className="relative">
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+          <Input
+            ref={inputRef}
+            placeholder="Search..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="h-9 w-56 pl-8 pr-8 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
         </div>
-      )}
+      </div>
+
+      {/* Search/close icon — on the right */}
+      <button
+        onClick={expanded ? close : open}
+        className="inline-flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground transition-colors shrink-0"
+      >
+        {expanded ? <X className="h-4 w-4" /> : <Search className="h-4 w-4" />}
+        <span className="sr-only">{expanded ? "Close search" : "Search"}</span>
+      </button>
 
       {/* Dropdown results */}
       {expanded && q && (
