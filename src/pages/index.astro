@@ -6,6 +6,7 @@ import { MobileNav } from "@/components/MobileNav";
 import { DesktopSearch } from "@/components/DesktopSearch";
 import { DesktopNav } from "@/components/DesktopNav";
 import { SocialLinks } from "@/components/SocialLinks";
+import { ProjectCard } from "@/components/ProjectCard";
 import { GET } from "./api/spotify/now-playing";
 
 const latestPosts = (await getCollection("blog", ({ data }) => !data.hidden))
@@ -19,9 +20,9 @@ const currentProject = projects[0];
 const nowPlaying = await (await GET(Astro)).json();
 
 const menuItems = [
-  { title: "Tutoring", path: "/tutoring" },
-  { title: "Resume", path: "/resume" },
   { title: "Projects", path: "/projects" },
+  { title: "Resume", path: "/resume" },
+  { title: "Tutoring", path: "/tutoring" },
   { title: "Blog", path: "/blog" },
 ];
 
@@ -87,12 +88,12 @@ const services = (await getCollection("services")).map((s) => ({
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css" integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM" crossorigin="anonymous">
     
   </head>
-  <body class="fd-body antialiased min-h-screen flex flex-col">
+  <body class="fd-body antialiased min-h-screen flex flex-col max-w-screen-2xl mx-auto">
 
     {/* --- HEADER --- */}
     <header class="px-4 sm:px-6 lg:px-12 py-5 flex items-center justify-between">
       {/* Logo */}
-      <a href="/" class="fd-logo">Saketh Thota</a>
+      <a href="/" class="fd-logo">skth.dev</a>
 
       {/* Desktop: nav links + search + mode toggle + github */}
       <div class="hidden lg:flex items-baseline gap-6">
@@ -115,11 +116,11 @@ const services = (await getCollection("services")).map((s) => ({
     <div class="fd-rule-thick"></div>
 
     {/* --- HERO + RIGHT PANEL --- */}
-    <section class="px-4 sm:px-6 lg:px-12 pt-10 lg:pt-16 pb-8 lg:pb-12">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-0 lg:items-start">
+    <section class="px-4 sm:px-6 lg:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-0">
 
         {/* Left — name */}
-        <div>
+        <div class="pt-10 lg:pt-16 pb-4 lg:pb-12">
           <div class="fd-hero">
             <span>SAKETH</span><br/>
             <span style="color: var(--fd-accent);">THOTA</span>
@@ -127,7 +128,8 @@ const services = (await getCollection("services")).map((s) => ({
         </div>
 
         {/* Right — profile + bio stacked, single border */}
-        <div class="lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-8 flex flex-col gap-3 lg:gap-4">
+        <div class="pb-8 lg:py-16 lg:pl-8">
+          <div class="lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-8 flex flex-col gap-3 lg:gap-4">
 
           {/* Identity + social links + now playing */}
           <div>
@@ -161,14 +163,15 @@ const services = (await getCollection("services")).map((s) => ({
           {/* Bio + CTA */}
           <div>
             <p class="fd-body-text">
-              Software engineer at The Home Depot working on AI-assisted semantic search. Passionate about building thoughtful tools and bringing people together.
+              I'm a software engineer at The Home Depot, where I work on AI-assisted semantic search. I love building thoughtful tools and making simple solutions to complex problems.
             </p>
             <p class="fd-body-text mt-2">
-              Leading my fraternity's alumni network in Chicago and tutoring students on the side. Available for freelance, collaborations & tutoring.
+              Outside of work I lead my fraternity's alumni network in Chicago and tutor students in math and CS. I'm always open to freelance work and private tutoring, so feel free to reach out!
             </p>
             <a href="mailto:saketh@umich.edu" class="fd-typo-cta" style="margin-top: 0.75rem;">Get in touch &rarr;</a>
           </div>
 
+          </div>
         </div>
       </div>
     </section>
@@ -182,8 +185,9 @@ const services = (await getCollection("services")).map((s) => ({
         <a href="/blog" class="fd-label hover:text-[var(--fd-accent)]" style="transition: color 0.15s;">VIEW ALL &rarr;</a>
       </div>
       <div>
-        {latestPosts.map((post) => (
+        {latestPosts.map((post, i) => (
           <a href={`/blog/${post.id}/`} class="fd-post">
+            <span class="fd-post-index">{String(i + 1).padStart(2, '0')}</span>
             <div class="min-w-0">
               <span class="fd-post-title">{post.data.title}</span>
               <p class="fd-post-desc hidden md:block">{post.data.description}</p>
@@ -212,28 +216,17 @@ const services = (await getCollection("services")).map((s) => ({
     <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
       <span class="fd-label block mb-6">CURRENT PROJECT</span>
       {currentProject && (
-        <div class="fd-project-stripe overflow-hidden">
-          <div class="grid grid-cols-1 lg:grid-cols-5 gap-0">
-            <div class="lg:col-span-2 aspect-video lg:aspect-auto overflow-hidden">
-              <img src={currentProject.data.src} alt={currentProject.data.title} class="w-full h-full object-cover" />
-            </div>
-            <div class="lg:col-span-3 p-5 lg:p-8 flex flex-col justify-between min-w-0">
-              <div>
-                <h3 class="fd-project-title">{currentProject.data.title}</h3>
-                <p class="fd-body-text mb-4">{currentProject.data.description}</p>
-                <div class="flex flex-wrap gap-2 mb-6">
-                  {currentProject.data.tags.map((tag: string) => (
-                    <span class="fd-tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-4">
-                <a href={currentProject.data.source} class="fd-btn" target="_blank" rel="noopener noreferrer">SOURCE</a>
-                <a href={currentProject.data.live} class="fd-btn" target="_blank" rel="noopener noreferrer">LIVE</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProjectCard
+          client:load
+          title={currentProject.data.title}
+          description={currentProject.data.description}
+          source={currentProject.data.source}
+          live={currentProject.data.live}
+          src={currentProject.data.src}
+          images={currentProject.data.images}
+          tags={currentProject.data.tags}
+          index={1}
+        />
       )}
     </section>
 

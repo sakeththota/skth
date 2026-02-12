@@ -1,8 +1,10 @@
 ---
-const { url, title, description, publishedAt, tags, draft} = Astro.props
+const { url, title, description, publishedAt, tags, draft, index } = Astro.props
+const displayIndex = index !== undefined ? String(index).padStart(2, '0') : undefined
 ---
 
 <a href={url} class="fd-post">
+  {displayIndex && <span class="fd-post-index">{displayIndex}</span>}
   <div class="min-w-0">
     <span class="fd-post-title">{title}</span>
     <p class="fd-post-desc hidden md:block">{description}</p>

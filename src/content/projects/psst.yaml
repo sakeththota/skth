@@ -1,8 +1,11 @@
 ---
-id: 5
+id: 6
 title: "Psst"
 description: "Ephemeral, anonymous real-time chat rooms"
 source: "https://github.com/sakeththota/psst"
 live: "https://psst.skth.dev"
 src: "https://placehold.co/1440x1024/000000/FFF?text=."
+images:
+  - "/psst1.png"
+  - "/psst2.png"
 tags: ["nextjs", "ably", "typescript"]

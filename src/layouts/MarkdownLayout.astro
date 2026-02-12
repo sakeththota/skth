@@ -4,14 +4,21 @@ const { frontmatter } = Astro.props
 const { title, publishedAt, tags} = frontmatter
 ---
 <BaseLayout pageTitle={frontmatter.title}>
-  <header class="fd-post-header">
-    <h1 class="fd-post-header-title">{title}</h1>
-    <span class="fd-post-header-meta">by Saketh Thota &middot; {(new Date(publishedAt)).toLocaleDateString('en-us')}</span>
-  </header>
-  <div class="fd-prose">
-    <slot />
-  </div>
-  <div class="flex gap-2 mt-8">
-    {tags.map((tag: string) => <span class="fd-tag">{tag}</span>)}
-  </div>
+  <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
+    {/* Post header */}
+    <header class="fd-post-header">
+      <h1 class="fd-post-header-title">{title}</h1>
+      <span class="fd-post-header-meta">by Saketh Thota &middot; {(new Date(publishedAt)).toLocaleDateString('en-us')}</span>
+    </header>
+
+    {/* Post content */}
+    <div class="fd-prose max-w-3xl">
+      <slot />
+    </div>
+
+    {/* Tags */}
+    <div class="flex gap-2 mt-8 max-w-3xl">
+      {tags.map((tag: string) => <span class="fd-tag">{tag}</span>)}
+    </div>
+  </section>
 </BaseLayout>

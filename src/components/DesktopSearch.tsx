@@ -197,6 +197,44 @@ export function DesktopSearch({
               </p>
             )}
 
+            {/* Project results */}
+            {showProjects && (
+              <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
+                <CollapsibleTrigger className="flex w-full items-center justify-between group">
+                  <span className="fd-nav">Projects</span>
+                  <span className="fd-toggle-indicator">
+                    {projectsOpen ? "\u2212" : "+"}
+                  </span>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="flex flex-col gap-0">
+                  {filteredProjects.map((project) => (
+                    <a key={project.title} href="/projects" className="fd-result">
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="fd-result-title">{project.title}</p>
+                        <div className="flex gap-1.5 shrink-0">
+                          <a href={project.source} className="fd-text-icon" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>SRC</a>
+                          <a href={project.live} className="fd-text-icon" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>LIVE</a>
+                        </div>
+                      </div>
+                      <p className="fd-result-desc line-clamp-1">{project.description}</p>
+                      <div className="flex gap-1 flex-wrap mt-1.5">
+                        {project.tags.slice(0, 4).map((tag) => (
+                          <span key={tag} className="fd-tag">{tag}</span>
+                        ))}
+                      </div>
+                    </a>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            )}
+
+            {/* Resume result (wrapped to match collapsible trigger height) */}
+            {showResume && (
+              <div className="flex w-full items-center">
+                <a href="/resume" className="fd-nav">Resume</a>
+              </div>
+            )}
+
             {/* Tutoring results */}
             {showTutoring && (
               <Collapsible open={tutoringOpen} onOpenChange={setTutoringOpen}>
@@ -212,41 +250,10 @@ export function DesktopSearch({
                       <p className="fd-result-title">{service.Name}</p>
                       <p className="fd-result-meta">{service.Details}</p>
                       <p className="fd-result-desc line-clamp-1">{service.Description}</p>
-                    </a>
-                  ))}
-                </CollapsibleContent>
-              </Collapsible>
-            )}
-
-            {/* Resume result (wrapped to match collapsible trigger height) */}
-            {showResume && (
-              <div className="flex w-full items-center">
-                <a href="/resume" className="fd-nav">Resume</a>
-              </div>
-            )}
-
-            {/* Project results */}
-            {showProjects && (
-              <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
-                <CollapsibleTrigger className="flex w-full items-center justify-between group">
-                  <span className="fd-nav">Projects</span>
-                  <span className="fd-toggle-indicator">
-                    {projectsOpen ? "\u2212" : "+"}
-                  </span>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="flex flex-col gap-0">
-                  {filteredProjects.map((project) => (
-                    <a key={project.title} href="/projects" className="fd-result">
-                      <p className="fd-result-title">{project.title}</p>
-                      <p className="fd-result-desc line-clamp-1">{project.description}</p>
-                      <div className="fd-meta-links">
-                        <a href={project.source} className="fd-text-icon" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>SRC</a>
-                        <a href={project.live} className="fd-text-icon" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>LIVE</a>
-                        <div className="flex gap-1 flex-wrap">
-                          {project.tags.slice(0, 3).map((tag) => (
-                            <span key={tag} className="fd-tag">{tag}</span>
-                          ))}
-                        </div>
+                      <div className="flex gap-1 flex-wrap mt-1.5">
+                        <span className="fd-tag">in-person</span>
+                        <span className="fd-tag">hybrid</span>
+                        <span className="fd-tag">online</span>
                       </div>
                     </a>
                   ))}
@@ -266,17 +273,22 @@ export function DesktopSearch({
                 <CollapsibleContent className="flex flex-col gap-0">
                   {filteredPosts.map((post) => (
                     <a key={post.url} href={post.url} className="fd-result">
-                      <p className="fd-result-title">{post.title}</p>
-                      <p className="fd-result-desc line-clamp-1">{post.description}</p>
-                      <div className="fd-meta-links">
-                        <span className="fd-result-meta">
-                          {new Date(post.publishedAt).toLocaleDateString("en-us", { month: "short", day: "numeric" })}
-                        </span>
-                        <div className="flex gap-1 flex-wrap">
-                          {post.tags.slice(0, 3).map((tag) => (
-                            <span key={tag} className="fd-tag">{tag}</span>
-                          ))}
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="fd-result-title">{post.title}</p>
+                        <div className="flex flex-col items-end shrink-0">
+                          <span className="fd-result-meta">
+                            {new Date(post.publishedAt).toLocaleDateString("en-us", { month: "short", day: "numeric" })}
+                          </span>
+                          <span className="fd-result-meta" style={{ opacity: 0.5 }}>
+                            {new Date(post.publishedAt).getFullYear()}
+                          </span>
                         </div>
+                      </div>
+                      <p className="fd-result-desc line-clamp-1">{post.description}</p>
+                      <div className="flex gap-1 flex-wrap mt-1.5">
+                        {post.tags.slice(0, 3).map((tag) => (
+                          <span key={tag} className="fd-tag">{tag}</span>
+                        ))}
                       </div>
                     </a>
                   ))}

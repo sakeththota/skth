@@ -6,9 +6,9 @@ import { DesktopNav } from '@/components/DesktopNav';
 import { getCollection } from 'astro:content';
 
 const menuItems = [
-  { title: "Tutoring", path: "/tutoring" },
-  { title: "Resume", path: "/resume" },
   { title: "Projects", path: "/projects" },
+  { title: "Resume", path: "/resume" },
+  { title: "Tutoring", path: "/tutoring" },
   { title: "Blog", path: "/blog" },
 ]
 
@@ -42,10 +42,10 @@ const services = (await getCollection('services'))
     Details: s.data.properties.Details,
   }));
 ---
-<header class="mb-10">
-  <div class="flex items-center justify-between py-5">
+<header>
+  <div class="px-4 sm:px-6 lg:px-12 py-5 flex items-center justify-between">
     {/* Logo */}
-    <a href="/" class="fd-logo">Saketh Thota</a>
+    <a href="/" class="fd-logo">skth.dev</a>
 
     {/* Desktop: nav links + search + mode toggle + github */}
     <div class="hidden lg:flex items-baseline gap-6">

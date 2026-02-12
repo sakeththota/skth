@@ -1,7 +1,7 @@
 ---
 import '@/styles/globals.css';
 import Header from '@/components/Header.astro';
-const { pageTitle} = Astro.props;
+const { pageTitle = "Saketh Thota" } = Astro.props;
 ---
 <script is:inline>
 	const getThemePreference = () => {
@@ -26,15 +26,25 @@ const { pageTitle} = Astro.props;
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css" integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM" crossorigin="anonymous">
   </head>
-  <body class="fd-body antialiased max-w-5xl mb-40 flex flex-col mt-8 mx-auto">
-    <main class="flex-auto min-w-0 mt-6 flex flex-col px-2 justify-center mx-8">
-      <Header />
+    <body class="fd-body antialiased min-h-screen flex flex-col max-w-screen-2xl mx-auto">
+
+    <Header />
+
+    {/* --- PAGE CONTENT --- */}
+    <main class="flex-auto min-w-0">
       <slot />
     </main>
+
+    {/* --- FOOTER --- */}
+    <footer class="px-4 sm:px-6 lg:px-12 py-5 flex items-center justify-between mt-auto" style="border-top: 2px solid var(--fd-accent);">
+      <span class="fd-footer">&copy; {new Date().getFullYear()} Saketh Thota</span>
+      <span class="fd-footer">Chicago, IL</span>
+    </footer>
+
   </body>
 </html>

@@ -154,6 +154,61 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           {/* Divider */}
           <div style={{ height: "2px", backgroundColor: "var(--fd-fg)" }} />
 
+          {/* Projects -- collapsible with project cards */}
+          {showProjects && (
+            <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
+              <CollapsibleTrigger className="flex w-full items-center justify-between group">
+                <a
+                  href="/projects"
+                  onClick={() => setOpen(false)}
+                  className="fd-nav"
+                >
+                  Projects
+                </a>
+                <span className="fd-toggle-indicator">
+                  {projectsOpen ? "\u2212" : "+"}
+                </span>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="flex flex-col gap-0">
+                {(q ? filteredProjects : projects).map((project) => (
+                  <a
+                    key={project.title}
+                    href="/projects"
+                    className="fd-result"
+                    onClick={() => setOpen(false)}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="fd-result-title">{project.title}</p>
+                      <div className="flex gap-1.5 shrink-0">
+                        <span className="fd-text-icon">SRC</span>
+                        <span className="fd-text-icon">LIVE</span>
+                      </div>
+                    </div>
+                    <p className="fd-result-desc line-clamp-2">{project.description}</p>
+                    <div className="flex gap-1 flex-wrap mt-1.5">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="fd-tag">{tag}</span>
+                      ))}
+                    </div>
+                  </a>
+                ))}
+              </CollapsibleContent>
+            </Collapsible>
+          )}
+
+          {/* Resume -- plain link (padded to match collapsible trigger height) */}
+          {showResume && (
+            <div className="flex w-full items-center">
+              <a
+                href="/resume"
+                className="fd-nav"
+                onClick={() => setOpen(false)}
+              >
+                Resume
+              </a>
+            </div>
+          )}
+
           {/* Tutoring -- collapsible with service cards */}
           {showTutoring && (
             <Collapsible open={tutoringOpen} onOpenChange={setTutoringOpen}>
@@ -180,63 +235,10 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
                     <p className="fd-result-title">{service.Name}</p>
                     <p className="fd-result-meta">{service.Details}</p>
                     <p className="fd-result-desc line-clamp-2">{service.Description}</p>
-                    <div className="flex gap-1.5 mt-1.5 flex-wrap">
+                    <div className="flex gap-1 flex-wrap mt-1.5">
                       <span className="fd-tag">in-person</span>
                       <span className="fd-tag">hybrid</span>
                       <span className="fd-tag">online</span>
-                    </div>
-                  </a>
-                ))}
-              </CollapsibleContent>
-            </Collapsible>
-          )}
-
-          {/* Resume -- plain link (padded to match collapsible trigger height) */}
-          {showResume && (
-            <div className="flex w-full items-center">
-              <a
-                href="/resume"
-                className="fd-nav"
-                onClick={() => setOpen(false)}
-              >
-                Resume
-              </a>
-            </div>
-          )}
-
-          {/* Projects -- collapsible with project cards */}
-          {showProjects && (
-            <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between group">
-                <a
-                  href="/projects"
-                  onClick={() => setOpen(false)}
-                  className="fd-nav"
-                >
-                  Projects
-                </a>
-                <span className="fd-toggle-indicator">
-                  {projectsOpen ? "\u2212" : "+"}
-                </span>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="flex flex-col gap-0">
-                {(q ? filteredProjects : projects).map((project) => (
-                  <a
-                    key={project.title}
-                    href="/projects"
-                    className="fd-result"
-                    onClick={() => setOpen(false)}
-                  >
-                    <p className="fd-result-title">{project.title}</p>
-                    <p className="fd-result-desc line-clamp-2">{project.description}</p>
-                    <div className="fd-meta-links">
-                      <span className="fd-text-icon">SRC</span>
-                      <span className="fd-text-icon">LIVE</span>
-                      <div className="flex gap-1.5 flex-wrap">
-                        {project.tags.map((tag) => (
-                          <span key={tag} className="fd-tag">{tag}</span>
-                        ))}
-                      </div>
                     </div>
                   </a>
                 ))}
@@ -267,17 +269,22 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
                     className="fd-result"
                     onClick={() => setOpen(false)}
                   >
-                    <p className="fd-result-title">{post.title}</p>
-                    <p className="fd-result-desc line-clamp-2">{post.description}</p>
-                    <div className="fd-meta-links">
-                      <span className="fd-result-meta">
-                        {new Date(post.publishedAt).toLocaleDateString("en-us", { month: "short", day: "numeric" })}
-                      </span>
-                      <div className="flex gap-1.5 flex-wrap">
-                        {post.tags.map((tag) => (
-                          <span key={tag} className="fd-tag">{tag}</span>
-                        ))}
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="fd-result-title">{post.title}</p>
+                      <div className="flex flex-col items-end shrink-0">
+                        <span className="fd-result-meta">
+                          {new Date(post.publishedAt).toLocaleDateString("en-us", { month: "short", day: "numeric" })}
+                        </span>
+                        <span className="fd-result-meta" style={{ opacity: 0.5 }}>
+                          {new Date(post.publishedAt).getFullYear()}
+                        </span>
                       </div>
+                    </div>
+                    <p className="fd-result-desc line-clamp-2">{post.description}</p>
+                    <div className="flex gap-1 flex-wrap mt-1.5">
+                      {post.tags.map((tag) => (
+                        <span key={tag} className="fd-tag">{tag}</span>
+                      ))}
                     </div>
                   </a>
                 ))}

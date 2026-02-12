@@ -6,7 +6,7 @@ const basic = btoa(`${client_id}:${client_secret}`);
 const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 
-const getAccessToken = async () => {
+const getAccessToken = async (): Promise<string | null> => {
   const response = await fetch(TOKEN_ENDPOINT, {
     method: "POST",
     headers: {
@@ -19,11 +19,21 @@ const getAccessToken = async () => {
     }),
   });
 
-  return response.json();
+  if (!response.ok) {
+    console.error("Spotify token request failed:", response.status, await response.text().catch(() => ""));
+    return null;
+  }
+
+  const data = await response.json();
+  return data.access_token ?? null;
 };
 
-export const getNowPlaying = async () => {
-  const { access_token } = await getAccessToken();
+export const getNowPlaying = async (): Promise<Response | null> => {
+  const access_token = await getAccessToken();
+
+  if (!access_token) {
+    return null;
+  }
 
   return fetch(NOW_PLAYING_ENDPOINT, {
     headers: {

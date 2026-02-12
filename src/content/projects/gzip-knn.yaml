@@ -5,4 +5,6 @@ description: "Implmentation of https://arxiv.org/abs/2212.09410"
 source: "https://github.com/sakeththota/gzip-text-classification"
 live: "https://arxiv.org/abs/2212.09410"
 src: "/gzip.png"
+images:
+  - "/gzip.png"
 tags: ["c++", "zlib"]

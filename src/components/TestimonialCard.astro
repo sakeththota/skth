@@ -2,15 +2,13 @@
 const { name, title, quote} = Astro.props
 ---
 
-<div class="fd-testimonial flex-1">
-    <div class="flex flex-col-reverse justify-center items-center lg:flex-row">
-        <div class="flex flex-col text-center">
-            <p class="fd-testimonial-name">{name}</p>
-            <p class="fd-testimonial-title mt-1">{title}</p>
-        </div>
+<div class="fd-testimonial h-full">
+    <div class="flex-1">
+        <p class="fd-testimonial-quote">"{quote}"</p>
     </div>
     <div style="height: 1px; background-color: var(--fd-border-light);"></div>
-    <div class="flex text-center">
-        <p class="fd-testimonial-quote">"{quote}"</p>
+    <div>
+        <p class="fd-testimonial-name">{name}</p>
+        <p class="fd-testimonial-title mt-1">{title}</p>
     </div>
 </div>
