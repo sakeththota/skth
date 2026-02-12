@@ -1,4 +1,5 @@
 import { z, defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
 import { notionLoader } from "notion-astro-loader"
 import {
   notionPageSchema,
@@ -6,7 +7,7 @@ import {
 } from "notion-astro-loader/schemas";
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({ pattern: '**/*.mdx', base: "./src/content/blog" }),
   schema: z.object({
     idx: z.number(),
     title: z.string(),
@@ -17,7 +18,7 @@ const blog = defineCollection({
 });
 
 const projects = defineCollection({
-  type: "data",
+  loader: glob({ pattern: '**/*.yaml', base: "./src/content/projects" }),
   schema: z.object({
     id: z.number(),
     title: z.string(),
@@ -30,7 +31,7 @@ const projects = defineCollection({
 });
 
 const testimonials = defineCollection({
-  type: "data",
+  loader: glob({ pattern: '**/*.yaml', base: "./src/content/testimonials" }),
   schema: z.object({
     name: z.string(),
     title: z.string(),

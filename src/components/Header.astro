@@ -44,7 +44,7 @@ const posts = (await getCollection('blog'))
     description: p.data.description,
     tags: p.data.tags,
     publishedAt: p.data.publishedAt,
-    url: `/blog/${p.slug}/`,
+    url: `/blog/${p.id}/`,
   }));
 
 const services = (await getCollection('services'))

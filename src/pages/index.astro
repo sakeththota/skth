@@ -54,13 +54,13 @@ const nowPlaying = await (await GET(Astro)).json() // spotify component
         { latestPosts.sort((a, b) => {
           return a.data.idx - b.data.idx
         }).reverse().slice(0,2).map((post) => {
-          return <Post url=`/blog/${post.slug}/` {...post.data} />
+          return <Post url=`/blog/${post.id}/` {...post.data} />
         })}
       </div>
     </div>
     <div class="flex flex-col gap-4">
       <h1 class="scroll-m-20 text-xl lg:text-2xl font-semibold tracking-tight pb-2">Working On...</h1>
-      <Project {...currentProject.data} />
+      { currentProject && <Project {...currentProject.data} /> }
     </div>
   </div>
   
