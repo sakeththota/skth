@@ -4,7 +4,8 @@ import "@/styles/globals.css";
 import { ModeToggle } from "@/components/ModeToggle";
 import { MobileNav } from "@/components/MobileNav";
 import { DesktopSearch } from "@/components/DesktopSearch";
-import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
+import { DesktopNav } from "@/components/DesktopNav";
+import { SocialLinks } from "@/components/SocialLinks";
 import { GET } from "./api/spotify/now-playing";
 
 const latestPosts = (await getCollection("blog", ({ data }) => !data.hidden))
@@ -80,309 +81,33 @@ const services = (await getCollection("services")).map((s) => ({
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>Saketh Thota</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.css" integrity="sha384-WsHMgfkABRyG494OmuiNmkAOk8nhO1qE+Y6wns6v+EoNoTNxrWxYpl5ZYWFOLPCM" crossorigin="anonymous">
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
-
-      :root {
-        --fd-accent: #C2410C;
-        --fd-bg: #FAFAF9;
-        --fd-fg: #0C0A09;
-        --fd-muted: #57534E;
-        --fd-border: #0C0A09;
-        --fd-surface: #F5F5F4;
-        --fd-border-light: #D6D3D1;
-      }
-      .dark {
-        --fd-accent: #F59E0B;
-        --fd-bg: #0C0A09;
-        --fd-fg: #FAFAF9;
-        --fd-muted: #A8A29E;
-        --fd-border: #FAFAF9;
-        --fd-surface: #1C1917;
-        --fd-border-light: #292524;
-      }
-
-      .fd-body {
-        font-family: 'Inter', system-ui, sans-serif;
-        background-color: var(--fd-bg);
-        color: var(--fd-fg);
-      }
-      .fd-mono { font-family: 'JetBrains Mono', monospace; }
-
-      /* Hero name */
-      .fd-hero {
-        font-size: clamp(3rem, 11vw, 9rem);
-        font-weight: 900;
-        line-height: 0.88;
-        letter-spacing: -0.05em;
-        text-transform: uppercase;
-      }
-
-      .fd-rule-thick { height: 3px; background-color: var(--fd-fg); }
-
-      /* Navigation links (desktop redesign-style) */
-      .fd-nav {
-        position: relative;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.6875rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--fd-muted);
-        text-decoration: none;
-        padding-bottom: 4px;
-        transition: color 0.2s ease;
-      }
-      .fd-nav:hover { color: var(--fd-fg); }
-      .fd-nav::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 0;
-        height: 2px;
-        background-color: var(--fd-accent);
-        transition: width 0.2s ease;
-      }
-      .fd-nav:hover::after { width: 100%; }
-
-      /* Labels */
-      .fd-label {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.625rem;
-        font-weight: 500;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--fd-muted);
-      }
-
-      /* Blog post rows */
-      .fd-post {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 1rem;
-        align-items: start;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--fd-border-light);
-        text-decoration: none;
-        color: inherit;
-        transition: padding-left 0.15s ease;
-      }
-      .fd-post:hover { padding-left: 0.5rem; }
-      .fd-post:hover .fd-post-title { color: var(--fd-accent); }
-      .fd-post-title { transition: color 0.15s ease; }
-
-      /* Tags */
-      .fd-tag {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.5625rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        padding: 2px 8px;
-        background-color: var(--fd-surface);
-        color: var(--fd-muted);
-        border: 1px solid var(--fd-border-light);
-      }
-
-      /* Buttons */
-      .fd-btn {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.6875rem;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        padding: 0.5rem 1.25rem;
-        border: 2px solid var(--fd-fg);
-        background: transparent;
-        color: var(--fd-fg);
-        text-decoration: none;
-        transition: all 0.15s ease;
-      }
-      .fd-btn:hover {
-        background: var(--fd-accent);
-        border-color: var(--fd-accent);
-        color: #0C0A09;
-      }
-
-      /* Project stripe card */
-      .fd-project-stripe {
-        border-top: 4px solid var(--fd-accent);
-        border-left: 1px solid var(--fd-border-light);
-        border-right: 1px solid var(--fd-border-light);
-        border-bottom: 1px solid var(--fd-border-light);
-      }
-
-      /* Right panel: typographic profile */
-      .fd-typo-role {
-        font-size: clamp(1.5rem, 3.5vw, 2.75rem);
-        font-weight: 900;
-        line-height: 1.05;
-        letter-spacing: -0.03em;
-        text-transform: uppercase;
-      }
-      .fd-typo-company {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.6875rem;
-        font-weight: 500;
-        letter-spacing: 0.08em;
-        color: var(--fd-muted);
-        margin-top: 0.125rem;
-      }
-      .fd-typo-focus {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.5625rem;
-        font-weight: 500;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--fd-accent);
-        margin-top: 0.125rem;
-      }
-
-      /* Social row */
-      .fd-social-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.125rem 0.875rem;
-        margin-top: 0.75rem;
-      }
-      .fd-social-link {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.625rem;
-        font-weight: 500;
-        color: var(--fd-fg);
-        text-decoration: none;
-        padding-bottom: 1px;
-        border-bottom: 1.5px solid transparent;
-        transition: border-color 0.15s ease, color 0.15s ease;
-      }
-      .fd-social-link:hover {
-        border-bottom-color: var(--fd-accent);
-        color: var(--fd-accent);
-      }
-
-      .fd-avail-text {
-        font-size: 0.6875rem;
-        line-height: 1.5;
-        color: var(--fd-muted);
-        margin-top: 0.5rem;
-      }
-      .fd-typo-cta {
-        display: inline-block;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.5625rem;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--fd-accent);
-        text-decoration: none;
-        margin-top: 0.375rem;
-        transition: color 0.15s ease;
-      }
-      .fd-typo-cta:hover { color: var(--fd-fg); }
-
-      /* Spotify now-playing widget */
-      .fd-np {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-top: 1rem;
-        padding: 0.625rem 0;
-        border-top: 2px solid var(--fd-accent);
-        text-decoration: none;
-        color: inherit;
-        transition: opacity 0.15s ease;
-      }
-      .fd-np:hover { opacity: 0.8; }
-      .fd-np-art {
-        width: 48px;
-        height: 48px;
-        flex-shrink: 0;
-        object-fit: cover;
-        border: 1px solid var(--fd-border-light);
-      }
-      .fd-np-info { min-width: 0; flex: 1; }
-      .fd-np-label {
-        display: flex;
-        align-items: center;
-        gap: 0.375rem;
-        margin-bottom: 0.25rem;
-      }
-      .fd-np-dot {
-        width: 6px;
-        height: 6px;
-        background-color: var(--fd-accent);
-        border-radius: 50%;
-        animation: fd-pulse 2s ease-in-out infinite;
-      }
-      @keyframes fd-pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-      }
-      .fd-np-title {
-        font-size: 0.8125rem;
-        font-weight: 600;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        transition: color 0.15s ease;
-      }
-      .fd-np:hover .fd-np-title { color: var(--fd-accent); }
-      .fd-np-artist {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.625rem;
-        color: var(--fd-muted);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      /* Header icon overrides to match fd theme */
-      .fd-header-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.25rem;
-        height: 2.25rem;
-        color: var(--fd-muted);
-        transition: color 0.15s ease;
-      }
-      .fd-header-icon:hover { color: var(--fd-fg); }
-    </style>
+    
   </head>
   <body class="fd-body antialiased min-h-screen flex flex-col">
 
     {/* --- HEADER --- */}
-    <header class="px-6 lg:px-12 py-5 flex items-center justify-between">
+    <header class="px-4 sm:px-6 lg:px-12 py-5 flex items-center justify-between">
       {/* Logo */}
-      <a href="/" class="text-lg font-black tracking-[-0.03em] uppercase">Saketh Thota</a>
+      <a href="/" class="fd-logo">Saketh Thota</a>
 
       {/* Desktop: nav links + search + mode toggle + github */}
-      <div class="hidden lg:flex items-center gap-6">
-        <nav class="flex items-center gap-5">
-          {menuItems.map((item) => (
-            <a href={item.path} class="fd-nav">{item.title}</a>
-          ))}
-        </nav>
-        <div class="flex items-center gap-1">
+      <div class="hidden lg:flex items-baseline gap-6">
+        <DesktopNav client:load items={menuItems} pathname="/" />
+        <div class="flex items-baseline gap-3">
           <DesktopSearch client:load projects={projectItems} posts={postItems} services={services} />
           <ModeToggle client:load />
-          <a href="https://github.com/sakeththota/skth" class="fd-header-icon" target="_blank" rel="noopener noreferrer">
-            <OpenInNewWindowIcon className="h-4 w-4" />
-          </a>
+          <a href="https://github.com/sakeththota/skth" class="fd-text-icon" style="font-size: 0.875rem;" target="_blank" rel="noopener noreferrer">&#x2197;</a>
         </div>
       </div>
 
       {/* Mobile: mode toggle + github + hamburger */}
-      <div class="flex lg:hidden items-center gap-2">
+      <div class="flex lg:hidden items-center gap-3">
         <ModeToggle client:load />
-        <a href="https://github.com/sakeththota/skth" class="fd-header-icon" target="_blank" rel="noopener noreferrer">
-          <OpenInNewWindowIcon className="h-5 w-5" />
-        </a>
+        <a href="https://github.com/sakeththota/skth" class="fd-text-icon" style="font-size: 0.875rem;" target="_blank" rel="noopener noreferrer">&#x2197;</a>
         <MobileNav client:load projects={projectItems} posts={postItems} services={services} />
       </div>
     </header>
@@ -390,39 +115,31 @@ const services = (await getCollection("services")).map((s) => ({
     <div class="fd-rule-thick"></div>
 
     {/* --- HERO + RIGHT PANEL --- */}
-    <section class="px-6 lg:px-12 pt-10 lg:pt-16 pb-8 lg:pb-12">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 lg:items-stretch items-end">
-        <div class="lg:col-span-7 flex items-end">
+    <section class="px-4 sm:px-6 lg:px-12 pt-10 lg:pt-16 pb-8 lg:pb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-0 lg:items-start">
+
+        {/* Left — name */}
+        <div>
           <div class="fd-hero">
             <span>SAKETH</span><br/>
             <span style="color: var(--fd-accent);">THOTA</span>
           </div>
         </div>
-        <div class="lg:col-span-5 flex flex-col lg:justify-end lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-6">
-          {/* Profile block -- pinned to bottom of column */}
-          <div class="mt-auto">
+
+        {/* Right — profile + bio stacked, single border */}
+        <div class="lg:border-l-[3px] lg:border-[var(--fd-fg)] lg:pl-8 flex flex-col gap-3 lg:gap-4">
+
+          {/* Identity + social links + now playing */}
+          <div>
             <div class="fd-typo-role">Software Engineer</div>
-            <div class="fd-typo-company">The Home Depot</div>
-            <div class="fd-typo-focus">AI & Semantic Search</div>
-
-            {/* Divider between identity and links */}
-            <div style="height: 1px; background-color: var(--fd-border-light); margin-top: 0.75rem;"></div>
-
-            {/* Social links */}
-            <div class="fd-social-row">
-              {socialLinks.map((link) => (
-                <a href={link.url} class="fd-social-link" target="_blank" rel="noopener noreferrer">
-                  {link.label}
-                </a>
-              ))}
+            <div class="fd-typo-company">
+              <span class="fd-company-logo" aria-hidden="true"></span>
+              The Home Depot
             </div>
-
-            {/* Availability + CTA */}
-            <p class="fd-avail-text">
-              Available for freelance, collaborations & tutoring.
-            </p>
-            <a href="mailto:saketh@umich.edu" class="fd-typo-cta">Get in touch &rarr;</a>
-
+            <div class="fd-typo-focus">AI & Semantic Search</div>
+            <div style="margin-top: 0.5rem;">
+              <SocialLinks client:load links={socialLinks} />
+            </div>
             {/* Spotify now playing */}
             {nowPlaying.isPlaying && (
               <a href={nowPlaying.songUrl} class="fd-np" target="_blank" rel="noopener noreferrer">
@@ -430,7 +147,7 @@ const services = (await getCollection("services")).map((s) => ({
                 <div class="fd-np-info">
                   <div class="fd-np-label">
                     <span class="fd-np-dot"></span>
-                    <span class="fd-label" style="font-size: 0.5rem; letter-spacing: 0.2em;">NOW PLAYING</span>
+                    <span class="fd-label">NOW PLAYING</span>
                   </div>
                   <div class="fd-np-title">{nowPlaying.title}</div>
                   <div class="fd-np-artist">{nowPlaying.artist}</div>
@@ -438,23 +155,20 @@ const services = (await getCollection("services")).map((s) => ({
               </a>
             )}
           </div>
-        </div>
-      </div>
-    </section>
 
-    {/* --- BIO --- */}
-    <section class="px-6 lg:px-12 pb-10 lg:pb-14">
-      <div class="max-w-3xl">
-        <div class="flex gap-4">
-          <div class="w-1 flex-shrink-0" style="background-color: var(--fd-accent);"></div>
+          <div style="height: 1px; background-color: var(--fd-border-light);"></div>
+
+          {/* Bio + CTA */}
           <div>
-            <p class="text-sm lg:text-base leading-6 lg:leading-7" style="color: var(--fd-muted);">
+            <p class="fd-body-text">
               Software engineer at The Home Depot working on AI-assisted semantic search. Passionate about building thoughtful tools and bringing people together.
             </p>
-            <p class="text-sm lg:text-base leading-6 lg:leading-7 mt-3" style="color: var(--fd-muted);">
-              Leading my fraternity's alumni network in Chicago and tutoring students on the side.
+            <p class="fd-body-text mt-2">
+              Leading my fraternity's alumni network in Chicago and tutoring students on the side. Available for freelance, collaborations & tutoring.
             </p>
+            <a href="mailto:saketh@umich.edu" class="fd-typo-cta" style="margin-top: 0.75rem;">Get in touch &rarr;</a>
           </div>
+
         </div>
       </div>
     </section>
@@ -462,7 +176,7 @@ const services = (await getCollection("services")).map((s) => ({
     <div class="fd-rule-thick"></div>
 
     {/* --- BLOG --- */}
-    <section class="px-6 lg:px-12 py-10 lg:py-14">
+    <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
       <div class="flex items-center justify-between mb-6">
         <span class="fd-label">RECENT WRITING</span>
         <a href="/blog" class="fd-label hover:text-[var(--fd-accent)]" style="transition: color 0.15s;">VIEW ALL &rarr;</a>
@@ -471,21 +185,19 @@ const services = (await getCollection("services")).map((s) => ({
         {latestPosts.map((post) => (
           <a href={`/blog/${post.id}/`} class="fd-post">
             <div class="min-w-0">
-              <div class="flex items-baseline gap-3">
-                <span class="fd-post-title text-base lg:text-lg font-bold tracking-tight">{post.data.title}</span>
-              </div>
-              <p class="text-sm mt-1 hidden md:block" style="color: var(--fd-muted);">{post.data.description}</p>
-              <div class="flex gap-2 mt-2">
+              <span class="fd-post-title">{post.data.title}</span>
+              <p class="fd-post-desc hidden md:block">{post.data.description}</p>
+              <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
                 {post.data.tags.map((tag: string) => (
-                  <span class="fd-tag">{tag}</span>
+                  <span class="fd-tag fd-tag-sm">{tag}</span>
                 ))}
               </div>
             </div>
-            <div class="flex flex-col items-end gap-1 flex-shrink-0 pt-1">
-              <span class="fd-mono text-xs" style="color: var(--fd-muted);">
+            <div class="flex flex-col items-end gap-0.5 flex-shrink-0 pt-1">
+              <span class="fd-post-date">
                 {new Date(post.data.publishedAt).toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}
               </span>
-              <span class="fd-mono text-xs" style="color: var(--fd-muted); opacity: 0.6;">
+              <span class="fd-post-date" style="opacity: 0.5;">
                 {new Date(post.data.publishedAt).getFullYear()}
               </span>
             </div>
@@ -497,7 +209,7 @@ const services = (await getCollection("services")).map((s) => ({
     <div class="fd-rule-thick"></div>
 
     {/* --- PROJECT --- */}
-    <section class="px-6 lg:px-12 py-10 lg:py-14">
+    <section class="px-4 sm:px-6 lg:px-12 py-10 lg:py-14">
       <span class="fd-label block mb-6">CURRENT PROJECT</span>
       {currentProject && (
         <div class="fd-project-stripe overflow-hidden">
@@ -505,17 +217,17 @@ const services = (await getCollection("services")).map((s) => ({
             <div class="lg:col-span-2 aspect-video lg:aspect-auto overflow-hidden">
               <img src={currentProject.data.src} alt={currentProject.data.title} class="w-full h-full object-cover" />
             </div>
-            <div class="lg:col-span-3 p-6 lg:p-8 flex flex-col justify-between">
+            <div class="lg:col-span-3 p-5 lg:p-8 flex flex-col justify-between min-w-0">
               <div>
-                <h3 class="text-xl lg:text-3xl font-black tracking-tight uppercase mb-3">{currentProject.data.title}</h3>
-                <p class="text-sm lg:text-base mb-4" style="color: var(--fd-muted);">{currentProject.data.description}</p>
+                <h3 class="fd-project-title">{currentProject.data.title}</h3>
+                <p class="fd-body-text mb-4">{currentProject.data.description}</p>
                 <div class="flex flex-wrap gap-2 mb-6">
                   {currentProject.data.tags.map((tag: string) => (
                     <span class="fd-tag">{tag}</span>
                   ))}
                 </div>
               </div>
-              <div class="flex gap-4">
+              <div class="flex flex-wrap gap-4">
                 <a href={currentProject.data.source} class="fd-btn" target="_blank" rel="noopener noreferrer">SOURCE</a>
                 <a href={currentProject.data.live} class="fd-btn" target="_blank" rel="noopener noreferrer">LIVE</a>
               </div>
@@ -525,12 +237,10 @@ const services = (await getCollection("services")).map((s) => ({
       )}
     </section>
 
-    <div class="fd-rule-thick"></div>
-
     {/* --- FOOTER --- */}
-    <footer class="px-6 lg:px-12 py-5 flex items-center justify-between mt-auto">
-      <span class="fd-mono text-xs" style="color: var(--fd-muted);">&copy; {new Date().getFullYear()} SAKETH THOTA</span>
-      <span class="fd-mono text-xs" style="color: var(--fd-muted);">CHICAGO, IL</span>
+    <footer class="px-4 sm:px-6 lg:px-12 py-5 flex items-center justify-between mt-auto" style="border-top: 2px solid var(--fd-accent);">
+      <span class="fd-footer">&copy; {new Date().getFullYear()} Saketh Thota</span>
+      <span class="fd-footer">Chicago, IL</span>
     </footer>
 
   </body>

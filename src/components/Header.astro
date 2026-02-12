@@ -3,25 +3,13 @@ import { ModeToggle } from '@/components/ModeToggle';
 import { MobileNav } from '@/components/MobileNav';
 import { DesktopSearch } from '@/components/DesktopSearch';
 import { DesktopNav } from '@/components/DesktopNav';
-import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 import { getCollection } from 'astro:content';
 
 const menuItems = [
-  {
-    title: "tutoring",
-    path: "/tutoring"
-  },
-  { title: "resume",
-    path: "/resume"
-  },
-  {
-    title: "projects",
-    path: "/projects"
-  },
-  {
-    title: "blog",
-    path: "/blog"
-  },
+  { title: "Tutoring", path: "/tutoring" },
+  { title: "Resume", path: "/resume" },
+  { title: "Projects", path: "/projects" },
+  { title: "Blog", path: "/blog" },
 ]
 
 const pathname = Astro.url.pathname;
@@ -54,37 +42,27 @@ const services = (await getCollection('services'))
     Details: s.data.properties.Details,
   }));
 ---
-<header class="mb-10 tracking-tight">
-  <div class="lg:sticky lg:top-8 lg:py-4 lg:backdrop-blur-sm lg:bg-background/80">
-    <!-- Mobile header row -->
-    <div class="flex flex-row items-center justify-between lg:hidden">
-      <a href="/" class="hover:text-accent-foreground transition-colors">
-        <span class="font-semibold text-2xl">Saketh Thota</span>
-      </a>
-      <div class="flex gap-2 items-center">
+<header class="mb-10">
+  <div class="flex items-center justify-between py-5">
+    {/* Logo */}
+    <a href="/" class="fd-logo">Saketh Thota</a>
+
+    {/* Desktop: nav links + search + mode toggle + github */}
+    <div class="hidden lg:flex items-baseline gap-6">
+      <DesktopNav client:load items={menuItems} pathname={pathname} />
+      <div class="flex items-baseline gap-3">
+        <DesktopSearch client:load projects={projects} posts={posts} services={services} />
         <ModeToggle client:load />
-        <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 rounded-md hover:bg-accent transition-colors">
-          <OpenInNewWindowIcon className="h-5 w-5"/>
-        </a>
-        <MobileNav client:load projects={projects} posts={posts} services={services} />
+        <a href="https://github.com/sakeththota/skth" class="fd-text-icon" style="font-size: 0.875rem;" target="_blank" rel="noopener noreferrer">&#x2197;</a>
       </div>
     </div>
 
-    <!-- Desktop nav -->
-    <nav class="hidden lg:flex lg:items-center lg:justify-between">
-      <a href="/" class="text-xl font-semibold inline-flex items-center h-9 hover:text-accent-foreground transition-colors">
-        Saketh Thota
-      </a>
-      <div class="flex items-center gap-8">
-        <DesktopNav client:load items={menuItems} pathname={pathname} />
-        <div class="flex items-center gap-1">
-          <DesktopSearch client:load projects={projects} posts={posts} services={services} />
-          <ModeToggle client:load />
-          <a href="https://github.com/sakeththota/skth" class="inline-flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground transition-colors">
-            <OpenInNewWindowIcon className="h-4 w-4"/>
-          </a>
-        </div>
-      </div>
-    </nav>
+    {/* Mobile: mode toggle + github + hamburger */}
+    <div class="flex lg:hidden items-center gap-3">
+      <ModeToggle client:load />
+      <a href="https://github.com/sakeththota/skth" class="fd-text-icon" style="font-size: 0.875rem;" target="_blank" rel="noopener noreferrer">&#x2197;</a>
+      <MobileNav client:load projects={projects} posts={posts} services={services} />
+    </div>
   </div>
+  <div class="fd-rule-thick"></div>
 </header>

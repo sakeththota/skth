@@ -9,7 +9,7 @@ const pageTitle = 'Blog';
 const posts = await getCollection('blog', ({ data }) => !data.hidden);
 ---
 <BaseLayout {pageTitle}>
-  <h1 class="pb-8 scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Posts</h1>
+  <h1 class="fd-page-heading">Posts</h1>
     <section class="flex flex-col gap-4">
       {posts.sort((a, b) => a.data.idx - b.data.idx).reverse().map((post) => <Post url=`/blog/${post.id}/` {...post.data} />)}
     </section>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,6 +26,15 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+
+    /* Swiss design system (fd-*) */
+    --fd-accent: #C2410C;
+    --fd-bg: #FAFAF9;
+    --fd-fg: #0C0A09;
+    --fd-muted: #57534E;
+    --fd-border: #0C0A09;
+    --fd-surface: #F5F5F4;
+    --fd-border-light: #C8C4BF;
   }
 
   .dark {
@@ -46,6 +57,15 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+
+    /* Swiss design system (fd-*) */
+    --fd-accent: #F59E0B;
+    --fd-bg: #0C0A09;
+    --fd-fg: #FAFAF9;
+    --fd-muted: #A8A29E;
+    --fd-border: #FAFAF9;
+    --fd-surface: #1C1917;
+    --fd-border-light: #3D3835;
   }
 }
 
@@ -61,3 +81,778 @@
   }
 }
 
+/* ==========================================================================
+   Swiss / International Typographic Style — fd-* design system
+   ========================================================================== */
+
+/* Ensure buttons/inputs inside fd-body inherit font instead of browser defaults */
+.fd-body button,
+.fd-body input {
+  font-family: inherit;
+}
+
+.fd-body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--fd-bg);
+  color: var(--fd-fg);
+}
+.fd-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Logo */
+.fd-logo {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--fd-fg);
+  text-decoration: none;
+}
+
+/* Hero name */
+.fd-hero {
+  font-size: clamp(2.5rem, 11vw, 9rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.fd-rule-thick { height: 3px; background-color: var(--fd-fg); }
+
+/* Navigation links (desktop redesign-style) */
+.fd-nav {
+  position: relative;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fd-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.fd-nav:hover { color: var(--fd-fg); }
+.fd-nav::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background-color: var(--fd-accent);
+  transition: width 0.2s ease;
+}
+.fd-nav:hover::after { width: 100%; }
+/* Disable per-link underline when a shared sliding underline is used */
+.fd-nav--no-underline::after { display: none; }
+
+/* Labels */
+.fd-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fd-muted);
+}
+
+/* Blog post rows */
+.fd-post {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--fd-border-light);
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left 0.15s ease;
+}
+@media (min-width: 640px) {
+  .fd-post { gap: 1rem; }
+}
+.fd-post:first-child { border-top: 1px solid var(--fd-border-light); }
+.fd-post:hover { padding-left: 0.75rem; }
+.fd-post:hover .fd-post-title { color: var(--fd-accent); }
+.fd-post-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .fd-post-title {
+    font-size: 1rem;
+    white-space: normal;
+    overflow: visible;
+  }
+}
+@media (min-width: 1024px) {
+  .fd-post-title { font-size: 1.125rem; }
+}
+.fd-post-desc {
+  font-size: 0.875rem;
+  color: var(--fd-muted);
+  margin-top: 0.25rem;
+}
+.fd-post-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+  text-align: right;
+}
+
+/* Tags */
+.fd-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  background-color: var(--fd-surface);
+  color: var(--fd-muted);
+  border: 1px solid var(--fd-border-light);
+}
+@media (max-width: 639px) {
+  .fd-tag-sm {
+    font-size: 0.5rem;
+    padding: 1px 5px;
+    letter-spacing: 0.08em;
+  }
+}
+
+/* Buttons */
+.fd-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.875rem;
+  border: 2px solid var(--fd-fg);
+  background: transparent;
+  color: var(--fd-fg);
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+@media (min-width: 640px) {
+  .fd-btn {
+    font-size: 0.6875rem;
+    padding: 0.5rem 1.25rem;
+  }
+}
+.fd-btn:hover {
+  background: var(--fd-accent);
+  border-color: var(--fd-accent);
+  color: #0C0A09;
+}
+
+/* Project stripe card */
+.fd-project-stripe {
+  border-top: 4px solid var(--fd-accent);
+  border-left: 1px solid var(--fd-border-light);
+  border-right: 1px solid var(--fd-border-light);
+  border-bottom: 1px solid var(--fd-border-light);
+}
+
+/* Right panel: typographic profile */
+.fd-typo-role {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+.fd-typo-company {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+  margin-top: 0.5rem;
+}
+.fd-company-logo {
+  display: inline-block;
+  height: 1.5em;
+  width: 1.5em;
+  padding: 1px;
+  margin-right: 0.25rem;
+  background-color: var(--fd-fg);
+  position: relative;
+  flex-shrink: 0;
+}
+.fd-company-logo::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--fd-bg);
+  -webkit-mask-image: url('/the-home-depot.svg'), linear-gradient(#fff, #fff);
+  mask-image: url('/the-home-depot.svg'), linear-gradient(#fff, #fff);
+  -webkit-mask-size: contain, cover;
+  mask-size: contain, cover;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.fd-typo-focus {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fd-accent);
+  margin-top: 0.5rem;
+}
+
+/* Social row */
+.fd-social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.75rem;
+}
+@media (min-width: 1024px) {
+  .fd-social-row { gap: 0.25rem 0.875rem; }
+}
+.fd-social-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--fd-fg);
+  text-decoration: none;
+  padding-bottom: 1px;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.fd-social-link:hover {
+  border-bottom-color: var(--fd-accent);
+  color: var(--fd-accent);
+}
+
+.fd-avail-text {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--fd-muted);
+  margin-top: 0.5rem;
+}
+.fd-typo-cta {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fd-fg);
+  text-decoration: none;
+  margin-top: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border: 2px solid var(--fd-fg);
+  transition: all 0.15s ease;
+}
+.fd-typo-cta:hover {
+  background: var(--fd-accent);
+  border-color: var(--fd-accent);
+  color: #0C0A09;
+}
+
+/* Scale up profile section on ultrawide / large desktop */
+@media (min-width: 1536px) {
+  .fd-typo-company { font-size: 1.0625rem; }
+  .fd-typo-focus { font-size: 0.9375rem; }
+  .fd-social-link { font-size: 0.875rem; }
+  .fd-avail-text { font-size: 0.9375rem; }
+  .fd-typo-cta { font-size: 0.8125rem; padding: 0.4rem 0.875rem; }
+}
+
+/* Spotify now-playing widget */
+.fd-np {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.875rem;
+  padding: 0.5rem 0;
+  border-top: 2px solid var(--fd-accent);
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.15s ease;
+}
+.fd-np:hover { opacity: 0.8; }
+.fd-np-art {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.fd-np-info { min-width: 0; flex: 1; }
+.fd-np-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.25rem;
+}
+.fd-np-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--fd-accent);
+  border-radius: 50%;
+  animation: fd-pulse 2s ease-in-out infinite;
+}
+@keyframes fd-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.fd-np-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+.fd-np:hover .fd-np-title { color: var(--fd-accent); }
+.fd-np-artist {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  color: var(--fd-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Body text (bio, descriptions) */
+.fd-body-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--fd-muted);
+}
+@media (min-width: 1024px) {
+  .fd-body-text { font-size: 1rem; line-height: 1.7; }
+}
+
+/* Project card title */
+.fd-project-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+@media (min-width: 640px) {
+  .fd-project-title { font-size: 1.25rem; }
+}
+@media (min-width: 1024px) {
+  .fd-project-title { font-size: 1.875rem; }
+}
+
+/* Search/nav result rows */
+.fd-result {
+  display: block;
+  padding: 0.75rem 0.75rem;
+  border-bottom: 1px solid var(--fd-border-light);
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left 0.15s ease;
+}
+.fd-result:hover { padding-left: 1rem; }
+.fd-result:hover .fd-result-title { color: var(--fd-accent); }
+.fd-result-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+}
+.fd-result-desc {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: var(--fd-muted);
+  margin-top: 0.125rem;
+  line-height: 1.5;
+}
+.fd-result-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  color: var(--fd-muted);
+}
+
+/* Mono text button (used for icon replacements) */
+.fd-text-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fd-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  height: 1.5rem;
+  transition: color 0.15s ease;
+}
+.fd-text-icon:hover { color: var(--fd-accent); }
+
+/* Collapsible toggle indicator */
+.fd-toggle-indicator {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--fd-muted);
+  transition: color 0.15s ease;
+  user-select: none;
+}
+
+/* Meta link row (replaces icon rows in search results) */
+.fd-meta-links {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.375rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Sub-page typography & layout
+   ========================================================================== */
+
+/* Page heading (used on blog, projects, resume, tutoring list pages) */
+.fd-page-heading {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+}
+
+/* Sub-heading (resume companies, education institutions) */
+.fd-sub-heading {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+@media (min-width: 640px) {
+  .fd-sub-heading { font-size: 1.25rem; }
+}
+
+/* Resume entry: role title + date row */
+.fd-resume-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+}
+.fd-resume-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+  white-space: nowrap;
+}
+
+/* Resume bullet points */
+.fd-resume-bullet {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--fd-fg);
+}
+@media (min-width: 1024px) {
+  .fd-resume-bullet { font-size: 0.875rem; }
+}
+
+/* Resume section divider (thick rule between Experience / Education) */
+.fd-section-rule {
+  height: 2px;
+  background-color: var(--fd-border-light);
+  margin: 2rem 0;
+}
+
+/* Testimonial card */
+.fd-testimonial {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 2px solid var(--fd-border-light);
+}
+.fd-testimonial-name {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.fd-testimonial-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+}
+.fd-testimonial-quote {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--fd-muted);
+}
+
+/* Service carousel card */
+.fd-service-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding: 1.25rem 1.5rem;
+  border: 2px solid var(--fd-border-light);
+  border-top: 3px solid var(--fd-accent);
+}
+.fd-service-name {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+@media (min-width: 768px) {
+  .fd-service-name { font-size: 1.125rem; }
+}
+.fd-service-details {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+.fd-service-desc {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--fd-muted);
+}
+@media (min-width: 768px) {
+  .fd-service-desc { font-size: 0.875rem; }
+}
+
+/* Form elements */
+.fd-form-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fd-muted);
+}
+.fd-form-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  border: 2px solid var(--fd-border-light);
+  background: transparent;
+  color: var(--fd-fg);
+  width: 100%;
+  transition: border-color 0.15s ease;
+}
+.fd-form-input:focus {
+  outline: none;
+  border-color: var(--fd-accent);
+}
+.fd-form-input::placeholder {
+  color: var(--fd-muted);
+  opacity: 0.6;
+}
+textarea.fd-form-input {
+  min-height: 8rem;
+  resize: vertical;
+}
+.fd-form-error {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #DC2626;
+  margin-top: 0.25rem;
+}
+
+/* Markdown/prose page (blog posts) */
+.fd-prose {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--fd-fg);
+  max-width: none;
+}
+.fd-prose h2 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 1024px) {
+  .fd-prose h2 { font-size: 1.5rem; }
+}
+.fd-prose h3 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+@media (min-width: 1024px) {
+  .fd-prose h3 { font-size: 1.25rem; }
+}
+.fd-prose p {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+}
+@media (min-width: 1024px) {
+  .fd-prose p { font-size: 1rem; }
+}
+.fd-prose li {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+@media (min-width: 1024px) {
+  .fd-prose li { font-size: 1rem; }
+}
+.fd-prose ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1.25rem;
+  list-style-type: disc;
+}
+.fd-prose ol {
+  padding-left: 1.25rem;
+  margin-bottom: 1.25rem;
+  list-style-type: decimal;
+}
+.fd-prose a {
+  color: var(--fd-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.fd-prose a:hover {
+  color: var(--fd-fg);
+}
+.fd-prose blockquote {
+  border-left: 3px solid var(--fd-accent);
+  padding-left: 1rem;
+  color: var(--fd-muted);
+  font-style: italic;
+  margin: 1.5rem 0;
+}
+.fd-prose code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  background: var(--fd-surface);
+  padding: 0.125rem 0.375rem;
+}
+.fd-prose pre {
+  margin: 1.5rem 0;
+}
+.fd-prose pre code {
+  background: none;
+  padding: 0;
+}
+.fd-prose img {
+  max-width: 100%;
+  margin: 1.5rem 0;
+}
+.fd-prose hr {
+  height: 2px;
+  background-color: var(--fd-border-light);
+  border: none;
+  margin: 2rem 0;
+}
+
+/* Blog post header (MarkdownLayout) */
+.fd-post-header {
+  border-bottom: 3px solid var(--fd-fg);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+.fd-post-header-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1.375rem, 3.5vw, 2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+.fd-post-header-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+}
+
+/* Contact info (tutoring page) */
+.fd-contact-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--fd-fg);
+}
+.fd-contact-detail {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--fd-muted);
+}
+
+/* Headshot (square, no border-radius) */
+.fd-headshot {
+  width: 8rem;
+  height: 8rem;
+  object-fit: cover;
+  border: 2px solid var(--fd-border-light);
+}
+@media (min-width: 768px) {
+  .fd-headshot { width: 10rem; height: 10rem; }
+}
+
+/* Footer */
+.fd-footer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fd-muted);
+}

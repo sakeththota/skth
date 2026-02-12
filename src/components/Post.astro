@@ -1,21 +1,27 @@
 ---
-import { CalendarIcon } from '@radix-ui/react-icons';
-import { Badge } from '@/components/ui/badge';
 const { url, title, description, publishedAt, tags, draft} = Astro.props
 ---
 
-<a href={url} id="link" class="cursor-pointer">
-  <div class="flex flex-col justify-start w-full px-4 py-2 border-[1px] rounded-md md:hover:bg-accent">
-    <h4 class="scroll-m-20 text-lg lg:text-xl font-semibold tracking-tight">{title}</h4>
-    <p class="text-sm lg:text-base font-medium">{description}</p>
-    <div class="flex items-center pt-2 gap-2">
-      <CalendarIcon className="h-4 w-4 sm:h-6 sm:w-6 opacity-70" />
-      <span class="text-sm sm:text-md temd-muted-foreground">{draft ? "Coming Soon" : (new Date(publishedAt)).toLocaleDateString('en-us')}</span>
-      <div class="flex gap-2 invisible sm:visible">
-        {tags.map((tag: string) => <Badge className="lg:text-sm" variant="outline">{tag}</Badge>)}
-      </div>
+<a href={url} class="fd-post">
+  <div class="min-w-0">
+    <span class="fd-post-title">{title}</span>
+    <p class="fd-post-desc hidden md:block">{description}</p>
+    <div class="flex gap-2 mt-2">
+      {tags.map((tag: string) => <span class="fd-tag">{tag}</span>)}
     </div>
   </div>
+  <div class="flex flex-col items-end gap-0.5 flex-shrink-0 pt-1">
+    {draft ? (
+      <span class="fd-post-date">Coming Soon</span>
+    ) : (
+      <>
+        <span class="fd-post-date">
+          {new Date(publishedAt).toLocaleDateString('en-us', { month: 'short', day: 'numeric' })}
+        </span>
+        <span class="fd-post-date" style="opacity: 0.5;">
+          {new Date(publishedAt).getFullYear()}
+        </span>
+      </>
+    )}
+  </div>
 </a>
-
-

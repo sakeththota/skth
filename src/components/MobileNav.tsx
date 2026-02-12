@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Menu, Search, ChevronDown } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -11,14 +10,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  CalendarIcon,
-  GitHubLogoIcon,
-  OpenInNewWindowIcon,
-} from "@radix-ui/react-icons";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 interface ProjectItem {
@@ -101,75 +92,98 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden">
-          <Menu
-            className={`h-6 w-6 transition-transform duration-200 ${open ? "rotate-90" : "rotate-0"}`}
-          />
+        <button
+          className="fd-text-icon lg:hidden"
+          style={{
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            padding: 0,
+          }}
+        >
+          {open ? "\u00D7" : "MENU"}
           <span className="sr-only">Toggle menu</span>
-        </Button>
+        </button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-3/4 pt-12 pb-8 overflow-y-auto" onOpenAutoFocus={(e) => e.preventDefault()}>
+      <SheetContent
+        side="left"
+        className="fd-body w-3/4 pt-12 pb-8 overflow-y-auto !rounded-none"
+        style={{
+          borderRight: "3px solid var(--fd-fg)",
+        }}
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <VisuallyHidden.Root>
           <SheetTitle>Navigation</SheetTitle>
         </VisuallyHidden.Root>
-        <nav className="flex flex-col gap-3">
+        <nav className="flex flex-col gap-4">
+          {/* Logo */}
           <a
             href="/"
-            className="text-xl font-semibold hover:text-accent-foreground transition-colors"
+            className="fd-logo transition-colors"
             onClick={() => setOpen(false)}
           >
             Saketh Thota
           </a>
+
+          {/* Search input */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
+            <input
+              placeholder="SEARCH..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="pl-9"
+            className="fd-label h-9 w-full pl-3 pr-8 uppercase outline-none"
+            style={{
+              backgroundColor: "var(--fd-surface)",
+              color: "var(--fd-fg)",
+              border: "2px solid var(--fd-border)",
+              borderRadius: 0,
+            }}
             />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 fd-text-icon"
+                style={{ fontSize: "0.625rem", letterSpacing: "0" }}
+              >
+                &times;
+              </button>
+            )}
           </div>
+
+          {/* Divider */}
+          <div style={{ height: "2px", backgroundColor: "var(--fd-fg)" }} />
 
           {/* Tutoring -- collapsible with service cards */}
           {showTutoring && (
             <Collapsible open={tutoringOpen} onOpenChange={setTutoringOpen}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between text-base font-medium hover:text-accent-foreground transition-colors group">
+              <CollapsibleTrigger className="flex w-full items-center justify-between group">
                 <a
                   href="/tutoring"
                   onClick={() => setOpen(false)}
-                  className="hover:text-accent-foreground"
+                  className="fd-nav"
                 >
-                  tutoring
+                  Tutoring
                 </a>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                <span className="fd-toggle-indicator">
+                  {tutoringOpen ? "\u2212" : "+"}
+                </span>
               </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2 flex flex-col gap-2">
+              <CollapsibleContent className="flex flex-col gap-0">
                 {(q ? filteredServices : services).map((service) => (
                   <a
                     key={service.Name}
                     href="/tutoring#contact"
-                    className="block py-2 px-3 border-[1px] rounded-md hover:bg-accent transition-colors"
+                    className="fd-result"
                     onClick={() => setOpen(false)}
                   >
-                    <h4 className="scroll-m-20 text-sm font-semibold tracking-tight">
-                      {service.Name}
-                    </h4>
-                    <h3 className="scroll-m-20 text-xs font-semibold tracking-tight text-muted-foreground">
-                      {service.Details}
-                    </h3>
-                    <p className="text-xs mt-1 line-clamp-2">
-                      {service.Description}
-                    </p>
+                    <p className="fd-result-title">{service.Name}</p>
+                    <p className="fd-result-meta">{service.Details}</p>
+                    <p className="fd-result-desc line-clamp-2">{service.Description}</p>
                     <div className="flex gap-1.5 mt-1.5 flex-wrap">
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                        in-person
-                      </Badge>
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                        hybrid
-                      </Badge>
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                        online
-                      </Badge>
+                      <span className="fd-tag">in-person</span>
+                      <span className="fd-tag">hybrid</span>
+                      <span className="fd-tag">online</span>
                     </div>
                   </a>
                 ))}
@@ -177,56 +191,50 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
             </Collapsible>
           )}
 
-          {/* Resume -- plain link */}
+          {/* Resume -- plain link (padded to match collapsible trigger height) */}
           {showResume && (
-            <a
-              href="/resume"
-              className="text-base font-medium hover:text-accent-foreground transition-colors"
-              onClick={() => setOpen(false)}
-            >
-              resume
-            </a>
+            <div className="flex w-full items-center">
+              <a
+                href="/resume"
+                className="fd-nav"
+                onClick={() => setOpen(false)}
+              >
+                Resume
+              </a>
+            </div>
           )}
 
           {/* Projects -- collapsible with project cards */}
           {showProjects && (
             <Collapsible open={projectsOpen} onOpenChange={setProjectsOpen}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between text-base font-medium hover:text-accent-foreground transition-colors group">
+              <CollapsibleTrigger className="flex w-full items-center justify-between group">
                 <a
                   href="/projects"
                   onClick={() => setOpen(false)}
-                  className="hover:text-accent-foreground"
+                  className="fd-nav"
                 >
-                  projects
+                  Projects
                 </a>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                <span className="fd-toggle-indicator">
+                  {projectsOpen ? "\u2212" : "+"}
+                </span>
               </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2 flex flex-col gap-2">
+              <CollapsibleContent className="flex flex-col gap-0">
                 {(q ? filteredProjects : projects).map((project) => (
                   <a
                     key={project.title}
                     href="/projects"
-                    className="block py-2 px-3 border-[1px] rounded-md hover:bg-accent transition-colors"
+                    className="fd-result"
                     onClick={() => setOpen(false)}
                   >
-                    <h4 className="scroll-m-20 text-sm font-semibold tracking-tight">
-                      {project.title}
-                    </h4>
-                    <p className="text-xs font-medium mt-0.5 line-clamp-2">
-                      {project.description}
-                    </p>
-                    <div className="flex items-center pt-1.5 gap-2">
-                      <GitHubLogoIcon className="h-4 w-4 opacity-70" />
-                      <OpenInNewWindowIcon className="h-4 w-4 opacity-70" />
+                    <p className="fd-result-title">{project.title}</p>
+                    <p className="fd-result-desc line-clamp-2">{project.description}</p>
+                    <div className="fd-meta-links">
+                      <span className="fd-text-icon">SRC</span>
+                      <span className="fd-text-icon">LIVE</span>
                       <div className="flex gap-1.5 flex-wrap">
                         {project.tags.map((tag) => (
-                          <Badge
-                            key={tag}
-                            variant="outline"
-                            className="text-[10px] px-1.5 py-0"
-                          >
-                            {tag}
-                          </Badge>
+                          <span key={tag} className="fd-tag">{tag}</span>
                         ))}
                       </div>
                     </div>
@@ -239,44 +247,35 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           {/* Blog -- collapsible with post cards */}
           {showBlog && (
             <Collapsible open={blogOpen} onOpenChange={setBlogOpen}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between text-base font-medium hover:text-accent-foreground transition-colors group">
+              <CollapsibleTrigger className="flex w-full items-center justify-between group">
                 <a
                   href="/blog"
                   onClick={() => setOpen(false)}
-                  className="hover:text-accent-foreground"
+                  className="fd-nav"
                 >
-                  blog
+                  Blog
                 </a>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                <span className="fd-toggle-indicator">
+                  {blogOpen ? "\u2212" : "+"}
+                </span>
               </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2 flex flex-col gap-2">
+              <CollapsibleContent className="flex flex-col gap-0">
                 {(q ? filteredPosts : posts).map((post) => (
                   <a
                     key={post.url}
                     href={post.url}
-                    className="block rounded-md border-[1px] py-2 px-3 hover:bg-accent transition-colors"
+                    className="fd-result"
                     onClick={() => setOpen(false)}
                   >
-                    <h4 className="scroll-m-20 text-sm font-semibold tracking-tight">
-                      {post.title}
-                    </h4>
-                    <p className="text-xs font-medium mt-0.5 line-clamp-2">
-                      {post.description}
-                    </p>
-                    <div className="flex items-center pt-1.5 gap-2">
-                      <CalendarIcon className="h-3 w-3 opacity-70" />
-                      <span className="text-[10px] text-muted-foreground">
-                        {new Date(post.publishedAt).toLocaleDateString("en-us")}
+                    <p className="fd-result-title">{post.title}</p>
+                    <p className="fd-result-desc line-clamp-2">{post.description}</p>
+                    <div className="fd-meta-links">
+                      <span className="fd-result-meta">
+                        {new Date(post.publishedAt).toLocaleDateString("en-us", { month: "short", day: "numeric" })}
                       </span>
                       <div className="flex gap-1.5 flex-wrap">
                         {post.tags.map((tag) => (
-                          <Badge
-                            key={tag}
-                            variant="outline"
-                            className="text-[10px] px-1.5 py-0"
-                          >
-                            {tag}
-                          </Badge>
+                          <span key={tag} className="fd-tag">{tag}</span>
                         ))}
                       </div>
                     </div>
@@ -287,7 +286,9 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
           )}
 
           {!hasResults && (
-            <p className="text-muted-foreground text-sm">No results</p>
+            <p className="fd-result-meta py-4 text-center uppercase" style={{ letterSpacing: "0.1em" }}>
+              No results
+            </p>
           )}
         </nav>
       </SheetContent>

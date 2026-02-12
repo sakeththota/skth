@@ -1,19 +1,18 @@
 ---
 import { Image } from 'astro:assets';
-import { Badge } from '@/components/ui/badge';
-import { GitHubLogoIcon, OpenInNewWindowIcon } from '@radix-ui/react-icons';
 const { src, title, description, source, live, tags} = Astro.props
 ---
-<div class="flex flex-col justify-start p-2 border-[1px] rounded-md w-full md:hover:bg-accent">
-  <Image {src} alt="" class="rounded-md" width="1400" height="1024"/>
-  <div class="px-2">
-  <h4 class="scroll-m-20 text-lg mt-2 lg:text-xl font-semibold tracking-tight">{title}</h4>
-  <p class="text-sm lg:text-base font-medium">{description}</p>
-  <div class="flex items-center pt-2 gap-2">
-    <a href={source}><GitHubLogoIcon className="h-6 w-6 opacity-70 z-10" /></a>
-    <a href={live}><OpenInNewWindowIcon className="h-6 w-6 opacity-70 z-11" /></a>
-    <div class="flex gap-2">
-      {tags.map((tag: string) => <Badge className="lg:text-sm" variant="outline">{tag}</Badge>)}
+<div class="fd-project-stripe overflow-hidden">
+  <Image {src} alt="" class="w-full aspect-video object-cover" width="1400" height="1024"/>
+  <div class="p-4 lg:p-5 flex flex-col">
+    <h4 class="fd-project-title" style="margin-bottom: 0.25rem;">{title}</h4>
+    <p class="fd-body-text mb-3">{description}</p>
+    <div class="flex flex-wrap gap-2 mb-4">
+      {tags.map((tag: string) => <span class="fd-tag">{tag}</span>)}
+    </div>
+    <div class="flex items-center gap-4">
+      <a href={source} class="fd-social-link" target="_blank" rel="noopener noreferrer">Source ↗</a>
+      <a href={live} class="fd-social-link" target="_blank" rel="noopener noreferrer">Live ↗</a>
     </div>
   </div>
 </div>
