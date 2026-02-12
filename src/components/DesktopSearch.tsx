@@ -72,8 +72,8 @@ export function DesktopSearch({
   const showTutoring = q && filteredServices.length > 0;
   const showProjects = q && filteredProjects.length > 0;
   const showBlog = q && filteredPosts.length > 0;
-  const showCv = q && "cv".includes(q);
-  const hasResults = showTutoring || showProjects || showBlog || showCv;
+  const showResume = q && "resume".includes(q);
+  const hasResults = showTutoring || showProjects || showBlog || showResume;
 
   // Close on click outside
   React.useEffect(() => {
@@ -186,17 +186,17 @@ export function DesktopSearch({
             </div>
           )}
 
-          {/* CV result */}
-          {showCv && (
+          {/* Resume result */}
+          {showResume && (
             <div className="mb-2">
               <p className="text-xs font-medium text-muted-foreground px-2 py-1.5 uppercase tracking-wider">
                 Pages
               </p>
               <a
-                href="/cv"
+                href="/resume"
                 className="block rounded-md px-2 py-2 hover:bg-accent transition-colors"
               >
-                <p className="text-sm font-medium">CV</p>
+                <p className="text-sm font-medium">Resume</p>
                 <p className="text-xs text-muted-foreground">
                   View resume and experience
                 </p>

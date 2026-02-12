@@ -1,5 +1,5 @@
 ---
-id: 1
+id: 4
 title: "Gzip and k-NN for Text Classification"
 description: "Implmentation of https://arxiv.org/abs/2212.09410"
 source: "https://github.com/sakeththota/gzip-text-classification"

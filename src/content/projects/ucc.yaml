@@ -1,8 +1,9 @@
 ---
-id: 3
+id: 2
 title: "ucc" 
 description: "Compiler for uC, a small language in the C family" 
 source: "https://github.com/sakeththota/ucc" 
 live: "https://eecs390.github.io/uc-language/"
 src: "https://placehold.co/1440x1024/000000/FFF?text=." 
 tags: ['rust', 'python', 'c++']
+hidden: true

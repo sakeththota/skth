@@ -6,7 +6,7 @@ import { getCollection } from 'astro:content';
 export const prerender = true;
 
 const pageTitle = 'Blog';
-const posts = await getCollection('blog');
+const posts = await getCollection('blog', ({ data }) => !data.hidden);
 ---
 <BaseLayout {pageTitle}>
   <h1 class="pb-8 scroll-m-20 text-2xl lg:text-3xl font-semibold tracking-tight">Posts</h1>

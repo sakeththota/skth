@@ -82,8 +82,8 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
   const showTutoring = !q || filteredServices.length > 0;
   const showProjects = !q || filteredProjects.length > 0;
   const showBlog = !q || filteredPosts.length > 0;
-  const showCv = !q || "cv".includes(q);
-  const hasResults = showCv || showTutoring || showProjects || showBlog;
+  const showResume = !q || "resume".includes(q);
+  const hasResults = showResume || showTutoring || showProjects || showBlog;
 
   // Reactively open/close collapsibles based on search query
   React.useEffect(() => {
@@ -177,14 +177,14 @@ export function MobileNav({ projects, posts, services }: MobileNavProps) {
             </Collapsible>
           )}
 
-          {/* CV -- plain link */}
-          {showCv && (
+          {/* Resume -- plain link */}
+          {showResume && (
             <a
-              href="/cv"
+              href="/resume"
               className="text-base font-medium hover:text-accent-foreground transition-colors"
               onClick={() => setOpen(false)}
             >
-              cv
+              resume
             </a>
           )}
 

@@ -11,8 +11,8 @@ const menuItems = [
     title: "tutoring",
     path: "/tutoring"
   },
-  { title: "cv",
-    path: "/cv"
+  { title: "resume",
+    path: "/resume"
   },
   {
     title: "projects",
@@ -26,8 +26,8 @@ const menuItems = [
 
 const pathname = Astro.url.pathname;
 
-const projects = (await getCollection('projects'))
-  .sort((a, b) => a.data.id - b.data.id)
+const projects = (await getCollection('projects', ({ data }) => !data.hidden))
+  .sort((a, b) => b.data.id - a.data.id)
   .map((p) => ({
     title: p.data.title,
     description: p.data.description,
@@ -36,7 +36,7 @@ const projects = (await getCollection('projects'))
     live: p.data.live,
   }));
 
-const posts = (await getCollection('blog'))
+const posts = (await getCollection('blog', ({ data }) => !data.hidden))
   .sort((a, b) => a.data.idx - b.data.idx)
   .reverse()
   .map((p) => ({

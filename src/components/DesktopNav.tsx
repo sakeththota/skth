@@ -52,23 +52,21 @@ export function DesktopNav({ items, pathname }: DesktopNavProps) {
     const activeIndex = getActiveIndex();
     if (activeIndex === -1) {
       setLineStyle({ opacity: 0 });
-      return;
+    } else if (containerRef.current) {
+      const spans = containerRef.current.querySelectorAll<HTMLSpanElement>("a > span");
+      const span = spans[activeIndex];
+      if (span) {
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const spanRect = span.getBoundingClientRect();
+
+        // No transition on mount — just snap into place
+        setLineStyle({
+          opacity: 1,
+          width: spanRect.width,
+          transform: `translateX(${spanRect.left - containerRect.left}px)`,
+        });
+      }
     }
-
-    if (!containerRef.current) return;
-    const spans = containerRef.current.querySelectorAll<HTMLSpanElement>("a > span");
-    const span = spans[activeIndex];
-    if (!span) return;
-
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const spanRect = span.getBoundingClientRect();
-
-    // No transition on mount — just snap into place
-    setLineStyle({
-      opacity: 1,
-      width: spanRect.width,
-      transform: `translateX(${spanRect.left - containerRect.left}px)`,
-    });
 
     // Enable transitions after mount
     requestAnimationFrame(() => {

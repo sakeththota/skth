@@ -1,5 +1,5 @@
 ---
-import { getEntry, getCollection } from 'astro:content'
+import { getCollection } from 'astro:content'
 import BaseLayout  from '@/layouts/BaseLayout.astro';
 import Post from '@/components/Post.astro';
 import Project from '@/components/Project.astro';
@@ -10,8 +10,9 @@ import { GET } from './api/spotify/now-playing'
 import { NowPlaying} from '@/components/NowPlaying'
 const pageTitle = 'Saketh Thota';
 
-const latestPosts = await getCollection('blog') // blog posts
-const currentProject = await getEntry('projects', 'aoc-24'); // project info
+const latestPosts = await getCollection('blog', ({ data }) => !data.hidden) // blog posts
+const currentProject = (await getCollection('projects', ({ data }) => !data.hidden))
+  .sort((a, b) => b.data.id - a.data.id)[0]; // latest non-hidden project
 const nowPlaying = await (await GET(Astro)).json() // spotify component
 ---
 
@@ -53,7 +54,7 @@ const nowPlaying = await (await GET(Astro)).json() // spotify component
       <div class="flex flex-col gap-4 justify-center">
         { latestPosts.sort((a, b) => {
           return a.data.idx - b.data.idx
-        }).reverse().slice(0,2).map((post) => {
+        }).reverse().slice(0,3).map((post) => {
           return <Post url=`/blog/${post.id}/` {...post.data} />
         })}
       </div>

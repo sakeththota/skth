@@ -1,8 +1,9 @@
 ---
-id: 0
+id: 3
 title: "Advent of Code 2024"
 description: "My solutions for the 2024 Advent of Code problems"
 source: "https://github.com/sakeththota/aoc-24"
 live: "https://adventofcode.com"
 src: "/aocLogo.png"
 tags: ["typescript"]
+hidden: true
