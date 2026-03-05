@@ -1,0 +1,12 @@
+---
+id: 8
+title: "Temporal eCommerce Demo"
+description: "eCommerce demo showcasing temporal workflows and crash recovery"
+source: "https://github.com/sakeththota/temporal-ecommerce-demo"
+live: "https://temporaldemo.skth.dev"
+src: "/temporaldemo1.png"
+images:
+  - "temporaldemo1.png"
+  - "temporaldemo2.png"
+  - "temporaldemo3.png"
+tags: ["temporal", "go", "nextjs"]
