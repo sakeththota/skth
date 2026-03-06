@@ -3,7 +3,7 @@ id: 8
 title: "Temporal eCommerce Demo"
 description: "eCommerce demo showcasing temporal workflows and crash recovery"
 source: "https://github.com/sakeththota/temporal-ecommerce-demo"
-live: "https://temporaldemo.skth.dev"
+live: "https://temporaldemo.skth.dev?utm_source=portfolio"
 src: "/temporaldemo1.png"
 images:
   - "temporaldemo1.png"
