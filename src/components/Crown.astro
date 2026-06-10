@@ -1,0 +1,32 @@
+---
+const { size = 64, class: className = "" } = Astro.props;
+---
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  class={className}
+  aria-hidden="true"
+>
+  <defs>
+    <linearGradient id="crownGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4D27A" />
+      <stop offset="0.55" stop-color="#D9A441" />
+      <stop offset="1" stop-color="#A9781F" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M8 22 L18 34 L32 16 L46 34 L56 22 L52 50 L12 50 Z"
+    fill="url(#crownGold)"
+    stroke="#2C1B0E"
+    stroke-width="2.5"
+    stroke-linejoin="round"
+  />
+  <rect x="11" y="49" width="42" height="7" rx="2" fill="url(#crownGold)" stroke="#2C1B0E" stroke-width="2.5" />
+  <circle cx="8" cy="20" r="4" fill="#C0573A" stroke="#2C1B0E" stroke-width="2" />
+  <circle cx="32" cy="13" r="4.5" fill="#C0573A" stroke="#2C1B0E" stroke-width="2" />
+  <circle cx="56" cy="20" r="4" fill="#C0573A" stroke="#2C1B0E" stroke-width="2" />
+  <circle cx="32" cy="40" r="3" fill="#F7EDD3" stroke="#2C1B0E" stroke-width="1.5" />
+</svg>

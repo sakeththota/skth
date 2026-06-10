@@ -43,15 +43,32 @@ const testimonials = defineCollection({
   }),
 });
 
+const notionServices = notionLoader({
+  auth: import.meta.env.NOTION_INTEGRATION_SECRET,
+  database_id: import.meta.env.NOTION_DATABASE_ID,
+  filter: {
+    property: "active",
+    checkbox: { equals: true },
+  },
+});
+
 const services = defineCollection({
-  loader: notionLoader({
-    auth: import.meta.env.NOTION_INTEGRATION_SECRET,
-    database_id: import.meta.env.NOTION_DATABASE_ID,
-    filter: {
-      property: "active",
-      checkbox: { equals: true },
+  // Degrade gracefully when Notion isn't configured (e.g. local dev without
+  // NOTION_INTEGRATION_SECRET) so the dev server / build doesn't crash.
+  loader: {
+    ...notionServices,
+    load: async (context) => {
+      if (!import.meta.env.NOTION_INTEGRATION_SECRET) {
+        console.warn("[services] NOTION_INTEGRATION_SECRET not set — skipping Notion services collection");
+        return;
+      }
+      try {
+        return await notionServices.load(context);
+      } catch (error) {
+        console.warn(`[services] Notion load failed — skipping: ${error instanceof Error ? error.message : String(error)}`);
+      }
     },
-  }),
+  },
   schema: notionPageSchema({
     properties: z.object({
       Name: transformedPropertySchema.title,
@@ -60,7 +77,12 @@ const services = defineCollection({
       Description: transformedPropertySchema.rich_text,
       Details: transformedPropertySchema.rich_text
     })
+  }).extend({
+    // Notion added icon types (e.g. "custom_emoji") the loader's schema doesn't
+    // know about; accept any icon/cover so a page's icon can't break the build.
+    icon: z.any().nullable(),
+    cover: z.any().nullable(),
   })
-}) 
+})
 
 export const collections = { blog, projects, services, testimonials };

@@ -11,6 +11,11 @@ interface ImportMetaEnv {
   readonly FIREBASE_TOKEN_URI: string;
   readonly FIREBASE_AUTH_CERT_URL: string;
   readonly FIREBASE_CLIENT_CERT_URL: string;
+  readonly RESEND_API_KEY?: string;
+  readonly RESEND_API_TOKEN?: string;
+  // Birthday invite — host RSVP email (optional; defaults baked into notify.ts)
+  readonly RSVP_FROM?: string;
+  readonly RSVP_NOTIFY_TO?: string;
 }
 
 interface ImportMeta {
