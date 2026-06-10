@@ -12,7 +12,7 @@
 import type { Headcount, Rsvp } from "@/lib/rsvpCore";
 
 const FROM = import.meta.env.RSVP_FROM ?? "Saketh's Game Night <rsvp@skth.dev>";
-const TO = (import.meta.env.RSVP_NOTIFY_TO ?? "sakeththota01@gmail.com")
+const TO = (import.meta.env.RSVP_NOTIFY_TO ?? "sakeththota01@gmail.com, annasuleebub@outlook.com")
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
