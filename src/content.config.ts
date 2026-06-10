@@ -77,6 +77,11 @@ const services = defineCollection({
       Description: transformedPropertySchema.rich_text,
       Details: transformedPropertySchema.rich_text
     })
+  }).extend({
+    // Notion added icon types (e.g. "custom_emoji") the loader's schema doesn't
+    // know about; accept any icon/cover so a page's icon can't break the build.
+    icon: z.any().nullable(),
+    cover: z.any().nullable(),
   })
 })
 
