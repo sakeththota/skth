@@ -1,0 +1,127 @@
+---
+// A Catan terrain hex tile: pointy-top hexagon with painted-style terrain art
+// per resource. Children render centered on top (number token / crown).
+interface Props {
+  resource: "brick" | "wood" | "wool" | "wheat" | "ore" | "desert" | "sea";
+  size?: string;
+  class?: string;
+}
+const { resource, size = "6rem", class: className = "" } = Astro.props;
+const uid = "hex-" + Math.random().toString(36).slice(2, 8);
+const PTS = "50,1.5 99,29 99,86 50,113.5 1,86 1,29";
+---
+<div class:list={["hex", className]} style={`--s:${size}`}>
+  <svg viewBox="0 0 100 115" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <clipPath id={uid}><polygon points={PTS} /></clipPath>
+    </defs>
+    <g clip-path={`url(#${uid})`}>
+      {resource === "wheat" && (
+        <>
+          <rect width="100" height="115" fill="#E6B544" />
+          <g stroke="#B5821E" stroke-width="3" stroke-linecap="round">
+            <line x1="22" y1="100" x2="22" y2="52" />
+            <line x1="40" y1="106" x2="40" y2="50" />
+            <line x1="58" y1="106" x2="58" y2="50" />
+            <line x1="78" y1="100" x2="78" y2="54" />
+          </g>
+          <g fill="#C9942A">
+            <ellipse cx="22" cy="48" rx="6" ry="11" />
+            <ellipse cx="40" cy="46" rx="6" ry="11" />
+            <ellipse cx="58" cy="46" rx="6" ry="11" />
+            <ellipse cx="78" cy="50" rx="6" ry="11" />
+          </g>
+        </>
+      )}
+      {resource === "wood" && (
+        <>
+          <rect width="100" height="115" fill="#2F6B3C" />
+          {[
+            { x: 30, b: 84, s: 1.0 },
+            { x: 54, b: 92, s: 1.25 },
+            { x: 73, b: 82, s: 0.9 },
+          ].map((t) => (
+            <g>
+              <rect x={t.x - 2.5} y={t.b - 6} width="5" height="14" fill="#6B4B2A" />
+              <polygon points={`${t.x},${t.b - 48 * t.s} ${t.x - 17 * t.s},${t.b} ${t.x + 17 * t.s},${t.b}`} fill="#234E2B" />
+              <polygon points={`${t.x},${t.b - 36 * t.s} ${t.x - 13 * t.s},${t.b - 6} ${t.x + 13 * t.s},${t.b - 6}`} fill="#3C7E45" />
+            </g>
+          ))}
+        </>
+      )}
+      {resource === "wool" && (
+        <>
+          <rect width="100" height="115" fill="#93BD5B" />
+          <path d="M0 88 Q50 74 100 88 L100 115 L0 115 Z" fill="#84AE4F" />
+          {[
+            { x: 36, y: 66 },
+            { x: 64, y: 84 },
+          ].map((s) => (
+            <g>
+              <ellipse cx={s.x} cy={s.y} rx="13" ry="9" fill="#F4EEDD" />
+              <ellipse cx={s.x - 11} cy={s.y - 3} rx="5" ry="5" fill="#4A4A4A" />
+              <rect x={s.x - 6} y={s.y + 7} width="2.5" height="6" fill="#4A4A4A" />
+              <rect x={s.x + 5} y={s.y + 7} width="2.5" height="6" fill="#4A4A4A" />
+            </g>
+          ))}
+        </>
+      )}
+      {resource === "brick" && (
+        <>
+          <rect width="100" height="115" fill="#B0573A" />
+          <g>
+            <rect x="14" y="42" width="72" height="12" rx="5" fill="#C56B47" />
+            <rect x="9" y="59" width="82" height="12" rx="5" fill="#9C4A2E" />
+            <rect x="16" y="76" width="68" height="12" rx="5" fill="#BE6140" />
+          </g>
+          <g stroke="#8A4026" stroke-width="1.5" opacity="0.6">
+            <line x1="36" y1="42" x2="36" y2="88" />
+            <line x1="62" y1="42" x2="62" y2="88" />
+          </g>
+        </>
+      )}
+      {resource === "ore" && (
+        <>
+          <rect width="100" height="115" fill="#6E7E8C" />
+          <polygon points="48,38 74,88 22,88" fill="#54616E" />
+          <polygon points="48,38 48,88 74,88" fill="#46515C" />
+          <polygon points="48,38 40,56 56,56" fill="#EAF0F4" />
+          <polygon points="16,92 32,60 50,92" fill="#5C6975" />
+          <polygon points="32,60 26,72 38,72" fill="#EAF0F4" />
+        </>
+      )}
+      {resource === "desert" && (
+        <>
+          <rect width="100" height="115" fill="#DAC58C" />
+          <path d="M-5 78 Q28 64 58 78 T120 78" fill="none" stroke="#C9AE73" stroke-width="6" />
+          <path d="M-5 96 Q34 82 70 96 T130 96" fill="none" stroke="#C9AE73" stroke-width="6" />
+          <g fill="#5E7D3E">
+            <rect x="49" y="52" width="7" height="30" rx="3" />
+            <rect x="40" y="60" width="6" height="14" rx="3" />
+            <rect x="40" y="60" width="14" height="6" rx="3" />
+            <rect x="59" y="56" width="6" height="14" rx="3" />
+            <rect x="51" y="56" width="14" height="6" rx="3" />
+          </g>
+        </>
+      )}
+      {resource === "sea" && (
+        <>
+          <rect width="100" height="115" fill="#2C7191" />
+          <g fill="none" stroke="#5A93AC" stroke-width="4" stroke-linecap="round">
+            <path d="M14 46 Q24 38 34 46 T54 46" />
+            <path d="M52 64 Q62 56 72 64 T92 64" />
+            <path d="M20 82 Q30 74 40 82 T60 82" />
+          </g>
+        </>
+      )}
+    </g>
+    <polygon points={PTS} fill="none" stroke="#2C1B0E" stroke-width="3.5" stroke-linejoin="round" />
+    <polygon points={PTS} fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1.2" stroke-linejoin="round" transform="scale(0.93)" transform-origin="center" />
+  </svg>
+  <div class="hex-overlay"><slot /></div>
+</div>
+<style>
+  .hex { position: relative; width: var(--s); aspect-ratio: 1 / 1.1547; }
+  .hex svg { display: block; width: 100%; height: 100%; filter: drop-shadow(0 3px 4px rgba(44, 27, 14, 0.3)); }
+  .hex-overlay { position: absolute; inset: 0; display: grid; place-items: center; }
+</style>

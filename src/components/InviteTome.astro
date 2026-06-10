@@ -1,0 +1,143 @@
+---
+// Design 4 — "Illuminated Manuscript": an open aged tome. Gilt drop-cap, a ribbon
+// bookmark, an illuminated plate of the board, Uncial headings, and a wax-seal RSVP.
+import Board from "@/components/Board.astro";
+import Crown from "@/components/Crown.astro";
+import Hex from "@/components/Hex.astro";
+import Token from "@/components/Token.astro";
+import { RsvpForm } from "@/components/RsvpForm";
+import { Headcount } from "@/components/Headcount";
+import { event, formatDateTime, formatDate } from "@/lib/birthday";
+
+const when = formatDateTime(event.dateTime);
+const rsvpBy = formatDate(event.rsvpDeadline);
+const details = [
+  { k: "When", v: when },
+  { k: "Where", v: event.location },
+  { k: "RSVP by", v: rsvpBy },
+];
+
+// Wax-seal starburst — symmetric spikes around the center (50,50).
+const SEAL_SPIKES = 14;
+const sealPath =
+  Array.from({ length: SEAL_SPIKES * 2 }, (_, i) => {
+    const r = i % 2 === 0 ? 47 : 39;
+    const a = (Math.PI / SEAL_SPIKES) * i - Math.PI / 2;
+    return `${i === 0 ? "M" : "L"}${(50 + r * Math.cos(a)).toFixed(2)} ${(50 + r * Math.sin(a)).toFixed(2)}`;
+  }).join(" ") + " Z";
+---
+<div class="px-4 sm:px-8 py-10 lg:py-14">
+  <div class="tome max-w-5xl mx-auto gn-reveal">
+    <span class="tome-ribbon"></span>
+    <div class="tome-grid">
+      {/* LEFT PAGE — the tale */}
+      <div class="tome-page">
+        <p class="gn-kicker">{event.occasion} &nbsp;·&nbsp; Hereupon</p>
+        <h1 class="gn-display tome-title" style="font-size: clamp(2.4rem, 7vw, 4rem); line-height: 0.92;">Game Night</h1>
+        <div class="flex items-center gap-2 mt-2 mb-4">
+          <Crown size={30} class="gn-float" />
+          <span class="gn-regal" style="font-size: clamp(1rem, 2.6vw, 1.45rem);">{event.tagline}</span>
+        </div>
+
+        <p class="gn-body gn-dropcap" style="font-size: 1.02rem;">{event.blurb}</p>
+
+        <figure class="illum-frame mt-6">
+          <Board />
+          <figcaption class="gn-plate-cap">Hereupon is charted the Isle, whereon the Crown is contested.</figcaption>
+        </figure>
+      </div>
+
+      {/* RIGHT PAGE — the particulars + RSVP */}
+      <div class="tome-page">
+        <h2 class="gn-section-title tome-title" style="font-size: 1.7rem;">The Particulars</h2>
+        <div class="mb-7 mt-2">
+          {details.map((d) => (
+            <div class="gn-detail"><span class="gn-detail-key">{d.k}</span><span class="gn-detail-val">{d.v}</span></div>
+          ))}
+        </div>
+
+        <h2 id="night" class="gn-section-title tome-title scroll-mt-8" style="font-size: 1.7rem;">The Revelries</h2>
+        <div class="mb-7 mt-2">
+          {event.activities.map((a) => (
+            <div class="tome-rev">
+              <Hex resource={a.resource} size="2.9rem"><Token n={a.token} size={20} /></Hex>
+              <div>
+                <h3 class="gn-activity-title" style="font-size: 1.05rem;">{a.name}</h3>
+                <p class="gn-body" style="font-size: 0.86rem; line-height: 1.4;">{a.blurb}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h2 id="rsvp" class="gn-section-title tome-title scroll-mt-8" style="font-size: 1.7rem;">Inscribe Thy Name</h2>
+        <p class="gn-eyebrow mt-2 mb-3">Settlers so far</p>
+        <div class="mb-5"><Headcount client:load capacity={event.capacity} /></div>
+        <RsvpForm client:load />
+
+        <div class="flex justify-center mt-8">
+          <svg width="86" height="86" viewBox="0 0 100 100" aria-hidden="true">
+            <path fill="#9B2B22" d={sealPath} />
+            <circle cx="50" cy="50" r="27" fill="#7E211A" />
+            <circle cx="50" cy="50" r="27" fill="none" stroke="#5A1813" stroke-opacity="0.4" stroke-width="1.5" />
+            {/* crown centered: its visual box is (32,36), so translate by that */}
+            <g transform="translate(50 50) scale(0.4) translate(-32 -36)">
+              <path d="M8 22 L18 34 L32 16 L46 34 L56 22 L52 50 L12 50 Z" fill="#E7C46A" stroke="#5A1813" stroke-width="2.5" stroke-linejoin="round" />
+              <rect x="11" y="49" width="42" height="7" rx="2" fill="#E7C46A" stroke="#5A1813" stroke-width="2.5" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-8 mt-2 text-center"><span class="gn-eyebrow">🎲 Roll up — see you there</span></footer>
+</div>
+
+<style is:global>
+  /* ---- Illuminated manuscript skin ---- */
+  .v4 {
+    --gn-parch: #E9DAB6;
+    --gn-font-display: "Uncial Antiqua", "Cinzel", serif;
+  }
+  .tome {
+    position: relative;
+    background: var(--gn-cream);
+    border-radius: 6px;
+    box-shadow:
+      inset 0 0 70px rgba(72, 49, 20, 0.4),
+      inset 0 0 0 1px rgba(72, 49, 20, 0.3),
+      0 24px 60px rgba(0, 0, 0, 0.35);
+  }
+  .tome-grid { display: grid; grid-template-columns: 1fr; position: relative; }
+  .tome-page { padding: 2rem 1.75rem; }
+  @media (min-width: 900px) {
+    .tome-grid { grid-template-columns: 1fr 1fr; }
+    .tome-grid::after {
+      content: ""; position: absolute; top: 4%; bottom: 4%; left: 50%; width: 2px;
+      background: linear-gradient(180deg, transparent, rgba(72, 49, 20, 0.45), transparent);
+      box-shadow: -7px 0 14px rgba(72, 49, 20, 0.18), 7px 0 14px rgba(72, 49, 20, 0.18);
+    }
+    .tome-page { padding: 2.6rem 2.4rem; }
+  }
+  .tome-title { color: var(--gn-brick); letter-spacing: 0.01em; }
+  .tome-ribbon {
+    position: absolute; top: -8px; right: 9%; width: 26px; height: 86px; z-index: 2;
+    background: var(--gn-brick);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  /* Illuminated gold frame around the board plate */
+  .illum-frame {
+    padding: 0.7rem;
+    border: 3px solid var(--gn-gold);
+    outline: 2px solid var(--gn-ink);
+    outline-offset: 3px;
+    background: color-mix(in srgb, var(--gn-gold) 12%, var(--gn-cream));
+    box-shadow: inset 0 0 0 1px rgba(44, 27, 14, 0.4);
+  }
+  .tome-rev { display: flex; gap: 0.85rem; align-items: center; padding: 0.6rem 0; border-bottom: 1px dashed rgba(44, 27, 14, 0.22); }
+  .tome-rev:last-child { border-bottom: none; }
+  /* keep every Catan tile the same size regardless of blurb length */
+  .tome-rev > .hex { flex: 0 0 2.9rem; }
+  .v4 .gn-dropcap::first-letter { color: var(--gn-gold); -webkit-text-stroke: 1px var(--gn-ink); }
+</style>

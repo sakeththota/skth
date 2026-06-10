@@ -1,0 +1,8 @@
+---
+import BirthdayLayout from "@/layouts/BirthdayLayout.astro";
+import InviteTome from "@/components/InviteTome.astro";
+import { event } from "@/lib/birthday";
+---
+<BirthdayLayout variant="v4" pageTitle={`${event.occasion} · ${event.title}`}>
+  <InviteTome />
+</BirthdayLayout>

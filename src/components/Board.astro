@@ -1,0 +1,64 @@
+---
+// The Catan island (classic 3-4-5-4-3 = 19 hexes), reused by every layout.
+import Hex from "@/components/Hex.astro";
+import Token from "@/components/Token.astro";
+import Crown from "@/components/Crown.astro";
+
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
+
+type Cell = { r: "brick" | "wood" | "wool" | "wheat" | "ore" | "desert"; n?: number };
+const rows: Cell[][] = [
+  [{ r: "ore", n: 10 }, { r: "wool", n: 2 }, { r: "wood", n: 9 }],
+  [{ r: "wheat", n: 12 }, { r: "brick", n: 6 }, { r: "wool", n: 4 }, { r: "ore", n: 10 }],
+  [{ r: "brick", n: 9 }, { r: "wheat", n: 11 }, { r: "desert" }, { r: "wood", n: 3 }, { r: "ore", n: 8 }],
+  [{ r: "wood", n: 8 }, { r: "wool", n: 3 }, { r: "wheat", n: 4 }, { r: "brick", n: 5 }],
+  [{ r: "wheat", n: 5 }, { r: "wool", n: 6 }, { r: "wood", n: 11 }],
+];
+
+const W = 86;
+const H = Math.round(W * 1.1547);
+const VSTEP = H * 0.75;
+const PAD = 32;
+const boardW = 5 * W + PAD * 2;
+const boardH = (rows.length - 1) * VSTEP + H + PAD * 2;
+const centerX = boardW / 2;
+
+const tiles = rows.flatMap((row, k) =>
+  row.map((cell, i) => {
+    const x = centerX + (i - (row.length - 1) / 2) * W;
+    const y = PAD + H / 2 + k * VSTEP;
+    return {
+      ...cell,
+      center: k === 2 && i === 2,
+      leftPct: ((x - W / 2) / boardW) * 100,
+      topPct: ((y - H / 2) / boardH) * 100,
+      wPct: (W / boardW) * 100,
+    };
+  }),
+);
+
+const ports = [
+  { l: 16, t: 13, label: "3:1" },
+  { l: 80, t: 14, label: "2:1" },
+  { l: 93, t: 50, label: "3:1" },
+  { l: 76, t: 87, label: "2:1" },
+  { l: 20, t: 86, label: "3:1" },
+  { l: 6, t: 49, label: "2:1" },
+];
+const hexToken = "clamp(16px, 3.6vw, 32px)";
+---
+<div class:list={["gn-board", className]} style={`aspect-ratio: ${boardW} / ${boardH};`} aria-hidden="true">
+  {tiles.map((t) => (
+    <div class="gn-hex-abs" style={`left:${t.leftPct}%; top:${t.topPct}%; width:${t.wPct}%;`}>
+      <Hex resource={t.r} size="100%">
+        {t.center ? <Crown size={46} class="gn-crown" /> : <Token n={t.n} size={hexToken} />}
+      </Hex>
+    </div>
+  ))}
+  {ports.map((p) => (
+    <div class="gn-port" style={`left:${p.l}%; top:${p.t}%;`}>
+      <div class="gn-port-disc">{p.label}</div>
+    </div>
+  ))}
+</div>
