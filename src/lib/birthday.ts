@@ -41,7 +41,7 @@ export const event: EventConfig = {
   // Lands mid-2026 World Cup group stage — matches will be on between turns.
   dateTime: "2026-06-20T19:00:00-05:00",
   location: "1062 N Ashland Ave #203, Chicago",
-  rsvpDeadline: "2026-06-13T23:59:00-05:00",
+  rsvpDeadline: "2026-06-14T23:59:00-05:00",
   capacity: 20,
   blurb:
     "It's a birthday, so we're settling some islands. Two tribes face off across the Catan board " +
@@ -83,6 +83,10 @@ export const event: EventConfig = {
 };
 
 /** Helpers shared by the page and API. */
+// Pin to Central time so the date renders the same regardless of the server's
+// timezone (Vercel runs in UTC, which otherwise shifted 7 PM CDT to the next day).
+const TZ = "America/Chicago";
+
 export function formatDateTime(iso: string): string {
   return new Date(iso).toLocaleString("en-US", {
     weekday: "long",
@@ -91,6 +95,7 @@ export function formatDateTime(iso: string): string {
     hour: "numeric",
     minute: "2-digit",
     timeZoneName: "short",
+    timeZone: TZ,
   });
 }
 
@@ -99,5 +104,6 @@ export function formatDate(iso: string): string {
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: TZ,
   });
 }
