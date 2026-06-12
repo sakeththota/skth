@@ -8,6 +8,6 @@ export default async function seed() {
   const now = new Date().toISOString();
   await db.insert(Rsvp).values([
     { email: "saketh@skth.dev", name: "Saketh", attending: "yes", partySize: 1, submittedAt: now },
-    { email: "plus-one@skth.dev", name: "Plus One", attending: "yes", partySize: 1, submittedAt: now },
+    { email: "annasuleebub@outlook.com", name: "Anna Lee", attending: "yes", partySize: 1, partyOf: "saketh@skth.dev", submittedAt: now },
   ]);
 }

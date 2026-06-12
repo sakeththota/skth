@@ -7,6 +7,7 @@ const Rsvp = defineTable({
     name: column.text(),
     attending: column.text(), // "yes" | "no" | "maybe"
     partySize: column.number({ default: 1 }),
+    partyOf: column.text({ optional: true }), // host's email for a +1 row; null for primary guests
     dietary: column.text({ optional: true }),
     note: column.text({ optional: true }),
     song: column.text({ optional: true }),
